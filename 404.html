@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script async src="https://googlesyndication.com" crossorigin="anonymous"></script>
+  <title>Smart Wallet Tracker & Financial Management Guide</title>
+  <style>
+    :root { --primary: #2ecc71; --danger: #e74c3c; --dark: #2c3e50; --light: #f8f9fa; }
+    body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: var(--light); color: var(--dark); margin: 0; padding: 20px; line-height: 1.6; }
+    .container { max-width: 800px; margin: 0 auto; background: #fff; padding: 30px; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
+    h1, h2, h3 { color: var(--dark); text-align: center; }
+    .balance-box { background: var(--dark); color: #fff; padding: 20px; border-radius: 6px; text-align: center; margin-bottom: 20px; }
+    .inc-exp-container { display: flex; justify-content: space-around; background: #fff; padding: 15px; border: 1px solid #e0e0e0; border-radius: 6px; margin-bottom: 20px; }
+    .money { font-size: 20px; font-weight: bold; margin: 5px 0; }
+    .plus { color: var(--primary); }
+    .minus { color: var(--danger); }
+    .form-control { margin-bottom: 15px; }
+    label { display: block; margin-bottom: 5px; font-weight: 600; }
+    input { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; }
+    .btn { display: block; width: 100%; background: var(--dark); color: #fff; padding: 12px; border: none; border-radius: 4px; font-size: 16px; cursor: pointer; transition: 0.3s; }
+    .btn:hover { background: #1a252f; }
+    .list { list-style-type: none; padding: 0; margin-bottom: 30px; }
+    .list li { background: #fff; border: 1px solid #e0e0e0; border-left: 5px solid #ccc; display: flex; justify-content: space-between; padding: 10px; margin-bottom: 5px; position: relative; }
+    .list li.plus { border-left-color: var(--primary); }
+    .list li.minus { border-left-color: var(--danger); }
+    .info-section { margin-top: 40px; padding-top: 20px; border-top: 2px solid #eee; }
+    .info-card { background: #fdfdfd; border: 1px dashed #ccc; padding: 15px; border-radius: 6px; margin-bottom: 15px; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Smart Wallet Tracker</h1>
+    <div class="balance-box">
+      <h4>Current Balance</h4>
+      <h1 id="balance">₹0.00</h1>
+    </div>
+    <div class="inc-exp-container">
+      <div>
+        <h4>Total Income</h4>
+        <p id="money-plus" class="money plus">+₹0.00</p>
+      </div>
+      <div>
+        <h4>Total Expense</h4>
+        <p id="money-minus" class="money minus">-₹0.00</p>
+      </div>
+    </div>
+    <h3>Transaction History</h3>
+    <ul id="list" class="list"></ul>
+    <h3>Add New Transaction</h3>
+    <form id="form">
+      <div class="form-control">
+        <label for="text">Transaction Label</label>
+        <input type="text" id="text" placeholder="e.g., Salary, Groceries, Rent">
+      </div>
+      <div class="form-control">
+        <label for="amount">Amount (Use negative sign '-' for expenses)</label>
+        <input type="number" id="amount" placeholder="e.g., 5000 or -1200">
+      </div>
+      <button class="btn">Record Transaction</button>
+    </form>
+    <div class="info-section">
+      <h2>Essential Personal Finance & Budgeting Resources</h2>
+      <p>Managing your money efficiently requires consistent tracking, strategic saving patterns, and clear financial goals.</p>
+      <div class="info-card">
+        <h3>The 50/30/20 Budgeting Rule Explained</h3>
+        <ul>
+          <li><strong>50% Needs:</strong> Obligatory allocations including housing rent and essential groceries.</li>
+          <li><strong>30% Wants:</strong> Discretionary spending targeting entertainment and dining out.</li>
+          <li><strong>20% Savings:</strong> Asset accumulation including emergency accounts.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <script>
+    const balance = document.getElementById('balance');
+    const money_plus = document.getElementById('money-plus');
+    const money_minus = document.getElementById('money-minus');
+    const list = document.getElementById('list');
+    const form = document.getElementById('form');
+    const text = document.getElementById('text');
+    const amount = document.getElementById('amount');
+    const localStorageTransactions = JSON.parse(localStorage.getItem('transactions'));
+    let transactions = localStorage.getItem('transactions') !== null ? localStorageTransactions : [];
+    function addTransaction(e) {
+      e.preventDefault();
+      if (text.value.trim() === '' || amount.value.trim() === '') {
+        alert('Please provide a valid description and numerical amount.');
+        return;
+      }
+      const transaction = { id: generateID(), text: text.value, amount: +amount.value };
+      transactions.push(transaction);
+      addTransactionDOM(transaction);
+      updateValues();
+      updateLocalStorage();
+      text.value = '';
+      amount.value = '';
+    }
+    function generateID() { return Math.floor(Math.random() * 100000000); }
+    function addTransactionDOM(transaction) {
+      const sign = transaction.amount < 0 ? '-' : '+';
+      const item = document.createElement('li');
+      item.classList.add(transaction.amount < 0 ? 'minus' : 'plus');
+      item.innerHTML = `${transaction.text} <span>${sign}₹${Math.abs(transaction.amount)}</span>`;
+      list.appendChild(item);
+    }
+    function updateValues() {
+      const amounts = transactions.map(transaction => transaction.amount);
+      const total = amounts.reduce((acc, item) => (acc += item), 0).toFixed(2);
+      const income = amounts.filter(item => item > 0).reduce((acc, item) => (acc += item), 0).toFixed(2);
+      const expense = (amounts.filter(item => item < 0).reduce((acc, item) => (acc += item), 0) * -1).toFixed(2);
+      balance.innerText = `₹${total}`;
+      money_plus.innerText = `+₹${income}`;
+      money_minus.innerText = `-₹${expense}`;
+    }
+    function updateLocalStorage() { localStorage.setItem('transactions', JSON.stringify(transactions)); }
+    function init() { list.innerHTML = ''; transactions.forEach(addTransactionDOM); updateValues(); }
+    form.addEventListener('submit', addTransaction);
+    init();
+  </script>
+</body>
+</html>
