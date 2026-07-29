@@ -32,14 +32,11 @@ let currentSelectedType = 'income';
 const monthsArray = ["January","February","March","April","May","June","July","August","September","October","November","December"];
 formMonth.value = monthsArray[new Date().getMonth()];
 
-// Automatically configures UI based on Annual vs Monthly categories chosen
 function checkAnnualIncomeMode() {
   if (currentSelectedType === 'income' && incomeCategory.value === 'Salary (Annually)') {
-    monthSelectionGroup.style.opacity = '0.5';
-    monthSelectionGroup.style.pointerEvents = 'none';
+    monthSelectionGroup.style.display = 'none';
   } else {
-    monthSelectionGroup.style.opacity = '1';
-    monthSelectionGroup.style.pointerEvents = 'auto';
+    monthSelectionGroup.style.display = 'block';
   }
 }
 
@@ -51,22 +48,18 @@ function setTransactionType(type) {
   if (type === 'income') {
     incomeGroup.style.display = 'block';
     expenseGroup.style.display = 'none';
-    
     incomeTab.style.background = 'rgba(6, 214, 160, 0.15)';
     incomeTab.style.border = '1px solid #06d6a0';
     incomeTab.style.boxShadow = '0 0 15px rgba(6, 214, 160, 0.3)';
-    
     expenseTab.style.background = '#0b1329';
     expenseTab.style.border = '1px solid #3a506b';
     expenseTab.style.boxShadow = 'none';
   } else {
     incomeGroup.style.display = 'none';
     expenseGroup.style.display = 'block';
-    
     expenseTab.style.background = 'rgba(255, 90, 95, 0.15)';
     expenseTab.style.border = '1px solid #ff5a5f';
     expenseTab.style.boxShadow = '0 0 15px rgba(255, 90, 95, 0.3)';
-    
     incomeTab.style.background = '#0b1329';
     incomeTab.style.border = '1px solid #3a506b';
     incomeTab.style.boxShadow = 'none';
@@ -74,7 +67,8 @@ function setTransactionType(type) {
   checkAnnualIncomeMode();
 }
 
-function handleFormToggleDirect(type) {
+function handleFormToggleDirect(e, type) {
+  if(e) e.preventDefault();
   setTransactionType(type);
 }
 
@@ -110,8 +104,6 @@ function addTransaction(e) {
   let amtVal = parseFloat(valText);
   let catSel = (currentSelectedType === 'income') ? incomeCategory.value : expenseCategory.value;
   const labelVal = formDate.value.trim() !== '' ? formDate.value.trim() : catSel;
-  
-  // Set month to 'Full Year' automatically if it's an annual tracking payout
   let finalMonth = (currentSelectedType === 'income' && catSel === 'Salary (Annually)') ? 'Full Year' : formMonth.value;
 
   if (currentSelectedType === 'expense') amtVal = -amtVal;
@@ -131,7 +123,6 @@ function addTransaction(e) {
   amount.value = ''; 
   formDate.value = '';
 }
-
 function addTransactionDOM(t) {
   const sign = t.amount < 0 ? '-' : '+';
   const item = document.createElement('li');
@@ -145,10 +136,7 @@ function editTransaction(id) {
   editId = id; 
   amount.value = Math.abs(target.amount).toFixed(2); 
   formDate.value = target.text; 
-  
-  if (target.month !== 'Full Year') {
-    formMonth.value = target.month;
-  }
+  if (target.month !== 'Full Year') formMonth.value = target.month;
   
   if (target.amount >= 0) {
     setTransactionType('income');
@@ -174,27 +162,20 @@ function removeTransaction(id) {
 
 function updateValues() {
   const expense = transactions.filter(t => t.amount < 0).reduce((acc, t) => acc + Math.abs(t.amount), 0);
-  
-  // Calculate income base cleanly (ignoring crude raw values of annualized counters)
   let income = transactions.filter(t => t.amount > 0 && t.rawCat !== "Salary (Annually)").reduce((acc, t) => acc + t.amount, 0);
   
-  // Automatically split annual metrics safely across standard dashboard calculation blocks
   transactions.forEach(t => { 
-    if(t.amount > 0 && t.rawCat === "Salary (Annually)") {
-      income += (t.amount / 12); 
-    }
+    if(t.amount > 0 && t.rawCat === "Salary (Annually)") income += (t.amount / 12); 
   });
 
   const total = income - expense;
   balance.innerText = `₹${total.toFixed(2)}`; 
   money_plus.innerText = `+₹${income.toFixed(2)}`; 
   money_minus.innerText = `-₹${expense.toFixed(2)}`;
-
   velocityDisplay.innerText = income > 0 ? `${((income - expense) / income * 100).toFixed(1)}%` : "0.0%";
   velocityDisplay.style.color = (income > 0 && ((income - expense) / income) * 100 >= 20) ? '#06d6a0' : '#fbbf24';
 
   if(expense > 0 && total > 0) {
-    // Treat 'Full Year' entries uniformly without cluttering month counts
     const cleanMonths = transactions.map(t => t.month).filter(m => m !== 'Full Year');
     const monthsCount = new Set(cleanMonths).size || 1;
     runwayDisplay.innerText = `${(total / (expense / monthsCount)).toFixed(1)} Months`;
@@ -205,18 +186,13 @@ function updateValues() {
 
   list.innerHTML = ''; 
   transactions.forEach(addTransactionDOM);
-  
   let nVal = 0, wVal = 0, sVal = 0;
 
   transactions.filter(t => t.amount < 0).forEach(t => {
     const c = t.rawCat;
-    if (["Groceries", "Rent/Bills", "Medical/Hospital", "Travel/Fuel", "Education/Fees"].includes(c)) {
-      nVal += Math.abs(t.amount);
-    } else if (["Dining Out", "Entertainment", "Other Expense"].includes(c)) {
-      wVal += Math.abs(t.amount);
-    } else if (["Investment"].includes(c)) {
-      sVal += Math.abs(t.amount);
-    }
+    if (["Groceries", "Rent/Bills", "Medical/Hospital", "Travel/Fuel", "Education/Fees"].includes(c)) nVal += Math.abs(t.amount);
+    else if (["Dining Out", "Entertainment", "Other Expense"].includes(c)) wVal += Math.abs(t.amount);
+    else if (["Investment"].includes(c)) sVal += Math.abs(t.amount);
   });
 
   const totalExp = nVal + wVal + sVal;
@@ -227,3 +203,49 @@ function updateValues() {
   labelNeeds.innerText = `${nPct}%`;
   labelWants.innerText = `${wPct}%`;
   labelSavings.innerText = `${sPct}%`;
+  barNeeds.style.width = `${Math.min(nPct, 100)}%`;
+  barWants.style.width = `${Math.min(wPct, 100)}%`;
+  barSavings.style.width = `${Math.min(sPct, 100)}%`;
+
+  if (transactions.length === 0) {
+    advisor.className = "advisor-box";
+    advisor.innerHTML = "Start adding transactions to receive automated financial budget feedback.";
+    return;
+  }
+
+  let advice = "💡 <strong>Budget Analysis:</strong> ";
+  if (nPct > 50) advice += "Your <strong>Needs</strong> exceed 50%. Optimize utilities or rent rules. ";
+  if (wPct > 30) advice += "Your <strong>Wants</strong> spending is high at " + wPct + "%. Prune lifestyle leaks. ";
+  if (sPct < 20 && totalExp > 0) advice += "Investment velocity is under 20%. Automate transfers early. ";
+  if (nPct <= 50 && wPct <= 30 && sPct >= 20) advice += "Excellent allocations matching the 50/30/20 framework!";
+  advisor.innerHTML = advice;
+}
+
+function clearLedger() {
+  list.innerHTML = '';
+}
+
+function resetAllData() {
+  if (confirm("Are you absolutely sure you want to delete all transaction data? This action cannot be undone.")) {
+    transactions = [];
+    localStorage.removeItem('transactions');
+    editId = null;
+    formHeading.innerText = "Add New Transaction";
+    submitBtn.innerText = "Record Transaction";
+    submitBtn.style.background = "#38bdf8";
+    amount.value = '';
+    formDate.value = '';
+    init();
+  }
+}
+
+function init() {
+  updateValues();
+  setTransactionType('income');
+}
+
+form.addEventListener('submit', addTransaction);
+clearLedgerBtn.addEventListener('click', clearLedger);
+resetAllBtn.addEventListener('click', resetAllData);
+
+init();
