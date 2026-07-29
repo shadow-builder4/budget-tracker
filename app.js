@@ -29,8 +29,18 @@ let transactions = JSON.parse(localStorage.getItem('transactions')) || [];
 let editId = null;
 let currentSelectedType = 'income';
 
-const monthsArray = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+const monthsArray = ["January","February","March","April","May June","July","August","September","October","November","December"];
 formMonth.value = monthsArray[new Date().getMonth()];
+
+// Global Alert Notification Function
+function showToast(message, classType = 'toast-success') {
+  const container = document.getElementById('toast-container');
+  const toast = document.createElement('div');
+  toast.className = `toast-message ${classType}`;
+  toast.innerText = message;
+  container.appendChild(toast);
+  setTimeout(() => { toast.remove(); }, 2500);
+}
 
 function checkAnnualIncomeMode() {
   if (currentSelectedType === 'income' && incomeCategory.value === 'Salary (Annually)') {
@@ -80,13 +90,14 @@ function filterLedgerSearch() {
 }
 
 function exportDataCSV() {
-  if (!transactions.length) { alert("Ledger registry is empty. Action aborted."); return; }
+  if (!transactions.length) { showToast("Ledger is empty. Action aborted.", "toast-danger"); return; }
   let csv = "data:text/csv;charset=utf-8,Month,Label,Category,Amount (INR)\n";
   transactions.forEach(t => csv += `${t.month},"${t.text.replace(/"/g, '""')}",${t.rawCat || 'Unallocated'},${t.amount}\n`);
   const link = document.createElement("a");
   link.setAttribute("href", encodeURI(csv));
   link.setAttribute("download", `Budget_Report.csv`);
   document.body.appendChild(link); link.click(); document.body.removeChild(link);
+  showToast("📥 CSV Spreadsheet Exported Successfully!");
 }
 
 function addTransaction(e) {
@@ -97,7 +108,7 @@ function addTransaction(e) {
 
   if (valText === '' || isNaN(valText) || parseFloat(valText) <= 0) {
     amount.classList.add('error-border'); 
-    alert('Please enter a valid positive amount.'); 
+    showToast('Please enter a valid positive number.', 'toast-danger'); 
     return;
   }
   
@@ -115,8 +126,10 @@ function addTransaction(e) {
     submitBtn.innerText = "Record Transaction"; 
     submitBtn.style.background = "#38bdf8"; 
     submitBtn.style.color = "#0f172a";
+    showToast("✏️ Record Updated Successfully!");
   } else {
     transactions.push({ id: Math.floor(Math.random() * 100000000), text: labelVal, amount: amtVal, rawCat: catSel, month: finalMonth });
+    showToast(currentSelectedType === 'income' ? "🟢 Income Recorded Successfully!" : "🔴 Expense Recorded Successfully!");
   }
   localStorage.setItem('transactions', JSON.stringify(transactions)); 
   init();
@@ -158,6 +171,7 @@ function removeTransaction(id) {
   transactions = transactions.filter(t => t.id !== id); 
   localStorage.setItem('transactions', JSON.stringify(transactions)); 
   init();
+  showToast("❌ Entry Removed From Database", "toast-warning");
 }
 
 function updateValues() {
@@ -221,11 +235,11 @@ function updateValues() {
   advisor.innerHTML = advice;
 }
 
-// Fixed: Clears list items from view and empties structural state arrays to avoid instant calculations feedback loop
 function clearLedger() {
   transactions = [];
   list.innerHTML = '';
   updateValues();
+  showToast("🧹 Visual Ledger History Cleared", "toast-warning");
 }
 
 function resetAllData() {
@@ -239,6 +253,7 @@ function resetAllData() {
     amount.value = '';
     formDate.value = '';
     init();
+    showToast("⚠️ Local Database Erased Completely!", "toast-danger");
   }
 }
 
