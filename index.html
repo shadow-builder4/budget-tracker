@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <!-- KEEPING YOUR ACTIVE ADSENSE VERIFICATION TAG INTACT -->
+  <!-- ACTIVE ADSENSE VERIFICATION TAG -->
   <script async src="https://googlesyndication.com" crossorigin="anonymous"></script>
   <title>Smart Wallet Tracker Pro — Premium Personal Budget Planner</title>
   <link rel="stylesheet" href="style.css">
@@ -23,7 +23,6 @@
       <h1 id="balance">₹0.00</h1>
     </div>
 
-    <!-- CLEAN HIGH-VALUE METRICS -->
     <div class="pro-metrics-grid">
       <div class="metric-card runway-glow">
         <div class="metric-icon">🛡️</div>
@@ -33,7 +32,6 @@
           <small>How many months your savings will last if income stops.</small>
         </div>
       </div>
-
       <div class="metric-card velocity-glow">
         <div class="metric-icon">⚡</div>
         <div>
@@ -48,10 +46,8 @@
       Start adding transactions to receive automated financial budget feedback.
     </div>
 
-    <!-- 50/30/20 SIMPLIFIED VISUAL PROGRESS BARS -->
     <div class="dashboard-chart">
       <div class="chart-title">📊 50/30/20 Budget Allocation Dashboard</div>
-      
       <div class="chart-row">
         <div class="chart-label">
           <span>Needs (Rent, Bills, Groceries) <small>(Target: 50% max)</small></span>
@@ -59,7 +55,6 @@
         </div>
         <div class="bar-container"><div id="bar-needs" class="bar-fill bar-needs"></div></div>
       </div>
-      
       <div class="chart-row">
         <div class="chart-label">
           <span>Wants (Dining Out, Entertainment) <small>(Target: 30% max)</small></span>
@@ -67,7 +62,6 @@
         </div>
         <div class="bar-container"><div id="bar-wants" class="bar-fill bar-wants"></div></div>
       </div>
-      
       <div class="chart-row">
         <div class="chart-label">
           <span>Savings & Investments <small>(Target: 20% min)</small></span>
@@ -88,7 +82,6 @@
       </div>
     </div>
 
-    <!-- ADVANCED FILTER & DOWNLOAD TOOLBAR -->
     <div class="utility-toolbar">
       <input type="text" id="search-bar" placeholder="🔍 Search through histories..." onkeyup="filterLedgerSearch()">
       <button type="button" class="action-export-btn" onclick="exportDataCSV()">📥 Export Excel/CSV Report</button>
@@ -97,12 +90,11 @@
     <h3>Transaction History</h3>
     <ul id="list" class="list"></ul>
 
-    <!-- FULLY FIXED CLEAN FORM CONTAINER -->
     <div class="form-container">
       <h3 id="form-heading">Add New Transaction</h3>
       <p class="form-sub-note">Fields marked with <span class="required">*</span> are mandatory.</p>
       
-      <form id="form" novalidate>
+      <form id="form">
         <div class="form-control">
           <label for="form-month">Select Month <span class="required">*</span></label>
           <select id="form-month">
@@ -118,8 +110,12 @@
         <div class="form-control">
           <label>Transaction Type <span class="required">*</span></label>
           <div class="type-selector">
-            <label class="type-option"><input type="radio" name="txType" id="type-income" value="income" checked onclick="toggleDropdowns()"> 🟢 Income Inflow</label>
-            <label class="type-option"><input type="radio" name="txType" id="type-expense" value="expense" onclick="toggleDropdowns()"> 🔴 Expense Outflow</label>
+            <label class="type-option">
+              <input type="radio" name="txType" id="type-income" value="income" checked onclick="toggleDropdowns()"> 🟢 Income Inflow
+            </label>
+            <label class="type-option">
+              <input type="radio" name="txType" id="type-expense" value="expense" onclick="toggleDropdowns()"> 🔴 Expense Outflow
+            </label>
           </div>
         </div>
 
@@ -151,7 +147,7 @@
 
         <div class="form-control">
           <label for="amount">Amount (Value in ₹) <span class="required">*</span></label>
-          <input type="number" id="amount" step="any" placeholder="e.g., 5000">
+          <input type="number" id="amount" placeholder="e.g., 5000">
         </div>
         
         <button type="submit" class="btn btn-submit" id="submit-btn">Record Transaction</button>
@@ -159,22 +155,21 @@
         <div class="directive-box">
           <p><strong>💡 Dashboard Control Guide:</strong></p>
           <ul>
-            <li><strong>Clear Ledger:</strong> Clears the visible transaction history list from the screen. Your underlying browser memory is <strong>safely saved</strong>.</li>
+            <li><strong>Clear Ledger:</strong> Clears the visible transaction history list from the screen. Your records are <strong>safely saved</strong>.</li>
             <li><strong>Reset All Data:</strong> Permanent factory reset. Completely erases your entire budget records and data history.</li>
           </ul>
         </div>
 
         <div class="button-group">
-          <button type="button" class="btn btn-clear" onclick="clearCurrentLedger()">Clear Ledger</button>
-          <button type="button" class="btn btn-reset" onclick="clearAllData()">Reset All Data</button>
+          <button type="button" class="btn btn-clear" id="clear-ledger-btn">Clear Ledger</button>
+          <button type="button" class="btn btn-reset" id="reset-all-btn">Reset All Data</button>
         </div>
       </form>
     </div>
 
-    <!-- HIGH-VALUE REVENUE ARTICLE DISCLOSURES -->
     <div class="info-section">
       <h2>Essential Personal Finance & Budgeting Resources</h2>
-      <p>Managing your money efficiently requires consistent tracking, strategic saving patterns, and clear financial goals. Below is an educational framework designed to maximize your savings velocity using our tracking utility.</p>
+      <p>Managing money requires tracking, saving patterns, and financial goals. Use this tool to improve your budgeting strategy.</p>
       
       <div class="info-card">
         <h3>The 50/30/20 Budgeting Rule Explained</h3>
@@ -185,12 +180,14 @@
           <li><strong>20% Savings:</strong> Asset accumulation including emergency accounts, retirement contributions, and debt settlements.</li>
         </ul>
       </div>
+    </div>
 
-      <div class="info-card">
-        <h3>Top Strategies to Minimize Daily Expenditures</h3>
-        <p>Small adjustments heavily influence cumulative long-term cash retention. Consider deploying these strategies:</p>
-        <ul>
-          <li><strong>Automate Savings:</strong> Configure automatic bank transfers directly into specialized savings vaults immediately following payroll events.</li>
-          <li><strong>Audit Fixed Subscriptions:</strong> Routinely scan recurring card statements to isolate and deactivate underutilized premium streaming, software, or gym memberships.</li>
-          <li><strong>Meal Preparation:</strong> Planning household meals weekly systematically reduces dependencies on high-markup food delivery mobile applications.</li>
-        </ul>
+    <footer>
+        <p>© 2026 Smart Wallet Tracker Pro. All rights reserved.</p>
+        <p><a href="privacy.html">Privacy Policy</a></p>
+    </footer>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
