@@ -12,6 +12,8 @@
     .container { max-width: 800px; margin: 0 auto; background: #fff; padding: 30px; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
     h1, h2, h3 { color: var(--dark); text-align: center; }
     .balance-box { background: var(--dark); color: #fff; padding: 20px; border-radius: 6px; text-align: center; margin-bottom: 20px; }
+    /* FIXED INVISIBLE COLOR BUG HERE */
+    .balance-box h1 { color: #ffffff !important; margin: 10px 0 0 0; } 
     .inc-exp-container { display: flex; justify-content: space-around; background: #fff; padding: 15px; border: 1px solid #e0e0e0; border-radius: 6px; margin-bottom: 20px; }
     .money { font-size: 20px; font-weight: bold; margin: 5px 0; }
     .plus { color: var(--primary); }
@@ -27,6 +29,8 @@
     .list li.minus { border-left-color: var(--danger); }
     .info-section { margin-top: 40px; padding-top: 20px; border-top: 2px solid #eee; }
     .info-card { background: #fdfdfd; border: 1px dashed #ccc; padding: 15px; border-radius: 6px; margin-bottom: 15px; }
+    footer { text-align: center; padding: 20px; margin-top: 40px; border-top: 1px solid #e2e8f0; }
+    footer a { color: #2563eb; text-decoration: none; margin: 0 10px; font-weight: 600; }
   </style>
 </head>
 <body>
@@ -90,6 +94,15 @@
         </ul>
       </div>
     </div>
+
+    <!-- ADDED PRIVACY LINKS FOOTER FOR ADSENSE BOT COMPLIANCE -->
+    <footer>
+        <p>© 2026 Smart Wallet Tracker. All rights reserved.</p>
+        <p>
+            <a href="privacy.html">Privacy Policy</a> | 
+            <a href="https://github.com" target="_blank">About Developer</a>
+        </p>
+    </footer>
   </div>
 
   <script>
