@@ -180,3 +180,26 @@ input, select { width: 100%; padding: 14px; background: #0f172a; border: 1px sol
   85% { opacity: 1; transform: translateY(0) scale(1); }
   100% { opacity: 0; transform: translateY(-20px) scale(0.9); }
 }
+/* PRODUCTION COMPLIANT FOOTER ELEMENTS */
+footer {
+  margin-top: 40px;
+  padding-top: 25px;
+  border-top: 1px solid var(--border-glow);
+  text-align: center;
+  font-size: 13px;
+}
+footer p {
+  color: var(--text-muted);
+  margin: 0 0 10px 0;
+  line-height: 1.5;
+}
+footer a {
+  color: var(--accent-blue);
+  text-decoration: none;
+  font-weight: 600;
+  transition: color 0.2s ease;
+}
+footer a:hover {
+  color: var(--text-main);
+  text-decoration: underline;
+}
