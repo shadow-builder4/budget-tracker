@@ -22,7 +22,6 @@ const labelWants = document.getElementById('label-wants');
 const labelSavings = document.getElementById('label-savings');
 const runwayDisplay = document.getElementById('runway-display');
 const velocityDisplay = document.getElementById('velocity-display');
-const clearLedgerBtn = document.getElementById('clear-ledger-btn');
 const resetAllBtn = document.getElementById('reset-all-btn');
 
 let transactions = JSON.parse(localStorage.getItem('transactions')) || [];
@@ -54,8 +53,6 @@ function loadFinancialGoal() {
   const storedGoal = localStorage.getItem('financialGoalText') || '';
   if (goalInput) goalInput.value = storedGoal;
 }
-
-// DYNAMIC FILE IMPORT READER ENGINE
 function importDataCSV(e) {
   const file = e.target.files[0];
   if (!file) return;
@@ -124,17 +121,17 @@ function setTransactionType(type) {
     incomeTab.style.background = 'rgba(6, 214, 160, 0.15)';
     incomeTab.style.border = '1px solid #06d6a0';
     incomeTab.style.boxShadow = '0 0 15px rgba(6, 214, 160, 0.3)';
-    expenseTab.style.background = '#0b1329';
-    expenseTab.style.border = '1px solid #3a506b';
-    expenseTab.style.boxShadow = 'none';
+    incomeTab.style.background = '#111827';
+    incomeTab.style.border = 'none';
+    incomeTab.style.boxShadow = 'none';
   } else {
     incomeGroup.style.display = 'none';
     expenseGroup.style.display = 'block';
     expenseTab.style.background = 'rgba(255, 90, 95, 0.15)';
     expenseTab.style.border = '1px solid #ff5a5f';
     expenseTab.style.boxShadow = '0 0 15px rgba(255, 90, 95, 0.3)';
-    incomeTab.style.background = '#0b1329';
-    incomeTab.style.border = '1px solid #3a506b';
+    incomeTab.style.background = '#111827';
+    incomeTab.style.border = 'none';
     incomeTab.style.boxShadow = 'none';
   }
   checkAnnualIncomeMode();
@@ -151,6 +148,7 @@ function filterLedgerSearch() {
     item.style.display = item.textContent.toLowerCase().includes(query) ? 'flex' : 'none';
   });
 }
+
 function exportDataCSV() {
   if (!transactions.length) { showToast("Ledger is empty. Action aborted.", "toast-danger"); return; }
   let csv = "data:text/csv;charset=utf-8,Month,Label,Category,Amount (INR)\n";
@@ -161,7 +159,6 @@ function exportDataCSV() {
   document.body.appendChild(link); link.click(); document.body.removeChild(link);
   showToast("📥 CSV Spreadsheet Exported Successfully!");
 }
-
 function addTransaction(e) {
   e.preventDefault();
   const valText = amount.value.trim();
@@ -186,8 +183,8 @@ function addTransaction(e) {
     editId = null; 
     formHeading.innerText = "Add New Entry";
     submitBtn.innerText = "Record Transaction"; 
-    submitBtn.style.background = "#38bdf8"; 
-    submitBtn.style.color = "#0f172a";
+    submitBtn.style.background = "#00f0ff"; 
+    submitBtn.style.color = "#070a13";
     showToast("✏️ Record Updated Successfully!");
   } else {
     transactions.push({ id: Math.floor(Math.random() * 100000000), text: labelVal, amount: amtVal, rawCat: catSel, month: finalMonth });
@@ -203,7 +200,7 @@ function addTransactionDOM(t) {
   const sign = t.amount < 0 ? '-' : '+';
   const item = document.createElement('li');
   item.className = t.amount < 0 ? 'minus' : 'plus';
-  item.innerHTML = `<div><strong>${t.text}</strong> <small style="color:#94a3b8;">(${t.month})</small></div><div class="action-group"><span>${sign}₹${Math.abs(t.amount).toFixed(2)}</span><button type="button" class="edit-btn" onclick="editTransaction(${t.id})">Edit</button><button type="button" class="delete-btn" onclick="removeTransaction(${t.id})">Delete</button></div>`;
+  item.innerHTML = `<div><strong>${t.text}</strong> <small>(${t.month})</small></div><div class="action-group"><span>${sign}₹${Math.abs(t.amount).toFixed(2)}</span><button type="button" class="edit-btn" onclick="editTransaction(${t.id})">Edit</button><button type="button" class="delete-btn" onclick="removeTransaction(${t.id})">Delete</button></div>`;
   list.appendChild(item);
 }
 
@@ -229,7 +226,7 @@ function editTransaction(id) {
 }
 
 function removeTransaction(id) {
-  if(editId === id) { editId = null; formHeading.innerText = "Add New Entry"; submitBtn.innerText = "Record Transaction"; submitBtn.style.background = "#38bdf8"; amount.value = ''; formDate.value = ''; }
+  if(editId === id) { editId = null; formHeading.innerText = "Add New Entry"; submitBtn.innerText = "Record Transaction"; submitBtn.style.background = "#00f0ff"; amount.value = ''; formDate.value = ''; }
   transactions = transactions.filter(t => t.id !== id); 
   localStorage.setItem('transactions', JSON.stringify(transactions)); 
   init();
@@ -248,15 +245,15 @@ function updateValues() {
   money_plus.innerText = `+₹${income.toFixed(2)}`; 
   money_minus.innerText = `-₹${expense.toFixed(2)}`;
   velocityDisplay.innerText = income > 0 ? `${((income - expense) / income * 100).toFixed(1)}%` : "0.0%";
-  velocityDisplay.style.color = (income > 0 && ((income - expense) / income) * 100 >= 20) ? '#06d6a0' : '#fbbf24';
+  velocityDisplay.style.color = (income > 0 && ((income - expense) / income) * 100 >= 20) ? '#39ff14' : '#ffb800';
 
   if(expense > 0 && total > 0) {
     const cleanMonths = transactions.map(t => t.month).filter(m => m !== 'Full Year');
     const monthsCount = new Set(cleanMonths).size || 1;
     runwayDisplay.innerText = `${(total / (expense / monthsCount)).toFixed(1)} Months`;
-    runwayDisplay.style.color = ((total / (expense / monthsCount)) >= 6) ? '#38bdf8' : '#f87171';
+    runwayDisplay.style.color = ((total / (expense / monthsCount)) >= 6) ? '#00f0ff' : '#ff007f';
   } else {
-    runwayDisplay.innerText = "0.0 Months"; runwayDisplay.style.color = '#94a3b8';
+    runwayDisplay.innerText = "0.0 Months"; runwayDisplay.style.color = '#64748b';
   }
 
   list.innerHTML = ''; 
@@ -304,11 +301,11 @@ function updateValues() {
   advisor.innerHTML = advice;
 }
 
-function clearLedger() {
+function unloadCurrentSession() {
   transactions = [];
   list.innerHTML = '';
   updateValues();
-  showToast("🧹 Visual Ledger History Cleared", "toast-warning");
+  showToast("🧹 Current Session Unloaded Safely", "toast-warning");
 }
 
 function resetAllData() {
@@ -321,7 +318,7 @@ function resetAllData() {
     editId = null;
     formHeading.innerText = "Add New Entry";
     submitBtn.innerText = "Record Transaction";
-    submitBtn.style.background = "#38bdf8";
+    submitBtn.style.background = "#00f0ff";
     amount.value = '';
     formDate.value = '';
     init();
@@ -329,17 +326,6 @@ function resetAllData() {
   }
 }
 
-function init() {
-  updateValues();
-  setTransactionType('income');
-  loadFinancialGoal();
-}
-
-form.addEventListener('submit', addTransaction);
-clearLedgerBtn.addEventListener('click', clearLedger);
-resetAllBtn.addEventListener('click', resetAllData);
-
-init();
 function toggleAccordion(headerElement) {
   const parentItem = headerElement.parentElement;
   const contentElement = parentItem.querySelector('.accordion-content');
@@ -355,3 +341,15 @@ function toggleAccordion(headerElement) {
     contentElement.style.maxHeight = contentElement.scrollHeight + "px";
   }
 }
+
+function init() {
+  updateValues();
+  setTransactionType('income');
+  loadFinancialGoal();
+}
+
+form.addEventListener('submit', addTransaction);
+document.getElementById('unload-session-btn').addEventListener('click', unloadCurrentSession);
+resetAllBtn.addEventListener('click', resetAllData);
+
+init();
