@@ -19,12 +19,9 @@ const barSavings = document.getElementById('bar-savings');
 const labelNeeds = document.getElementById('label-needs');
 const labelWants = document.getElementById('label-wants');
 const labelSavings = document.getElementById('label-savings');
-const currencySelect = document.getElementById('currency-select');
-const convertedDisplay = document.getElementById('converted-display');
 
 let transactions = JSON.parse(localStorage.getItem('transactions')) || [];
 let editId = null;
-let currentNetBalanceINR = 0;
 
 const monthsArray = ["January","February","March","April","May","June","July","August","September","October","November","December"];
 formMonth.value = monthsArray[new Date().getMonth()];
@@ -35,30 +32,14 @@ function toggleDropdowns() {
   expenseGroup.style.display = (mode === 'expense') ? 'block' : 'none';
 }
 
-// LIVE MULTI-CURRENCY CONVERTER ARCHITECTURE
-function convertCurrency() {
-  const selectedCurrency = currencySelect.value;
-  let rate = 1;
-  let symbol = "₹";
-
-  if (selectedCurrency === "USD") { rate = 0.012; symbol = "$"; }
-  else if (selectedCurrency === "EUR") { rate = 0.011; symbol = "€"; }
-  else if (selectedCurrency === "GBP") { rate = 0.0093; symbol = "£"; }
-
-  const convertedValue = currentNetBalanceINR * rate;
-  convertedDisplay.innerText = `${symbol}${convertedValue.toFixed(2)}`;
-}
-
 function addTransaction(e) {
   e.preventDefault();
   
-  // RESET PREVIOUS VALIDATION VISUAL STYLES
   formDate.classList.remove('error-border');
   amount.classList.remove('error-border');
 
   let hasError = false;
 
-  // SMART VALIDATOR LOOKUP FOR MANDATORY FIELDS
   if (formDate.value.trim() === '') {
     formDate.classList.add('error-border');
     hasError = true;
@@ -89,6 +70,7 @@ function addTransaction(e) {
     formHeading.innerText = "Add New Transaction";
     submitBtn.innerText = "Record Transaction";
     submitBtn.style.background = "#2c3e50";
+    submitBtn.style.color = "#ffffff";
   } else {
     transactions.push({ id: Math.floor(Math.random() * 100000000), text: customLabel, amount: transactionVal, rawCat: selectedCategory, month: targetMonth });
   }
@@ -111,7 +93,7 @@ function editTransaction(id) {
   const target = transactions.find(t => t.id === id);
   if (!target) return;
   editId = id;
-  amount.value = Math.abs(target.amount);
+  amount.value = Math.abs(target.amount).toFixed(2);
   formDate.value = target.text;
   formMonth.value = target.month || monthsArray[new Date().getMonth()];
   if (target.amount >= 0) {
@@ -125,6 +107,7 @@ function editTransaction(id) {
   formHeading.innerText = `✏️ Editing Entry: ${target.text}`;
   submitBtn.innerText = "Save Updated Value";
   submitBtn.style.background = "#f1c40f";
+  submitBtn.style.color = "#2c3e50";
   formHeading.scrollIntoView({ behavior: 'smooth' });
 }
 
@@ -144,13 +127,9 @@ function updateValues() {
     if(t.amount > 0 && t.rawCat === "Salary (Annually)") calculatedIncomePool += (t.amount / 12);
   });
 
-  currentNetBalanceINR = calculatedIncomePool - expense;
-  balance.innerText = `₹${currentNetBalanceINR.toFixed(2)}`;
+  balance.innerText = `₹${(calculatedIncomePool - expense).toFixed(2)}`;
   money_plus.innerText = `+₹${calculatedIncomePool.toFixed(2)}`;
   money_minus.innerText = `-₹${expense.toFixed(2)}`;
-  
-  // RERUN THE DYNAMIC CONVERTER VALUE RECALCULATION
-  convertCurrency();
 
   list.innerHTML = '';
   transactions.forEach(addTransactionDOM);
@@ -177,7 +156,7 @@ function updateValues() {
     labelNeeds.innerText = `${nPct}% (Target: 50%)`; labelWants.innerText = `${wPct}% (Target: 30%)`; labelSavings.innerText = `${sPct}% (Target: 20%)`;
   } else {
     barNeeds.style.width = '0%'; barWants.style.width = '0%'; barSavings.style.width = '0%';
-    labelNeeds.innerHTML = '0%'; labelWants.innerHTML = '0%'; labelSavings.innerHTML = '0%';
+    labelNeeds.innerText = '0%'; labelWants.innerText = '0%'; labelSavings.innerText = '0%';
   }
 
   if (calculatedIncomePool === 0 && expense === 0) {
