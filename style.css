@@ -16,7 +16,7 @@
 }
 
 /* ==========================================================================
-   GLOBAL SCALED CANVAS LOGIC & UNIFIED HUD LAYOUTS
+   GLOBAL CANVAS LOGIC & UNIFIED SCROLLBAR SYSTEMS
    ========================================================================== */
 * { box-sizing: border-box; }
 
@@ -140,10 +140,10 @@ body {
 .plus { color: var(--accent-neon-green); }
 .minus { color: var(--accent-neon-red); }
 
-/* FIXED HIGHLIGHT AREA: APPLIED DISTINCT BLUE GLOW BOX EMBED TO BACKUP ZONE LAYER */
+/* COMPRESSED COMPACT TOOLBAR PANEL WITH BALANCED CYAN HOVER OVERLAY GLOW */
 .utility-toolbar { 
   background: linear-gradient(135deg, rgba(0, 240, 255, 0.04), rgba(11, 15, 29, 0.98)) !important; 
-  border: 1px solid rgba(0, 240, 255, 0.25) !important; /* Cyberpunk sharp accent boundaries */
+  border: 1px solid rgba(0, 240, 255, 0.25) !important; 
   padding: 14px 18px; 
   border-radius: 12px; 
   display: flex; 
@@ -155,7 +155,7 @@ body {
   box-shadow: inset 0 0 20px rgba(0, 240, 255, 0.05);
 }
 
-/* FIXED VISIBILITY: DYNAMIC TEXT TRUNCATION CONTROLLER REVEALS FULL TERMS ON MOUSE HOVER */
+/* MOUSE HOVER SECTIONS EXPAND CLIPSHORT WRITING TEXT STRINGS INDEPENDENTLY */
 .utility-toolbar input { 
   flex: 1; min-width: 240px; background: #040711; border: 1px solid rgba(255, 255, 255, 0.08); padding: 10px 14px; font-size: 13px; font-weight: 600; color: #fff; border-radius: 6px; outline: none;
   white-space: nowrap; overflow: hidden; text-overflow: ellipsis; transition: all 0.25s ease-in-out;
@@ -177,7 +177,6 @@ body {
 .list { list-style-type: none; padding: 0; margin: 0; display: block; width: 100%; }
 .list li { background: var(--panel-glass); border: 1px solid rgba(255, 255, 255, 0.03); border-left: 3px solid #334155; display: flex; justify-content: space-between; padding: 12px 18px; margin-top: 8px; border-radius: 8px; align-items: center; }
 
-/* HOVER EFFECT REVEALS EXPANDED LEDGER NOTE DESCRIPTIONS */
 .list li strong { 
   font-size: 13.5px; font-weight: 700; color: #fff; max-width: 180px; display: inline-block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; transition: all 0.2s ease;
 }
@@ -239,3 +238,4 @@ input:focus, select:focus { border-color: var(--accent-blue); }
 
 @media (max-width: 1024px) { .main-workspace-grid, .top-hud-grid { grid-template-columns: 1fr; gap: 20px; } }
 @media (max-width: 768px) { .backup-button-group { width: 100%; } .backup-button-group .tooltip-wrapper, .backup-button-group .action-export-btn { width: 100%; } }
+@media (max-width: 600px) { .container { padding: 15px; gap: 15px; } .pro-metrics-grid, .inc-exp-container, .button-group { grid-template-columns: 1fr; width: 100%; } .list li { flex-direction: column; align-items: flex-start; gap: 8px; } .action-group { width: 100%; justify-content: space-between; } }
