@@ -26,25 +26,27 @@ const resetAllBtn = document.getElementById('reset-all-btn');
 
 let transactions = JSON.parse(localStorage.getItem('transactions')) || [];
 let editId = null;
+let currentSelectedType = 'income'; // Dynamic state storage tracker variable
+
 const monthsArray = ["January","February","March","April","May","June","July","August","September","October","November","December"];
 formMonth.value = monthsArray[new Date().getMonth()];
 
-// 🔥 INSTANT VISUAL TABS HIGHLIGHTER LOGIC ENGINE
-function toggleDropdowns() {
-  const mode = document.querySelector('input[name="txType"]:checked').value;
-  const incomeTab = document.querySelector('.option-income');
-  const expenseTab = document.querySelector('.option-expense');
+// 🔥 DYNAMIC INTERACTIVE TAB CONTROLLER FUNCTION
+function setTransactionType(type) {
+  currentSelectedType = type;
+  const incomeTab = document.getElementById('tab-income');
+  const expenseTab = document.getElementById('tab-expense');
   
-  if (mode === 'income') {
+  if (type === 'income') {
     incomeGroup.style.display = 'block';
     expenseGroup.style.display = 'none';
     
-    // Force direct Neon Green highlighting onto the Income card tab
+    // Green Glow Presentation
     incomeTab.style.background = 'rgba(6, 214, 160, 0.15)';
     incomeTab.style.border = '1px solid #06d6a0';
     incomeTab.style.boxShadow = '0 0 15px rgba(6, 214, 160, 0.3)';
     
-    // Clear out Expense card styles completely
+    // Clear Expense Presentment
     expenseTab.style.background = '#0b1329';
     expenseTab.style.border = '1px solid #3a506b';
     expenseTab.style.boxShadow = 'none';
@@ -52,12 +54,12 @@ function toggleDropdowns() {
     incomeGroup.style.display = 'none';
     expenseGroup.style.display = 'block';
     
-    // Force direct Neon Red highlighting onto the Expense card tab
+    // Red Glow Presentation
     expenseTab.style.background = 'rgba(255, 90, 95, 0.15)';
     expenseTab.style.border = '1px solid #ff5a5f';
     expenseTab.style.boxShadow = '0 0 15px rgba(255, 90, 95, 0.3)';
     
-    // Clear out Income card styles completely
+    // Clear Income Presentment
     incomeTab.style.background = '#0b1329';
     incomeTab.style.border = '1px solid #3a506b';
     incomeTab.style.boxShadow = 'none';
@@ -93,12 +95,11 @@ function addTransaction(e) {
     return;
   }
   
-  const mode = document.querySelector('input[name="txType"]:checked').value;
   let amtVal = parseFloat(valText);
-  let catSel = (mode === 'income') ? incomeCategory.value : expenseCategory.value;
+  let catSel = (currentSelectedType === 'income') ? incomeCategory.value : expenseCategory.value;
   const labelVal = formDate.value.trim() !== '' ? formDate.value.trim() : catSel;
 
-  if (mode === 'expense') amtVal = -amtVal;
+  if (currentSelectedType === 'expense') amtVal = -amtVal;
   
   if (editId !== null) {
     transactions = transactions.map(t => t.id === editId ? { id: editId, text: labelVal, amount: amtVal, rawCat: catSel, month: formMonth.value } : t);
@@ -132,13 +133,12 @@ function editTransaction(id) {
   formMonth.value = target.month;
   
   if (target.amount >= 0) {
-    document.getElementById('type-income').checked = true; 
+    setTransactionType('income');
     incomeCategory.value = target.rawCat || 'Salary (Monthly)';
   } else {
-    document.getElementById('type-expense').checked = true; 
+    setTransactionType('expense');
     expenseCategory.value = target.rawCat || 'Groceries';
   }
-  toggleDropdowns(); 
   formHeading.innerText = `✏️ Editing Entry: ${target.text}`;
   submitBtn.innerText = "Save Updated Value"; 
   submitBtn.style.background = "#fbbf24"; 
@@ -206,3 +206,6 @@ function updateValues() {
   } else {
     const ratio = (expense / income) * 100;
     advisor.className = ratio > 70 ? "advisor-box advisor-warning" : "advisor-box advisor-good";
+    advisor.innerText = ratio > 70 ? `⚠️ High Spending Alert: You have spent ${ratio.toFixed(1)}% of your earnings. Restrain your discretionary expenses.` : `🌱 Healthy Budget: Your spending profile is stable (${ratio.toFixed(1)}% of income used).`;
+  }
+}
