@@ -200,3 +200,71 @@ footer a:hover { color: #fff; text-decoration: underline; }
 
 @media (max-width: 600px) {
   .container { padding: 25px 20px; gap: 30px; }
+/* ==========================================================================
+   INTERACTIVE COLLAPSIBLE ACCORDION INTERFACE RULES
+   ========================================================================== */
+.resources-subtitle {
+  font-size: 13px;
+  color: var(--text-muted);
+  margin: 5px 0 20px 0;
+}
+
+.accordion-item {
+  background: rgba(10, 15, 29, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.03);
+  border-radius: 10px;
+  margin-bottom: 12px;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.accordion-header {
+  width: 100%;
+  background: none;
+  border: none;
+  padding: 18px 22px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  text-align: left;
+  transition: background-color 0.2s ease;
+}
+
+.accordion-header:hover {
+  background-color: rgba(0, 240, 255, 0.03);
+}
+
+.accordion-arrow {
+  font-size: 10px;
+  color: var(--accent-blue);
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.accordion-content {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+.accordion-content p {
+  padding: 20px 24px;
+  margin: 0;
+  font-size: 13.5px;
+  line-height: 1.6;
+  color: #94a3b8;
+}
+
+/* State toggle helper classes executed via script engines */
+.accordion-item.active {
+  border-color: rgba(0, 240, 255, 0.15);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+}
+
+.accordion-item.active .accordion-arrow {
+  transform: rotate(180deg);
+}
