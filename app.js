@@ -55,6 +55,56 @@ function loadFinancialGoal() {
   if (goalInput) goalInput.value = storedGoal;
 }
 
+// DYNAMIC FILE IMPORT READER ENGINE
+function importDataCSV(e) {
+  const file = e.target.files[0];
+  if (!file) return;
+
+  const reader = new FileReader();
+  reader.onload = function(event) {
+    const text = event.target.result;
+    const lines = text.split("\n");
+    
+    if (text.trim() === "" || lines.length <= 1) {
+      showToast("Selected backup spreadsheet format is empty.", "toast-danger");
+      return;
+    }
+
+    let importedTransactions = [];
+    for (let i = 1; i < lines.length; i++) {
+      if (!lines[i].trim()) continue;
+      const parts = lines[i].split(",");
+      if (parts.length >= 4) {
+        const monthVal = parts[0].trim();
+        const textLabel = parts[1].replace(/^"|"$/g, '').trim();
+        const categoryVal = parts[2].trim();
+        const amountVal = parseFloat(parts[3].trim());
+
+        if (!isNaN(amountVal)) {
+          importedTransactions.push({
+            id: Math.floor(Math.random() * 100000000),
+            text: textLabel,
+            amount: amountVal,
+            rawCat: categoryVal,
+            month: monthVal
+          });
+        }
+      }
+    }
+
+    if (importedTransactions.length > 0) {
+      transactions = [...transactions, ...importedTransactions];
+      localStorage.setItem('transactions', JSON.stringify(transactions));
+      init();
+      showToast(`📥 Successfully Restored ${importedTransactions.length} Log Records!`);
+    } else {
+      showToast("No valid structural records detected.", "toast-danger");
+    }
+  };
+  reader.readAsText(file);
+  e.target.value = '';
+}
+
 function checkAnnualIncomeMode() {
   if (currentSelectedType === 'income' && incomeCategory.value === 'Salary (Annually)') {
     monthSelectionGroup.style.display = 'none';
