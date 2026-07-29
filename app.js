@@ -26,12 +26,11 @@ const resetAllBtn = document.getElementById('reset-all-btn');
 
 let transactions = JSON.parse(localStorage.getItem('transactions')) || [];
 let editId = null;
-let currentSelectedType = 'income'; // Dynamic state storage tracker variable
+let currentSelectedType = 'income';
 
 const monthsArray = ["January","February","March","April","May","June","July","August","September","October","November","December"];
 formMonth.value = monthsArray[new Date().getMonth()];
 
-// 🔥 DYNAMIC INTERACTIVE TAB CONTROLLER FUNCTION
 function setTransactionType(type) {
   currentSelectedType = type;
   const incomeTab = document.getElementById('tab-income');
@@ -41,12 +40,10 @@ function setTransactionType(type) {
     incomeGroup.style.display = 'block';
     expenseGroup.style.display = 'none';
     
-    // Green Glow Presentation
     incomeTab.style.background = 'rgba(6, 214, 160, 0.15)';
     incomeTab.style.border = '1px solid #06d6a0';
     incomeTab.style.boxShadow = '0 0 15px rgba(6, 214, 160, 0.3)';
     
-    // Clear Expense Presentment
     expenseTab.style.background = '#0b1329';
     expenseTab.style.border = '1px solid #3a506b';
     expenseTab.style.boxShadow = 'none';
@@ -54,16 +51,18 @@ function setTransactionType(type) {
     incomeGroup.style.display = 'none';
     expenseGroup.style.display = 'block';
     
-    // Red Glow Presentation
     expenseTab.style.background = 'rgba(255, 90, 95, 0.15)';
     expenseTab.style.border = '1px solid #ff5a5f';
     expenseTab.style.boxShadow = '0 0 15px rgba(255, 90, 95, 0.3)';
     
-    // Clear Income Presentment
     incomeTab.style.background = '#0b1329';
     incomeTab.style.border = '1px solid #3a506b';
     incomeTab.style.boxShadow = 'none';
   }
+}
+
+function handleFormToggleDirect(type) {
+  setTransactionType(type);
 }
 
 function filterLedgerSearch() {
@@ -176,36 +175,56 @@ function updateValues() {
 
   list.innerHTML = ''; 
   transactions.forEach(addTransactionDOM);
+  
   let nVal = 0, wVal = 0, sVal = 0;
 
-  transactions.forEach(t => {
-    if (t.amount < 0) {
-      const abs = Math.abs(t.amount); 
-      const c = t.rawCat || t.text;
-      if (c === 'Groceries' || c === 'Rent/Bills' || c === 'Medical/Hospital') nVal += abs;
-      else if (c === 'Dining Out' || c === 'Entertainment' || c === 'Travel/Fuel' || c === 'Other Expense') wVal += abs;
-      else if (c === 'Investment' || c === 'Education/Fees') sVal += abs;
-    } else {
-      if ((t.rawCat || t.text).startsWith('Investments Return')) sVal += t.amount;
+  transactions.filter(t => t.amount < 0).forEach(t => {
+    const c = t.rawCat;
+    if (["Groceries", "Rent/Bills", "Medical/Hospital", "Travel/Fuel", "Education/Fees"].includes(c)) {
+      nVal += Math.abs(t.amount);
+    } else if (["Dining Out", "Entertainment", "Other Expense"].includes(c)) {
+      wVal += Math.abs(t.amount);
+    } else if (["Investment"].includes(c)) {
+      sVal += Math.abs(t.amount);
     }
   });
 
-  if (income > 0) {
-    const nPct = Math.min((nVal / income) * 100, 100).toFixed(0);
-    const wPct = Math.min((wVal / income) * 100, 100).toFixed(0);
-    const sPct = Math.min((sVal / income) * 100, 100).toFixed(0);
-    barNeeds.style.width = `${nPct}%`; barWants.style.width = `${wPct}%`; barSavings.style.width = `${sPct}%`;
-    labelNeeds.innerText = `${nPct}%`; labelWants.innerText = `${wPct}%`; labelSavings.innerText = `${sPct}%`;
-  } else {
-    barNeeds.style.width = '0%'; barWants.style.width = '0%'; barSavings.style.width = '0%';
-    labelNeeds.innerText = '0%'; labelWants.innerText = '0%'; labelSavings.innerText = '0%';
+  const totalExp = nVal + wVal + sVal;
+  const nPct = totalExp > 0 ? Math.round((nVal / totalExp) * 100) : 0;
+  const wPct = totalExp > 0 ? Math.round((wVal / totalExp) * 100) : 0;
+  const sPct = totalExp > 0 ? Math.round((sVal / totalExp) * 100) : 0;
+
+  labelNeeds.innerText = `${nPct}%`;
+  labelWants.innerText = `${wPct}%`;
+  labelSavings.innerText = `${sPct}%`;
+
+  barNeeds.style.width = `${Math.min(nPct, 100)}%`;
+  barWants.style.width = `${Math.min(wPct, 100)}%`;
+  barSavings.style.width = `${Math.min(sPct, 100)}%`;
+
+  if (transactions.length === 0) {
+    advisor.className = "advisor-box";
+    advisor.innerHTML = "Start adding transactions to receive automated financial budget feedback.";
+    return;
   }
 
-  if (!income && !expense) {
-    advisor.className = "advisor-box"; advisor.innerText = "Start adding transactions to receive automated financial budget feedback.";
-  } else {
-    const ratio = (expense / income) * 100;
-    advisor.className = ratio > 70 ? "advisor-box advisor-warning" : "advisor-box advisor-good";
-    advisor.innerText = ratio > 70 ? `⚠️ High Spending Alert: You have spent ${ratio.toFixed(1)}% of your earnings. Restrain your discretionary expenses.` : `🌱 Healthy Budget: Your spending profile is stable (${ratio.toFixed(1)}% of income used).`;
+  let advice = "💡 <strong>Budget Analysis:</strong> ";
+  if (nPct > 50) {
+    advice += "Your <strong>Needs</strong> exceed the target 50%. Look for options to optimize utilities, rent or food waste. ";
   }
+  if (wPct > 30) {
+    advice += "Your <strong>Wants</strong> spending is high at " + wPct + "%. Consider pruning non-essential streaming profiles or dining leaks. ";
+  }
+  if (sPct < 20 && totalExp > 0) {
+    advice += "Your investment velocity is under 20%. Try setting up automatic investment allocations early in the month. ";
+  }
+  if (nPct <= 50 && wPct <= 30 && sPct >= 20) {
+    advice += "Excellent financial health! Your allocations safely mirror optimal parameters of the 50/30/20 framework.";
+  }
+  
+  advisor.innerHTML = advice;
+}
+
+function clearLedger() {
+  list.innerHTML = '';
 }
