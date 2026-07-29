@@ -29,12 +29,13 @@ let transactions = JSON.parse(localStorage.getItem('transactions')) || [];
 let editId = null;
 let currentSelectedType = 'income';
 
-const monthsArray = ["January","February","March","April","May June","July","August","September","October","November","December"];
+// Fixed typo: Added comma between May and June so the app doesn't crash
+const monthsArray = ["January","February","March","April","May","June","July","August","September","October","November","December"];
 formMonth.value = monthsArray[new Date().getMonth()];
 
-// Global Alert Notification Function
 function showToast(message, classType = 'toast-success') {
   const container = document.getElementById('toast-container');
+  if(!container) return;
   const toast = document.createElement('div');
   toast.className = `toast-message ${classType}`;
   toast.innerText = message;
