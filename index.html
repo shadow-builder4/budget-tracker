@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- ACTIVE ADSENSE VERIFICATION TAG -->
   <script async src="https://googlesyndication.com" crossorigin="anonymous"></script>
   <title>Smart Wallet Tracker Pro — Premium Personal Budget Planner</title>
   <link rel="stylesheet" href="style.css">
@@ -84,6 +85,9 @@
     <div class="utility-toolbar">
       <input type="text" id="search-bar" placeholder="🔍 Search through histories..." onkeyup="filterLedgerSearch()">
       <button type="button" class="action-export-btn" onclick="exportDataCSV()">📥 Export Excel/CSV Report</button>
+      <p style="width: 100%; margin: 10px 0 0 0; font-size: 13px; color: var(--text-muted); text-align: left; line-height: 1.4;">
+        ℹ️ <strong>What is the Export button for?</strong> Click this button to instantly save a copy of your entire transaction history as a spreadsheet file on your mobile phone or computer.
+      </p>
     </div>
 
     <h3>Transaction History</h3>
@@ -106,15 +110,12 @@
           <input type="text" id="form-date" placeholder="e.g., Office Salary, Groceries, Rent, Uber">
         </div>
 
+        <!-- RE-ENGINEERED BUTTON INTERACTIVE SELECTION CONTAINER BOX -->
         <div class="form-control">
           <label>Transaction Type <span class="required">*</span></label>
           <div class="type-selector">
-            <label class="type-option option-income">
-              <input type="radio" name="txType" id="type-income" value="income" checked onclick="toggleDropdowns()"> 🟢 Income Inflow
-            </label>
-            <label class="type-option option-expense">
-              <input type="radio" name="txType" id="type-expense" value="expense" onclick="toggleDropdowns()"> 🔴 Expense Outflow
-            </label>
+            <div class="type-option option-income" id="tab-income" onclick="setTransactionType('income')">🟢 Income Inflow</div>
+            <div class="type-option option-expense" id="tab-expense" onclick="setTransactionType('expense')">🔴 Expense Outflow</div>
           </div>
         </div>
 
@@ -169,7 +170,6 @@
     <div class="info-section">
       <h2>Essential Personal Finance & Budgeting Resources</h2>
       <p>Managing money requires tracking, saving patterns, and financial goals. Use this tool to improve your budgeting strategy.</p>
-      
       <div class="info-card">
         <h3>The 50/30/20 Budgeting Rule Explained</h3>
         <p>A classic financial formula divides your post-tax income into three distinct categories:</p>
