@@ -3,7 +3,6 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <!-- ACTIVE ADSENSE VERIFICATION TAG -->
   <script async src="https://googlesyndication.com" crossorigin="anonymous"></script>
   <title>Smart Wallet Tracker Pro — Premium Personal Budget Planner</title>
   <link rel="stylesheet" href="style.css">
@@ -86,7 +85,7 @@
       <input type="text" id="search-bar" placeholder="🔍 Search through histories..." onkeyup="filterLedgerSearch()">
       <button type="button" class="action-export-btn" onclick="exportDataCSV()">📥 Export Excel/CSV Report</button>
       <p style="width: 100%; margin: 10px 0 0 0; font-size: 13px; color: var(--text-muted); text-align: left; line-height: 1.4;">
-        ℹ️ <strong>What is the Export button for?</strong> Click this button to instantly save a copy of your entire transaction history as a spreadsheet file on your mobile phone or computer.
+        ℹ️ <strong>What is the Export button for?</strong> Click this button to save a copy of your transaction history as a spreadsheet file on your mobile phone or computer.
       </p>
     </div>
 
@@ -110,12 +109,11 @@
           <input type="text" id="form-date" placeholder="e.g., Office Salary, Groceries, Rent, Uber">
         </div>
 
-        <!-- RE-ENGINEERED BUTTON INTERACTIVE SELECTION CONTAINER BOX -->
         <div class="form-control">
           <label>Transaction Type <span class="required">*</span></label>
           <div class="type-selector">
-            <div class="type-option option-income" id="tab-income" onclick="setTransactionType('income')">🟢 Income Inflow</div>
-            <div class="type-option option-expense" id="tab-expense" onclick="setTransactionType('expense')">🔴 Expense Outflow</div>
+            <div class="type-option option-income" id="tab-income" onclick="handleFormToggleDirect('income')">🟢 Income Inflow</div>
+            <div class="type-option option-expense" id="tab-expense" onclick="handleFormToggleDirect('expense')">🔴 Expense Outflow</div>
           </div>
         </div>
 
@@ -155,7 +153,7 @@
         <div class="directive-box">
           <p><strong>💡 Dashboard Control Guide:</strong></p>
           <ul>
-            <li><strong>Clear Ledger:</strong> Clears the visible transaction history list from the screen. Your records are <strong>safely saved</strong>.</li>
+            <li><strong>Clear Ledger:</strong> Clears the visible transaction history list from the screen. Your records are safely saved.</li>
             <li><strong>Reset All Data:</strong> Permanent factory reset. Completely erases your entire budget records and data history.</li>
           </ul>
         </div>
@@ -187,6 +185,19 @@
     </footer>
   </div>
 
-  <script src="app.js"></script>
-</body>
-</html>
+  <script>
+    function handleFormToggleDirect(type) {
+      if(typeof setTransactionType === 'function') {
+        setTransactionType(type);
+      } else {
+        window.currentSelectedType = type;
+        const incGrp = document.getElementById('income-group');
+        const expGrp = document.getElementById('expense-group');
+        const incTab = document.getElementById('tab-income');
+        const expTab = document.getElementById('tab-expense');
+        if (type === 'income') {
+          incGrp.style.display = 'block'; expGrp.style.display = 'none';
+          incTab.style.background = 'rgba(6, 214, 160, 0.15)'; incTab.style.border = '1px solid #06d6a0';
+          expTab.style.background = '#0b1329'; expTab.style.border = '1px solid #3a506b';
+        } else {
+          incGrp.style.display = 'none'; expGrp.style.display = 'block';
