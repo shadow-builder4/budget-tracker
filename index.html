@@ -11,37 +11,28 @@
     .container { max-width: 850px; margin: 0 auto; background: #fff; padding: 30px; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
     h1 { color: var(--dark); text-align: center; font-size: 32px; margin-bottom: 20px; }
     h2 { font-size: 26px; color: var(--dark); text-align: center; }
-    h3 { font-size: 22px; color: var(--dark); margin-top: 25px; }
-    
+    h3 { font-size: 22px; color: var(--dark); margin-top: 25px; }   
     .balance-box { background: var(--dark); color: #fff; padding: 25px; border-radius: 6px; text-align: center; margin-bottom: 25px; }
     .balance-box h4 { margin: 0; font-size: 18px; text-transform: uppercase; letter-spacing: 1px; opacity: 0.9; }
     .balance-box h1 { color: #ffffff !important; margin: 10px 0 0 0; font-size: 42px; font-weight: bold; } 
-
-    /* RANGE TRACKER CONFIGURATION PANELS */
     .view-mode-selector { display: flex; justify-content: center; gap: 20px; margin-bottom: 25px; background: #f1f2f6; padding: 12px; border-radius: 6px; }
     .mode-btn { padding: 10px 20px; font-size: 16px; font-weight: bold; border: 2px solid var(--dark); border-radius: 4px; cursor: pointer; background: #fff; color: var(--dark); transition: 0.3s; }
     .mode-btn.active { background: var(--dark); color: #fff; }
-
-    /* YEAR MATRIX MATRIX GRID STYLING */
     .matrix-container { display: none; background: #f9f9f9; border: 1px solid #e2e8f0; padding: 20px; border-radius: 8px; margin-bottom: 25px; overflow-x: auto; }
     .matrix-table { width: 100%; border-collapse: collapse; text-align: left; background: #fff; font-size: 15px; }
     .matrix-table th, .matrix-table td { padding: 10px 12px; border: 1px solid #e2e8f0; }
     .matrix-table th { background: #f1f2f6; color: var(--dark); font-weight: bold; }
     .matrix-row-active { background: #eafaf1; font-weight: bold; }
-
     .inc-exp-container { display: flex; justify-content: space-around; background: #fff; padding: 20px; border: 1px solid #e0e0e0; border-radius: 6px; margin-bottom: 25px; text-align: center; }
     .inc-exp-container h4 { margin: 0; font-size: 16px; text-transform: uppercase; color: #7f8c8d; }
     .money { font-size: 26px; font-weight: bold; margin: 8px 0 0 0; }
     .plus { color: var(--primary); }
     .minus { color: var(--danger); }
-
     .calendar-filter { background: #f1f2f6; padding: 15px; border-radius: 6px; margin-bottom: 25px; display: flex; align-items: center; justify-content: space-between; font-weight: bold; }
-    .calendar-filter select { width: auto; min-width: 180px; padding: 8px; font-weight: bold; }
-    
+    .calendar-filter select { width: auto; min-width: 180px; padding: 8px; font-weight: bold; } 
     .advisor-box { background: #ebf5fb; border-left: 5px solid #3498db; padding: 18px; border-radius: 4px; margin-bottom: 25px; font-weight: 500; font-size: 16px; }
     .advisor-warning { background: #fef9e7; border-left: 5px solid var(--warning); color: #7d6608; }
     .advisor-good { background: #eafaf1; border-left: 5px solid var(--primary); color: #196f3d; }
-
     .dashboard-chart { background: #f9f9f9; border: 1px solid #e2e8f0; padding: 20px; border-radius: 8px; margin-bottom: 25px; }
     .chart-title { font-size: 18px; font-weight: bold; margin-bottom: 15px; color: var(--dark); border-bottom: 2px solid #e2e8f0; padding-bottom: 5px; }
     .chart-row { margin-bottom: 15px; }
@@ -52,15 +43,12 @@
     .bar-wants { background-color: var(--warning); }
     .bar-savings { background-color: var(--primary); }
     .target-text { font-size: 12px; color: #7f8c8d; font-weight: normal; }
-
     .form-control { margin-bottom: 18px; }
     label { display: block; margin-bottom: 8px; font-weight: 600; font-size: 16px; }
     input, select { width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; font-size: 16px; background-color: #fff; }
-    
     .type-selector { display: flex; gap: 20px; margin-bottom: 15px; background: #f1f2f6; padding: 10px; border-radius: 6px; }
     .type-option { display: flex; align-items: center; gap: 8px; font-weight: 600; cursor: pointer; font-size: 16px; }
     .type-option input { width: auto; cursor: pointer; }
-
     .button-group { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 10px; }
     .btn { display: block; width: 100%; background: var(--dark); color: #fff; padding: 14px; border: none; border-radius: 4px; font-size: 18px; font-weight: bold; cursor: pointer; transition: 0.3s; }
     .btn:hover { background: #1a252f; }
@@ -69,18 +57,15 @@
     .btn-clear:hover { background: #d35400; }
     .btn-reset { background: #7f8c8d; color: #fff; }
     .btn-reset:hover { background: #95a5a6; }
-
     .list { list-style-type: none; padding: 0; margin-bottom: 35px; }
     .list li { background: #fff; border: 1px solid #e0e0e0; border-left: 5px solid #ccc; display: flex; justify-content: space-between; padding: 14px; margin-bottom: 8px; position: relative; align-items: center; font-size: 18px; }
     .list li.plus { border-left-color: var(--primary); }
     .list li.minus { border-left-color: var(--danger); }
-    
     .action-group { display: flex; gap: 8px; }
     .delete-btn { background-color: var(--danger); border: none; color: #fff; font-size: 14px; padding: 6px 12px; border-radius: 4px; cursor: pointer; opacity: 0.9; transition: 0.2s; font-weight: bold; }
     .delete-btn:hover { opacity: 1; }
     .edit-btn { background-color: var(--edit); border: none; color: #2c3e50; font-size: 14px; padding: 6px 12px; border-radius: 4px; cursor: pointer; opacity: 0.9; transition: 0.2s; font-weight: bold; }
     .edit-btn:hover { opacity: 1; }
-
     .info-section { margin-top: 45px; padding-top: 25px; border-top: 2px solid #eee; }
     .info-card { background: #fdfdfd; border: 1px dashed #ccc; padding: 20px; border-radius: 6px; margin-bottom: 20px; }
     footer { text-align: center; padding: 20px; margin-top: 40px; border-top: 1px solid #e2e8f0; }
@@ -89,15 +74,11 @@
 </head>
 <body>
   <div class="container">
-    <h1>Smart Wallet Tracker</h1>
-    
-    <!-- STEP 1: DEFINE TIME FRAME MODE FRAMEWORK -->
+    <h1>Smart Wallet Tracker</h1>   
     <div class="view-mode-selector">
       <button type="button" id="btn-mode-month" class="mode-btn active" onclick="switchViewMode('month')">🗓️ Single Month View</button>
       <button type="button" id="btn-mode-year" class="mode-btn" onclick="switchViewMode('year')">📊 Full Year Range Planner</button>
     </div>
-
-    <!-- CALENDAR MONTH FILTER SELECTION PANEL (VISIBLE IN MONTH VIEW) -->
     <div class="calendar-filter" id="month-filter-area">
       <span>📅 Selected Active Month:</span>
       <select id="month-filter" onchange="init()">
@@ -115,8 +96,6 @@
         <option value="December">December</option>
       </select>
     </div>
-
-    <!-- NEW 12-MONTH VISUAL MATRIX SHEET TABLE (VISIBLE IN ANNUAL TRACKER RANGE MODE) -->
     <div class="matrix-container" id="year-matrix-area">
       <h3>📋 12-Month Annual Range Dashboard Summary</h3>
       <table class="matrix-table">
@@ -128,24 +107,18 @@
             <th>Net Savings Balance</th>
           </tr>
         </thead>
-        <tbody id="matrix-rows">
-          <!-- Rows will render dynamically through js loop array strings -->
-        </tbody>
+        <tbody id="matrix-rows"></tbody>
       </table>
     </div>
-
     <div class="balance-box">
       <h4 id="balance-title">Selected Month Balance</h4>
       <h1 id="balance">₹0.00</h1>
     </div>
-
     <div id="advisor" class="advisor-box">
       Start adding transactions to receive automated financial budget feedback.
     </div>
-
     <div class="dashboard-chart">
       <div class="chart-title">📊 100% Budget Allocation Dashboard</div>
-      
       <div class="chart-row">
         <div class="chart-label">
           <span>Needs (Rent, Bills, Groceries)</span>
@@ -155,7 +128,6 @@
           <div id="bar-needs" class="bar-fill bar-needs"></div>
         </div>
       </div>
-
       <div class="chart-row">
         <div class="chart-label">
           <span>Wants (Dining Out, Entertainment)</span>
@@ -165,3 +137,15 @@
           <div id="bar-wants" class="bar-fill bar-wants"></div>
         </div>
       </div>
+      <div class="chart-row">
+        <div class="chart-label">
+          <span>Savings & Investments</span>
+          <span id="label-savings">0% <span class="target-text">(Target: 20%)</span></span>
+        </div>
+        <div class="bar-container">
+          <div id="bar-savings" class="bar-fill bar-savings"></div>
+        </div>
+      </div>
+    </div>
+    <div class="inc-exp-container">
+      <div>
