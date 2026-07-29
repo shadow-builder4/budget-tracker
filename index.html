@@ -7,170 +7,178 @@
   <link rel="stylesheet" href="style.css">
   <link rel="preconnect" href="https://googleapis.com">
   <link rel="preconnect" href="https://gstatic.com" crossorigin>
-  <link href="https://googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+  <link href="https://googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
 </head>
 <body>
   <!-- DYNAMIC TOAST ALERT POPUP BOX CONTAINER -->
   <div id="toast-container" class="toast-container"></div>
 
-  <div class="container">
-    <!-- TIED GROUP 1: THE APPLICATION HEADER & MAIN STATUS SUMMARY -->
+  <div class="app-wrapper">
+    <!-- TOP CONTROL HUD BAR -->
     <header class="app-header">
-      <h1>SMART WALLET TRACKER <span class="premium-badge">PRO v4.2</span></h1>
-      <p class="subtitle">Your Advanced Personal Finance Dashboard</p>
+      <h1>SMART WALLET TRACKER <span class="premium-badge">PRO v4.5</span></h1>
+      <p class="subtitle">Advanced Financial Control Interface</p>
     </header>
     
-    <div class="balance-box">
-      <h4>Current Balance</h4>
-      <h1 id="balance">₹0.00</h1>
-    </div>
+    <div class="top-hud-grid">
+      <div class="balance-box">
+        <h4>Current Balance</h4>
+        <h1 id="balance">₹0.00</h1>
+      </div>
 
-    <div class="pro-metrics-grid">
-      <div class="metric-card runway-glow">
-        <div class="metric-icon">🛡️</div>
-        <div>
-          <strong>Survival Runway</strong>
-          <p id="runway-display">0.0 Months</p>
-          <small>How many months your savings will last if income stops.</small>
+      <div class="pro-metrics-grid">
+        <div class="metric-card runway-glow">
+          <div class="metric-icon">🛡️</div>
+          <div>
+            <strong>Survival Runway</strong>
+            <p id="runway-display">0.0 Months</p>
+            <small>Savings safety timeline framework.</small>
+          </div>
+        </div>
+        <div class="metric-card velocity-glow">
+          <div class="metric-icon">⚡</div>
+          <div>
+            <strong>Income Saved</strong>
+            <p id="velocity-display">0.0%</p>
+            <small>Net cash flow velocity index.</small>
+          </div>
         </div>
       </div>
-      <div class="metric-card velocity-glow">
-        <div class="metric-icon">⚡</div>
-        <div>
-          <strong>Income Saved</strong>
-          <p id="velocity-display">0.0%</p>
-          <small>The percentage of total income you kept this month.</small>
-        </div>
-      </div>
     </div>
-    <!-- MAIN CONTROL HEADINGS AND INPUT ELEMENTS -->
-    <h3 class="section-main-title">📥 RECORD NEW TRANSACTION</h3>
 
-    <!-- TIED GROUP 2: DYNAMIC ACTIVE ENTRY FORMS -->
-    <div class="form-container">
-      <h3 id="form-heading" style="margin-top: 0; font-size: 20px; text-transform: uppercase; color: #fff;">Add New Entry</h3>
-      <p class="form-sub-note">Fields marked with <span class="required">*</span> are mandatory.</p>
+    <!-- MAIN TWO-COLUMN APPLICATION WORKSPACE WORKBENCH -->
+    <div class="main-workspace-grid">
       
-      <form id="form">
-        <div class="form-control">
-          <label>Transaction Type <span class="required">*</span></label>
-          <div class="type-selector">
-            <button type="button" class="type-option option-income" id="tab-income" onclick="handleFormToggleDirect(event, 'income')">🟢 Income Inflow</button>
-            <button type="button" class="type-option option-expense" id="tab-expense" onclick="handleFormToggleDirect(event, 'expense')">🔴 Expense Outflow</button>
+      <!-- LEFT WORKSPACE COLUMN: INPUT OPERATIONS STATION -->
+      <div class="workspace-column">
+        <h3 class="section-main-title">📥 RECORD TRANSACTION</h3>
+        <div class="form-container">
+          <p class="form-sub-note">Fields marked with <span class="required">*</span> are mandatory.</p>
+          
+          <form id="form">
+            <div class="form-control">
+              <label>Transaction Type <span class="required">*</span></label>
+              <div class="type-selector">
+                <button type="button" class="type-option option-income" id="tab-income" onclick="handleFormToggleDirect(event, 'income')">🟢 Income Inflow</button>
+                <button type="button" class="type-option option-expense" id="tab-expense" onclick="handleFormToggleDirect(event, 'expense')">🔴 Expense Outflow</button>
+              </div>
+            </div>
+
+            <div class="form-control" id="income-group">
+              <label for="income-category">Income Source <span class="required">*</span></label>
+              <select id="income-category" onchange="checkAnnualIncomeMode()">
+                <option value="Salary (Monthly)">Salary Payout (Monthly)</option>
+                <option value="Salary (Annually)">Salary Payout (Annually)</option>
+                <option value="Freelance / Side Business">Freelance / Side Business (Monthly)</option>
+                <option value="Investment Returns">Investment Returns (Monthly)</option>
+                <option value="Other Inbound Money">Other Inbound Money (Monthly)</option>
+              </select>
+            </div>
+
+            <div class="form-control" id="expense-group" style="display: none;">
+              <label for="expense-category">Expense Category <span class="required">*</span></label>
+              <select id="expense-category">
+                <option value="Groceries">Essential Groceries</option>
+                <option value="Rent/Bills">Housing Rent & Utilities</option>
+                <option value="Medical/Hospital">Medical & Hospital bills</option>
+                <option value="Travel/Fuel">Travel, Fuel & Transport</option>
+                <option value="Dining Out">Food & Restaurants</option>
+                <option value="Entertainment">Entertainment & Subscriptions</option>
+                <option value="Investment">Mutual Funds / Stock Investments</option>
+                <option value="Education/Fees">Education & Tuition Fees</option>
+                <option value="Other Expense">Other Miscellaneous Expenses</option>
+              </select>
+            </div>
+
+            <div class="form-control" id="month-selection-group">
+              <label for="form-month">Select Month <span class="required">*</span></label>
+              <select id="form-month">
+                <option value="January">January</option><option value="February">February</option><option value="March">March</option><option value="April">April</option><option value="May">May</option><option value="June">June</option><option value="July">July</option><option value="August">August</option><option value="September">September</option><option value="October">October</option><option value="November">November</option><option value="December">December</option>
+              </select>
+            </div>
+
+            <div class="form-control">
+              <label for="form-date">Transaction Note / Label (Optional)</label>
+              <input type="text" id="form-date" placeholder="e.g., Office Salary, Groceries, Rent, Uber">
+            </div>
+
+            <div class="form-control">
+              <label for="amount">Amount (Value in ₹) <span class="required">*</span></label>
+              <input type="number" id="amount" step="any" placeholder="e.g., 5000">
+            </div>
+            
+            <button type="submit" class="btn btn-submit" id="submit-btn">Record Transaction</button>
+            
+            <div class="directive-box">
+              <p><strong>💡 Dashboard Control Guide:</strong></p>
+              <ul>
+                <li><strong>Unload Session:</strong> Clears active screen metrics safely without wiping backups.</li>
+                <li><strong>Reset All Data:</strong> Permanent local device storage hardware purge.</li>
+              </ul>
+            </div>
+
+            <div class="button-group">
+              <button type="button" class="btn btn-clear" id="unload-session-btn">Unload Current Session</button>
+              <button type="button" class="btn btn-reset" id="reset-all-btn">Reset All Data</button>
+            </div>
+          </form>
+        </div>
+      </div>
+      <!-- RIGHT WORKSPACE COLUMN: REAL-TIME GRAPHICS ANALYTICS RADAR -->
+      <div class="workspace-column">
+        <h3 class="section-main-title">📊 TELEMETRY REVIEWS</h3>
+        
+        <div id="advisor" class="advisor-box">
+          Start recording transactions to receive personalized budget feedback tailored to your life situation.
+        </div>
+
+        <div class="goal-tracker-card">
+          <div class="goal-header-row">
+            <span class="goal-badge">🎯 ACTIVE MILESTONE</span>
+            <small class="goal-status-text">🔒 Locked Client-Side</small>
+          </div>
+          <input type="text" id="goal-input" placeholder="Set a wealth target (e.g., Save ₹50,000 for emergency backup portfolio)..." onkeyup="saveFinancialGoal()">
+        </div>
+
+        <div class="dashboard-chart">
+          <div class="chart-title">Metrics Framework Allocation</div>
+          <div class="chart-row">
+            <div class="chart-label">
+              <span>Needs (Essentials) <small>(Target: 50% max)</small></span>
+              <span id="label-needs" class="pct-badge needs-bg">0%</span>
+            </div>
+            <div class="bar-container"><div id="bar-needs" class="bar-fill bar-needs"></div></div>
+          </div>
+          <div class="chart-row">
+            <div class="chart-label">
+              <span>Wants (Lifestyle) <small>(Target: 30% max)</small></span>
+              <span id="label-wants" class="pct-badge wants-bg">0%</span>
+            </div>
+            <div class="bar-container"><div id="bar-wants" class="bar-fill bar-wants"></div></div>
+          </div>
+          <div class="chart-row">
+            <div class="chart-label">
+              <span>Savings & Investments <small>(Target: 20% min)</small></span>
+              <span id="label-savings" class="pct-badge savings-bg">0%</span>
+            </div>
+            <div class="bar-container"><div id="bar-savings" class="bar-fill bar-savings"></div></div>
           </div>
         </div>
 
-        <div class="form-control" id="income-group">
-          <label for="income-category">Income Source <span class="required">*</span></label>
-          <select id="income-category" onchange="checkAnnualIncomeMode()">
-            <option value="Salary (Monthly)">Salary Payout (Monthly)</option>
-            <option value="Salary (Annually)">Salary Payout (Annually)</option>
-            <option value="Freelance / Side Business">Freelance / Side Business (Monthly)</option>
-            <option value="Investment Returns">Investment Returns (Monthly)</option>
-            <option value="Other Inbound Money">Other Inbound Money (Monthly)</option>
-          </select>
+        <div class="inc-exp-container">
+          <div class="flow-card plus-border">
+            <h4>Total Income flow</h4>
+            <p id="money-plus" class="money plus">+₹0.00</p>
+          </div>
+          <div class="flow-card minus-border">
+            <h4>Total Expense flow</h4>
+            <p id="money-minus" class="money minus">-₹0.00</p>
+          </div>
         </div>
-
-        <div class="form-control" id="expense-group" style="display: none;">
-          <label for="expense-category">Expense Category <span class="required">*</span></label>
-          <select id="expense-category">
-            <option value="Groceries">Essential Groceries</option>
-            <option value="Rent/Bills">Housing Rent & Utilities</option>
-            <option value="Medical/Hospital">Medical & Hospital bills</option>
-            <option value="Travel/Fuel">Travel, Fuel & Transport</option>
-            <option value="Dining Out">Food & Restaurants</option>
-            <option value="Entertainment">Entertainment & Subscriptions</option>
-            <option value="Investment">Mutual Funds / Stock Investments</option>
-            <option value="Education/Fees">Education & Tuition Fees</option>
-            <option value="Other Expense">Other Miscellaneous Expenses</option>
-          </select>
-        </div>
-
-        <div class="form-control" id="month-selection-group">
-          <label for="form-month">Select Month <span class="required">*</span></label>
-          <select id="form-month">
-            <option value="January">January</option><option value="February">February</option><option value="March">March</option><option value="April">April</option><option value="May">May</option><option value="June">June</option><option value="July">July</option><option value="August">August</option><option value="September">September</option><option value="October">October</option><option value="November">November</option><option value="December">December</option>
-          </select>
-        </div>
-
-        <div class="form-control">
-          <label for="form-date">Transaction Note / Label (Optional)</label>
-          <input type="text" id="form-date" placeholder="e.g., Office Salary, Groceries, Rent, Uber">
-        </div>
-
-        <div class="form-control">
-          <label for="amount">Amount (Value in ₹) <span class="required">*</span></label>
-          <input type="number" id="amount" step="any" placeholder="e.g., 5000">
-        </div>
-        
-        <button type="submit" class="btn btn-submit" id="submit-btn">Record Transaction</button>
-        
-        <div class="directive-box">
-          <p><strong>💡 Dashboard Control Guide:</strong></p>
-          <ul>
-            <li><strong>Clear Ledger:</strong> Clears the visible transaction history list from the screen. Your records are safely saved.</li>
-            <li><strong>Reset All Data:</strong> Permanent factory reset. Completely erases your entire budget records and data history.</li>
-          </ul>
-        </div>
-
-        <div class="button-group">
-          <button type="button" class="btn btn-clear" id="clear-ledger-btn">Unload Current Session</button>
-          <button type="button" class="btn btn-reset" id="reset-all-btn">Reset All Data</button>
-        </div>
-      </form>
-    </div>
-    <!-- TIED GROUP 3: CORE DATA ANALYTICS CONTROL PANEL -->
-    <h3 class="section-main-title">📊 OVERVIEW ALLOCATION RADAR</h3>
-
-    <div id="advisor" class="advisor-box">
-      Start recording transactions to receive personalized budget feedback tailored to your life situation.
-    </div>
-
-    <div class="goal-tracker-card">
-      <div class="goal-header-row">
-        <span class="goal-badge">🎯 ACTIVE MILESTONE</span>
-        <small class="goal-status-text">🔒 Locked Client-Side</small>
       </div>
-      <input type="text" id="goal-input" placeholder="Set a wealth target (e.g., Save ₹50,000 for emergency backup portfolio)..." onkeyup="saveFinancialGoal()">
-    </div>
+    </div> <!-- END OF SPLIT ROW WORKSPACE GRID -->
 
-    <div class="dashboard-chart">
-      <div class="chart-title">Metrics Framework Allocation</div>
-      <div class="chart-row">
-        <div class="chart-label">
-          <span>Needs (Rent, Bills, Groceries) <small>(Target: 50% max)</small></span>
-          <span id="label-needs" class="pct-badge needs-bg">0%</span>
-        </div>
-        <div class="bar-container"><div id="bar-needs" class="bar-fill bar-needs"></div></div>
-      </div>
-      <div class="chart-row">
-        <div class="chart-label">
-          <span>Wants (Dining Out, Entertainment) <small>(Target: 30% max)</small></span>
-          <span id="label-wants" class="pct-badge wants-bg">0%</span>
-        </div>
-        <div class="bar-container"><div id="bar-wants" class="bar-fill bar-wants"></div></div>
-      </div>
-      <div class="chart-row">
-        <div class="chart-label">
-          <span>Savings & Investments <small>(Target: 20% min)</small></span>
-          <span id="label-savings" class="pct-badge savings-bg">0%</span>
-        </div>
-        <div class="bar-container"><div id="bar-savings" class="bar-fill bar-savings"></div></div>
-      </div>
-    </div>
-
-    <div class="inc-exp-container">
-      <div class="flow-card plus-border">
-        <h4>Total Income flow</h4>
-        <p id="money-plus" class="money plus">+₹0.00</p>
-      </div>
-      <div class="flow-card minus-border">
-        <h4>Total Expense flow</h4>
-        <p id="money-minus" class="money minus">-₹0.00</p>
-      </div>
-    </div>
-
-    <!-- TIED GROUP 4: HISTORY STORAGE REGISTRIES AND DUAL UTILITY IMPORT TOOLBAR -->
+    <!-- TERMINAL ENTRY ZONE: STORAGE MATRIX & FILE EXPORTS -->
     <h3 class="section-main-title">📋 DATA LOG & BACKUP STATION</h3>
 
     <div class="utility-toolbar">
@@ -194,7 +202,7 @@
 
     <!-- UPGRADED INTERACTIVE RESOURCES ACCORDION COMPONENT -->
     <div class="info-section">
-      <h2 class="section-main-title">📚 FINANCIAL RESOURCE CENTER</h2>
+      <h2 class="section-main-title" style="border-left:none; padding-left:0;">📚 FINANCIAL RESOURCE CENTER</h2>
       <p class="resources-subtitle">Click on any panel header below to expand core personal finance learning modules.</p>
       
       <div class="accordion-item">
@@ -216,6 +224,7 @@
           <p>This framework divides your net income into three distinct groups: 50% for absolute structural survival Needs (rent, utilities, groceries), 30% for discretionary lifestyle freedom Wants (dining out, hobbies), and a minimum of 20% dedicated to wealth generation Savings and debt payoff plans.</p>
         </div>
       </div>
+
       <div class="accordion-item">
         <button type="button" class="accordion-header" onclick="toggleAccordion(this)">
           <span>🛡️ Capital Preservation & Survival Runway Tactics</span>
@@ -225,18 +234,13 @@
           <p>Your Survival Runway measures exactly how many months your household can comfortably sustain its current lifestyle if your primary income source suddenly stops. Financial experts recommend preserving a baseline emergency runway of 6 months.</p>
         </div>
       </div>
-    </div> <!-- Closes .info-section -->
+    </div>
 
-    <!-- RESTORED COMPLIANT ADSENSE FOOTER BLOCK LINKS -->
     <footer class="legal-footer-layer">
       <p>© 2026 Smart Wallet Tracker Pro. All Rights Reserved. Data stored locally via secure client-side browser storage layers.</p>
-      <p>
-        <a href="privacy.html">Privacy Policy</a> | 
-        <a href="terms.html">Terms of Service</a>
-      </p>
+      <p><a href="privacy.html">Privacy Policy</a> | <a href="terms.html">Terms of Service</a></p>
     </footer>
-
-  </div> <!-- Closes the main .container wrapper box -->
+  </div>
 
   <script src="app.js"></script>
 </body>
