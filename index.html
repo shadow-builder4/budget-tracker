@@ -14,8 +14,9 @@
   <div id="toast-container" class="toast-container"></div>
 
   <div class="container">
+    <!-- TIED GROUP 1: THE APPLICATION HEADER & MAIN STATUS SUMMARY -->
     <header class="app-header">
-      <h1>SMART WALLET TRACKER <span class="premium-badge">PRO v3.7</span></h1>
+      <h1>SMART WALLET TRACKER <span class="premium-badge">PRO v4.0</span></h1>
       <p class="subtitle">Your Advanced Personal Finance Dashboard</p>
     </header>
     
@@ -43,68 +44,12 @@
       </div>
     </div>
 
-    <div id="advisor" class="advisor-box">
-      Start recording transactions to receive personalized budget feedback tailored to your life situation.
-    </div>
+    <!-- MAIN CONTROL HEADINGS AND INPUT ELEMENTS -->
+    <h3 class="section-main-title">📥 RECORD NEW TRANSACTION</h3>
 
-    <!-- UPGRADED CLASSIC CYBERPUNK MILESTONE WIDGET -->
-    <div class="goal-tracker-card">
-    <div class="goal-header-row">
-      <span class="goal-badge">🎯 ACTIVE MILESTONE</span>
-      <small class="goal-status-text">🔒 Locked Client-Side</small>
-    </div>
-      <input type="text" id="goal-input" placeholder="Set a wealth target (e.g., Save ₹50,000 for emergency backup portfolio)..." onkeyup="saveFinancialGoal()">
-    </div>
-
-    <div class="dashboard-chart">
-      <div class="chart-title">📊 50/30/20 Budget Allocation Dashboard</div>
-      <div class="chart-row">
-        <div class="chart-label">
-          <span>Needs (Rent, Bills, Groceries) <small>(Target: 50% max)</small></span>
-          <span id="label-needs" class="pct-badge needs-bg">0%</span>
-        </div>
-        <div class="bar-container"><div id="bar-needs" class="bar-fill bar-needs"></div></div>
-      </div>
-      <div class="chart-row">
-        <div class="chart-label">
-          <span>Wants (Dining Out, Entertainment) <small>(Target: 30% max)</small></span>
-          <span id="label-wants" class="pct-badge wants-bg">0%</span>
-        </div>
-        <div class="bar-container"><div id="bar-wants" class="bar-fill bar-wants"></div></div>
-      </div>
-      <div class="chart-row">
-        <div class="chart-label">
-          <span>Savings & Investments <small>(Target: 20% min)</small></span>
-          <span id="label-savings" class="pct-badge savings-bg">0%</span>
-        </div>
-        <div class="bar-container"><div id="bar-savings" class="bar-fill bar-savings"></div></div>
-      </div>
-    </div>
-
-    <div class="inc-exp-container">
-      <div class="flow-card plus-border">
-        <h4>Total Income</h4>
-        <p id="money-plus" class="money plus">+₹0.00</p>
-      </div>
-      <div class="flow-card minus-border">
-        <h4>Total Expense</h4>
-        <p id="money-minus" class="money minus">-₹0.00</p>
-      </div>
-    </div>
-
-    <div class="utility-toolbar">
-      <input type="text" id="search-bar" placeholder="🔍 Search through histories..." onkeyup="filterLedgerSearch()">
-      <button type="button" class="action-export-btn" onclick="exportDataCSV()">📥 Export Excel/CSV Report</button>
-      <p style="width: 100%; margin: 10px 0 0 0; font-size: 13px; color: var(--text-muted); text-align: left; line-height: 1.4;">
-        ℹ️ <strong>What is the Export button for?</strong> Click this button to save a copy of your transaction history as a spreadsheet file on your mobile phone or computer.
-      </p>
-    </div>
-
-    <h3>Transaction History</h3>
-    <ul id="list" class="list"></ul>
-
+    <!-- TIED GROUP 2: DYNAMIC ACTIVE ENTRY FORMS -->
     <div class="form-container">
-      <h3 id="form-heading">Add New Transaction</h3>
+      <h3 id="form-heading" style="margin-top: 0; font-size: 20px; text-transform: uppercase; color: #fff;">Add New Transaction</h3>
       <p class="form-sub-note">Fields marked with <span class="required">*</span> are mandatory.</p>
       
       <form id="form">
@@ -176,6 +121,71 @@
       </form>
     </div>
 
+    <!-- TIED GROUP 3: CORE DATA ANALYTICS CONTROL PANEL -->
+    <h3 class="section-main-title">📊 OVERVIEW ALLOCATION RADAR</h3>
+
+    <div id="advisor" class="advisor-box">
+      Start recording transactions to receive personalized budget feedback tailored to your life situation.
+    </div>
+
+    <div class="goal-tracker-card">
+      <div class="goal-header-row">
+        <span class="goal-badge">🎯 ACTIVE MILESTONE</span>
+        <small class="goal-status-text">🔒 Locked Client-Side</small>
+      </div>
+      <input type="text" id="goal-input" placeholder="Set a wealth target (e.g., Save ₹50,000 for emergency backup portfolio)..." onkeyup="saveFinancialGoal()">
+    </div>
+
+    <div class="dashboard-chart">
+      <!-- FIXED SECTION ALLOCATION PANEL TITLE FOR VISUAL CLARITY -->
+      <div class="chart-title">Metrics Framework Allocation</div>
+      <div class="chart-row">
+        <div class="chart-label">
+          <span>Needs (Rent, Bills, Groceries) <small>(Target: 50% max)</small></span>
+          <span id="label-needs" class="pct-badge needs-bg">0%</span>
+        </div>
+        <div class="bar-container"><div id="bar-needs" class="bar-fill bar-needs"></div></div>
+      </div>
+      <div class="chart-row">
+        <div class="chart-label">
+          <span>Wants (Dining Out, Entertainment) <small>(Target: 30% max)</small></span>
+          <span id="label-wants" class="pct-badge wants-bg">0%</span>
+        </div>
+        <div class="bar-container"><div id="bar-wants" class="bar-fill bar-wants"></div></div>
+      </div>
+      <div class="chart-row">
+        <div class="chart-label">
+          <span>Savings & Investments <small>(Target: 20% min)</small></span>
+          <span id="label-savings" class="pct-badge savings-bg">0%</span>
+        </div>
+        <div class="bar-container"><div id="bar-savings" class="bar-fill bar-savings"></div></div>
+      </div>
+    </div>
+
+    <div class="inc-exp-container">
+      <div class="flow-card plus-border">
+        <h4>Total Income flow</h4>
+        <p id="money-plus" class="money plus">+₹0.00</p>
+      </div>
+      <div class="flow-card minus-border">
+        <h4>Total Expense flow</h4>
+        <p id="money-minus" class="money minus">-₹0.00</p>
+      </div>
+    </div>
+
+    <!-- TIED GROUP 4: HISTORY STORAGE REGISTRIES AND UTILITY TOOLBARS (Bottom Tier) -->
+    <h3 class="section-main-title">📋 ARCHIVAL HISTORY REGISTRY</h3>
+
+    <div class="utility-toolbar">
+      <input type="text" id="search-bar" placeholder="🔍 Search through history ledger entries..." onkeyup="filterLedgerSearch()">
+      <button type="button" class="action-export-btn" onclick="exportDataCSV()">📥 Export Excel Report</button>
+      <p style="width: 100%; margin: 10px 0 0 0; font-size: 13px; color: var(--text-muted); text-align: left; line-height: 1.4;">
+        ℹ️ <strong>What is the Export button for?</strong> Click this button to save a copy of your transaction history as a spreadsheet file on your mobile phone or computer.
+      </p>
+    </div>
+
+    <ul id="list" class="list"></ul>
+
     <div class="info-section">
       <h2>Essential Personal Finance & Budgeting Resources</h2>
       <p>Managing money requires intentional tracking, balanced saving patterns, and concrete financial goals. Use this dashboard daily to mirror optimal wealth metrics and keep your spending under your complete control.</p>
@@ -183,10 +193,3 @@
 
     <footer style="margin-top: 40px; padding-top: 25px; border-top: 1px solid var(--border-glow); text-align: center; font-size: 13px;">
       <p style="color: var(--text-muted); margin: 0 0 10px 0; line-height: 1.5;">© 2026 Smart Wallet Tracker Pro. All Rights Reserved. Data stored locally via secure client-side browser cookies.</p>
-      <p><a href="privacy.html" style="color: var(--accent-blue); text-decoration: none; font-weight: 600;">Privacy Policy</a> | <a href="terms.html" style="color: var(--accent-blue); text-decoration: none; font-weight: 600;">Terms of Service</a></p>
-    </footer>
-  </div>
-
-  <script src="app.js"></script>
-</body>
-</html>
