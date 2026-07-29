@@ -120,9 +120,15 @@ function updateValues() {
     if (t.amount < 0) {
       const absAmt = Math.abs(t.amount);
       const cat = t.rawCat || t.text;
-      if (cat.startsWith('Groceries') || cat.startsWith('Rent/Bills')) needsVal += absAmt;
-      else if (cat.startsWith('Dining Out') || cat.startsWith('Entertainment') || cat.startsWith('Other Expense')) wantsVal += absAmt;
-      else if (cat.startsWith('Investment')) savingsVal += absAmt;
+      
+      // CRUCIAL UPDATED EXPENDITURE FILTER CLASSIFICATIONS LOGIC ROW
+      if (cat.startsWith('Groceries') || cat.startsWith('Rent/Bills') || cat.startsWith('Medical/Hospital')) {
+        needsVal += absAmt;
+      } else if (cat.startsWith('Dining Out') || cat.startsWith('Entertainment') || cat.startsWith('Travel/Fuel') || cat.startsWith('Other Expense')) {
+        wantsVal += absAmt;
+      } else if (cat.startsWith('Investment') || cat.startsWith('Education/Fees')) {
+        savingsVal += absAmt;
+      }
     } else {
       const cat = t.rawCat || t.text;
       if (cat.startsWith('Investments Return')) savingsVal += t.amount;
