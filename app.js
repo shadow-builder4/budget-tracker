@@ -52,9 +52,9 @@ let transactions = JSON.parse(localStorage.getItem('transactions')) || [];
 let editId = null;
 let currentSelectedType = 'income';
 
-// Set active picker defaults directly to current calendar day strings on boot initialization
+// Leave the initial box completely blank on boot launch to display dd-mm-yyyy
 if (formTransactionDate) {
-  formTransactionDate.value = new Date().toISOString().split('T')[0];
+  formTransactionDate.value = "";
 }
 
 function showToast(message, classType = 'toast-success') {
@@ -90,11 +90,11 @@ function importDataCSV(e) {
       if (!lines[i].trim()) continue;
       const parts = lines[i].split(",");
       if (parts.length >= 4) {
-        const monthVal = parts[0].trim();
-        const textLabel = parts[1].replace(/^"|"$/g, '').trim();
-        const categoryVal = parts[2].trim();
-        const amountVal = parseFloat(parts[3].trim());
-        if (!isNaN(amountVal)) { importedTransactions.push({ id: Math.floor(Math.random() * 100000000), text: textLabel, amount: amountVal, rawCat: categoryVal, month: monthVal, exactDate: new Date().toISOString().split('T')[0] }); }
+        const monthVal = parts.trim();
+        const textLabel = parts.replace(/^"|"$/g, '').trim();
+        const categoryVal = parts.trim();
+        const amountVal = parseFloat(parts.trim());
+        if (!isNaN(amountVal)) { importedTransactions.push({ id: Math.floor(Math.random() * 100000000), text: textLabel, amount: amountVal, rawCat: categoryVal, month: monthVal, exactDate: "" }); }
       }
     }
     if (importedTransactions.length > 0) { transactions = [...transactions, ...importedTransactions]; localStorage.setItem('transactions', JSON.stringify(transactions)); init(); showToast(`📥 Successfully Restored ${importedTransactions.length} Log Records!`); } else { showToast("No valid structural records detected.", "toast-danger"); }
@@ -138,7 +138,7 @@ function addTransaction(e) {
   let catSel = (currentSelectedType === 'income') ? incomeCategory.value : expenseCategory.value;
   
   if (catSel === "" || catSel.includes("--")) { showToast('Please choose a valid transaction category target option.', 'toast-danger'); return; }
-  if (!formTransactionDate.value) { showToast('Please choose a valid transaction execution calendar date.', 'toast-danger'); return; }
+  if (!formTransactionDate.value || formTransactionDate.value === "") { showToast('Please select a specific date on the calendar input.', 'toast-danger'); return; }
   if (valText === '' || isNaN(valText) || parseFloat(valText) <= 0) { showToast('Please enter a valid positive number values.', 'toast-danger'); return; }
   
   let amtVal = parseFloat(valText); const labelVal = formDate.value.trim() !== '' ? formDate.value.trim() : catSel;
@@ -209,10 +209,10 @@ function updateValues() {
   advisor.innerHTML = advice;
 }
 
-/* FIXED CALENDAR RESET FLUSH PIPELINE ROUTINE VARIABLES */
+/* FIXED FORCED BLANKING RESETS: Completely empties date field input text value box */
 function unloadCurrentSession() { 
   transactions = []; list.innerHTML = ''; updateValues(); 
-  if (formTransactionDate) formTransactionDate.value = new Date().toISOString().split('T')[0];
+  if (formTransactionDate) formTransactionDate.value = ""; // Forces dd-mm-yyyy view state instantly
   showToast("🧹 Current Session Unloaded Safely", "toast-warning"); 
 }
 
@@ -220,7 +220,7 @@ function resetAllData() {
   if (confirm("Are you absolutely sure you want to delete all transaction data? This action cannot be undone.")) {
     transactions = []; localStorage.clear(); const goalInput = document.getElementById('goal-input'); if (goalInput) goalInput.value = '';
     editId = null; submitBtn.innerText = "Record Transaction"; amount.value = ''; formDate.value = ''; 
-    if (formTransactionDate) formTransactionDate.value = new Date().toISOString().split('T')[0];
+    if (formTransactionDate) formTransactionDate.value = ""; // Forces dd-mm-yyyy view state instantly
     init(); showToast("⚠️ Local Database Erased Completely!", "toast-danger");
   }
 }
@@ -231,7 +231,7 @@ function toggleAccordion(headerElement) {
   if (!isActive) { parentItem.classList.add('active'); contentElement.style.maxHeight = contentElement.scrollHeight + "px"; }
 }
 
-function init() { updateValues(); setTransactionType('income'); loadFinancialGoal(); incomeCategory.value = ""; expenseCategory.value = ""; }
+function init() { updateValues(); setTransactionType('income'); loadFinancialGoal(); incomeCategory.value = ""; expenseCategory.value = ""; if (formTransactionDate) formTransactionDate.value = ""; }
 
 form.addEventListener('submit', addTransaction);
 document.getElementById('unload-session-btn').addEventListener('click', unloadCurrentSession);
