@@ -10,7 +10,7 @@
   <link href="https://googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
 </head>
 <body>
-  <!-- DYNAMIC TOAST ALERT POPUP BOX CONTAINER -->
+  <!-- TOAST ALERT PANEL HOUSING -->
   <div id="toast-container" class="toast-container"></div>
 
   <div class="app-wrapper">
@@ -46,10 +46,10 @@
       </div>
     </div>
 
-    <!-- MAIN TWO-COLUMN APPLICATION WORKSPACE WORKBENCH -->
+    <!-- MAIN TWO-COLUMN WORKSPACE -->
     <div class="main-workspace-grid">
       
-      <!-- LEFT WORKSPACE COLUMN: INPUT OPERATIONS STATION -->
+      <!-- LEFT WORKSPACE COLUMN: INPUT OPERATIONS -->
       <div class="workspace-column">
         <h3 class="section-main-title">📥 RECORD TRANSACTION</h3>
         <div class="form-container">
@@ -64,11 +64,11 @@
               </div>
             </div>
 
-            <!-- INCOME SOURCE SELECTION DECK WITH UNSELECTED PLACEHOLDER NODE -->
+            <!-- INCOME SOURCE: EMPTY PLACEHOLDER DEFAULT -->
             <div class="form-control" id="income-group">
               <label for="income-category">Income Source <span class="required">*</span></label>
               <select id="income-category">
-                <option value="" disabled selected>-- Select Income Source --</option>
+                <option value="" disabled selected>-- Choose Income Source --</option>
                 <option value="Salary (Monthly)">Salary Payout (Monthly)</option>
                 <option value="Salary (Annually)">Salary Payout (Annually)</option>
                 <option value="Freelance / Side Business">Freelance / Side Business (Monthly)</option>
@@ -77,11 +77,11 @@
               </select>
             </div>
 
-            <!-- EXPENSE CATEGORY SELECTION DECK WITH UNSELECTED PLACEHOLDER NODE -->
+            <!-- EXPENSE CATEGORY: EMPTY PLACEHOLDER DEFAULT -->
             <div class="form-control" id="expense-group" style="display: none;">
               <label for="expense-category">Expense Category <span class="required">*</span></label>
               <select id="expense-category">
-                <option value="" disabled selected>-- Select Expense Category --</option>
+                <option value="" disabled selected>-- Choose Expense Category --</option>
                 <option value="Groceries">Essential Groceries</option>
                 <option value="Rent/Bills">Housing Rent & Utilities</option>
                 <option value="Medical/Hospital">Medical & Hospital bills</option>
@@ -94,7 +94,6 @@
               </select>
             </div>
 
-            <!-- PRECISION CALENDAR DAY SELECTION DECK FOR REAL-TIME MID-MONTH BUDGETING -->
             <div class="form-control" id="date-selection-group">
               <label for="form-transaction-date">Transaction Date <span class="required">*</span></label>
               <input type="date" id="form-transaction-date">
@@ -127,7 +126,7 @@
           </form>
         </div>
       </div>
-      <!-- RIGHT WORKSPACE COLUMN: REAL-TIME GRAPHICS ANALYTICS RADAR -->
+      <!-- RIGHT WORKSPACE COLUMN: GRAPHICS ANALYTICS RADAR -->
       <div class="workspace-column">
         <h3 class="section-main-title">📊 TELEMETRY REVIEWS</h3>
         
@@ -179,9 +178,9 @@
           </div>
         </div>
       </div>
-    </div> <!-- END OF SPLIT ROW WORKSPACE GRID -->
+    </div> <!-- END OF GRID -->
 
-    <!-- TERMINAL ENTRY ZONE: STORAGE MATRIX & FILE EXPORTS -->
+    <!-- TERMINAL ENTRY ZONE -->
     <h3 class="section-main-title">📋 DATA LOG & BACKUP STATION</h3>
 
     <div class="utility-toolbar">
@@ -203,7 +202,7 @@
 
     <ul id="list" class="list"></ul>
 
-    <!-- UPGRADED INTERACTIVE RESOURCES ACCORDION COMPONENT -->
+    <!-- INTERACTIVE RESOURCES ACCORDION MODULES -->
     <div class="info-section">
       <h2 class="section-main-title" style="border-left:none; padding-left:0;">📚 FINANCIAL RESOURCE CENTER</h2>
       <p class="resources-subtitle">Click on any panel header below to expand core personal finance learning modules.</p>
