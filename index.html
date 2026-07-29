@@ -3,7 +3,6 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <!-- KEEPING YOUR ACTIVE ADSENSE VERIFICATION TAG INTACT -->
   <script async src="https://googlesyndication.com" crossorigin="anonymous"></script>
   <title>Smart Wallet Tracker & Financial Management Guide</title>
   <link rel="stylesheet" href="style.css">
@@ -15,6 +14,21 @@
     <div class="balance-box">
       <h4>Current Balance</h4>
       <h1 id="balance">₹0.00</h1>
+    </div>
+
+    <!-- NEW ADVANCED TOOL: MULTI-CURRENCY CONVERTER LOOKUP -->
+    <div class="converter-box">
+      <strong>💱 Live Multi-Currency Converter View</strong>
+      <p style="margin:5px 0 10px 0; font-size:14px; opacity:0.8;">Convert your current ledger balances instantly:</p>
+      <div style="display: flex; gap: 10px; align-items: center;">
+        <select id="currency-select" onchange="convertCurrency()" style="padding: 8px; font-weight: bold; width: auto;">
+          <option value="INR">INR (₹) Base</option>
+          <option value="USD">USD ($) Dollars</option>
+          <option value="EUR">EUR (€) Euros</option>
+          <option value="GBP">GBP (£) Pounds</option>
+        </select>
+        <span id="converted-display" style="font-size: 18px; font-weight: bold; color: #2c3e50;">₹0.00</span>
+      </div>
     </div>
 
     <div id="advisor" class="advisor-box">
@@ -37,21 +51,23 @@
     <ul id="list" class="list"></ul>
 
     <h3 id="form-heading">Add New Transaction</h3>
-    <form id="form">
+    <p style="text-align: center; color: #e74c3c; font-size: 14px; font-weight: bold; margin-top: -10px;">Fields marked with <span class="required">*</span> are mandatory.</p>
+    
+    <form id="form" novalidate>
       <div class="form-control">
-        <label for="form-month">Select Month</label>
+        <label for="form-month">Select Month <span class="required">*</span></label>
         <select id="form-month">
           <option value="January">January</option><option value="February">February</option><option value="March">March</option><option value="April">April</option><option value="May">May</option><option value="June">June</option><option value="July">July</option><option value="August">August</option><option value="September">September</option><option value="October">October</option><option value="November">November</option><option value="December">December</option>
         </select>
       </div>
 
       <div class="form-control">
-        <label for="form-date">Transaction Note / Label</label>
+        <label for="form-date">Transaction Note / Label <span class="required">*</span></label>
         <input type="text" id="form-date" placeholder="e.g., Salary, Groceries, Rent">
       </div>
 
       <div class="form-control">
-        <label>Transaction Type</label>
+        <label>Transaction Type <span class="required">*</span></label>
         <div class="type-selector">
           <label class="type-option"><input type="radio" name="txType" id="type-income" value="income" checked onclick="toggleDropdowns()"> 🟢 Income</label>
           <label class="type-option"><input type="radio" name="txType" id="type-expense" value="expense" onclick="toggleDropdowns()"> 🔴 Expense</label>
@@ -59,7 +75,7 @@
       </div>
 
       <div class="form-control" id="income-group">
-        <label for="income-category">Income Source</label>
+        <label for="income-category">Income Source <span class="required">*</span></label>
         <select id="income-category">
           <option value="Salary (Monthly)">Salary Payout (Monthly)</option>
           <option value="Salary (Annually)">Salary Payout (Annually)</option>
@@ -70,7 +86,7 @@
       </div>
 
       <div class="form-control" id="expense-group" style="display: none;">
-        <label for="expense-category">Expense Category</label>
+        <label for="expense-category">Expense Category <span class="required">*</span></label>
         <select id="expense-category">
           <option value="Groceries">Essential Groceries</option>
           <option value="Rent/Bills">Housing Rent & Utilities</option>
@@ -85,32 +101,29 @@
       </div>
 
       <div class="form-control">
-        <label for="amount">Amount (Value in ₹)</label>
+        <label for="amount">Amount (Value in ₹) <span class="required">*</span></label>
         <input type="number" id="amount" step="any" placeholder="e.g., 5000">
       </div>
       
       <button type="submit" class="btn btn-submit" id="submit-btn">Record Transaction</button>
-
-      <!-- INTEGRATED DASHBOARD CONTROL GUIDE TEXT PANEL -->
-      <div style="background: #f1f2f6; border-radius: 4px; padding: 12px; margin-top: 15px; font-size: 14px; color: #555; text-align: left;">
+      
+      <div style="background: #f1f2f6; border-radius: 4px; padding: 12px; margin-top: 15px; font-size: 14px; color: #555;">
         <p style="margin: 0 0 5px 0;"><strong>💡 Dashboard Control Guide:</strong></p>
         <ul style="margin: 0; padding-left: 20px;">
           <li><strong>Clear Ledger:</strong> Clears the visible history list to start a fresh tracking view. Your underlying browser settings are <strong>safely saved</strong>.</li>
           <li><strong>Reset All Data:</strong> Permanent factory reset. Completely erases your entire multi-month budget memory and history.</li>
         </ul>
       </div>
-      
+
       <div class="button-group">
         <button type="button" class="btn btn-clear" onclick="clearCurrentLedger()">Clear Ledger</button>
         <button type="button" class="btn btn-reset" onclick="clearAllData()">Reset All Data</button>
       </div>
     </form>
 
-    <!-- RESTORED EXTENSIVE GOOGLE ADSENSE ARTICLES -->
     <div class="info-section">
       <h2>Essential Personal Finance & Budgeting Resources</h2>
       <p>Managing your money efficiently requires consistent tracking, strategic saving patterns, and clear financial goals. Below is an educational framework designed to maximize your savings velocity using our tracking utility.</p>
-      
       <div class="info-card">
         <h3>The 50/30/20 Budgeting Rule Explained</h3>
         <p>A classic financial formula divides your post-tax income into three distinct categories:</p>
@@ -120,19 +133,8 @@
           <li><strong>20% Savings:</strong> Asset accumulation including emergency accounts, retirement contributions, and debt settlements.</li>
         </ul>
       </div>
-
-      <div class="info-card">
-        <h3>Top Strategies to Minimize Daily Expenditures</h3>
-        <p>Small adjustments heavily influence cumulative long-term cash retention. Consider deploying these strategies:</p>
-        <ul>
-          <li><strong>Automate Savings:</strong> Configure automatic bank transfers directly into specialized savings vaults immediately following payroll events.</li>
-          <li><strong>Audit Fixed Subscriptions:</strong> Routinely scan recurring card statements to isolate and deactivate underutilized premium streaming, software, or gym memberships.</li>
-          <li><strong>Meal Preparation:</strong> Planning household meals weekly systematically reduces dependencies on high-markup food delivery mobile applications.</li>
-        </ul>
-      </div>
     </div>
 
-    <!-- REQUIRED PRIVACY POLICY SECTIONS HERE -->
     <footer>
         <p>© 2026 Smart Wallet Tracker. All rights reserved.</p>
         <p><a href="privacy.html">Privacy Policy</a></p>
