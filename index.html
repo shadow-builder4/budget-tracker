@@ -3,30 +3,42 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3546714823764465"
-     crossorigin="anonymous"></script>
+  <script async src="https://googlesyndication.com" crossorigin="anonymous"></script>
   <title>Smart Wallet Tracker & Financial Management Guide</title>
   <style>
-    :root { --primary: #2ecc71; --danger: #e74c3c; --dark: #2c3e50; --light: #f8f9fa; }
+    :root { --primary: #2ecc71; --danger: #e74c3c; --dark: #2c3e50; --light: #f8f9fa; --warning: #f39c12; }
     body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: var(--light); color: var(--dark); margin: 0; padding: 20px; line-height: 1.6; }
     .container { max-width: 800px; margin: 0 auto; background: #fff; padding: 30px; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
     h1, h2, h3 { color: var(--dark); text-align: center; }
     .balance-box { background: var(--dark); color: #fff; padding: 20px; border-radius: 6px; text-align: center; margin-bottom: 20px; }
-    /* FIXED INVISIBLE COLOR BUG HERE */
     .balance-box h1 { color: #ffffff !important; margin: 10px 0 0 0; } 
     .inc-exp-container { display: flex; justify-content: space-around; background: #fff; padding: 15px; border: 1px solid #e0e0e0; border-radius: 6px; margin-bottom: 20px; }
     .money { font-size: 20px; font-weight: bold; margin: 5px 0; }
     .plus { color: var(--primary); }
     .minus { color: var(--danger); }
+    
+    /* ADVISOR BOX LAYOUT */
+    .advisor-box { background: #ebf5fb; border-left: 5px solid #3498db; padding: 15px; border-radius: 4px; margin-bottom: 25px; font-weight: 500; }
+    .advisor-warning { background: #fef9e7; border-left: 5px solid var(--warning); color: #7d6608; }
+    .advisor-good { background: #eafaf1; border-left: 5px solid var(--primary); color: #196f3d; }
+
     .form-control { margin-bottom: 15px; }
     label { display: block; margin-bottom: 5px; font-weight: 600; }
-    input { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; }
-    .btn { display: block; width: 100%; background: var(--dark); color: #fff; padding: 12px; border: none; border-radius: 4px; font-size: 16px; cursor: pointer; transition: 0.3s; }
+    input, select { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; font-size: 15px; background-color: #fff; }
+    .btn { display: block; width: 100%; background: var(--dark); color: #fff; padding: 12px; border: none; border-radius: 4px; font-size: 16px; cursor: pointer; transition: 0.3s; margin-bottom: 10px; }
     .btn:hover { background: #1a252f; }
+    .btn-clear { background: #7f8c8d; }
+    .btn-clear:hover { background: #95a5a6; }
+
     .list { list-style-type: none; padding: 0; margin-bottom: 30px; }
-    .list li { background: #fff; border: 1px solid #e0e0e0; border-left: 5px solid #ccc; display: flex; justify-content: space-between; padding: 10px; margin-bottom: 5px; position: relative; }
+    .list li { background: #fff; border: 1px solid #e0e0e0; border-left: 5px solid #ccc; display: flex; justify-content: space-between; padding: 10px; margin-bottom: 5px; position: relative; align-items: center; }
     .list li.plus { border-left-color: var(--primary); }
     .list li.minus { border-left-color: var(--danger); }
+    
+    /* INLINE DELETE BUTTON STYLING */
+    .delete-btn { background-color: var(--danger); border: none; color: #fff; font-size: 12px; padding: 4px 8px; border-radius: 4px; cursor: pointer; opacity: 0.8; transition: 0.2s; margin-left: 10px; }
+    .delete-btn:hover { opacity: 1; }
+
     .info-section { margin-top: 40px; padding-top: 20px; border-top: 2px solid #eee; }
     .info-card { background: #fdfdfd; border: 1px dashed #ccc; padding: 15px; border-radius: 6px; margin-bottom: 15px; }
     footer { text-align: center; padding: 20px; margin-top: 40px; border-top: 1px solid #e2e8f0; }
@@ -40,6 +52,11 @@
     <div class="balance-box">
       <h4>Current Balance</h4>
       <h1 id="balance">₹0.00</h1>
+    </div>
+
+    <!-- LIVE ADVISOR CARD -->
+    <div id="advisor" class="advisor-box">
+      Start adding transactions to receive automated financial budget feedback.
     </div>
 
     <div class="inc-exp-container">
@@ -59,48 +76,49 @@
     <h3>Add New Transaction</h3>
     <form id="form">
       <div class="form-control">
-        <label for="text">Transaction Label</label>
-        <input type="text" id="text" placeholder="e.g., Salary, Groceries, Rent">
+        <label for="category">Transaction Category</label>
+        <select id="category">
+          <optgroup label="Income Sources">
+            <option value="Salary">Salary Payout</option>
+            <option value="Freelance">Freelance / Side Business</option>
+            <option value="Investments Return">Investment Returns</option>
+            <option value="Other Income">Other Inflow</option>
+          </optgroup>
+          <optgroup label="Expense Categories">
+            <option value="Groceries">Essential Groceries</option>
+            <option value="Rent/Bills">Housing Rent & Utilities</option>
+            <option value="Dining Out">Food & Restaurants</option>
+            <option value="Entertainment">Entertainment & Subscriptions</option>
+            <option value="Investment">Mutual Funds / Stock Investments</option>
+            <option value="Other Expense">Miscellaneous Outflow</option>
+          </optgroup>
+        </select>
       </div>
       <div class="form-control">
         <label for="amount">Amount (Use negative sign '-' for expenses)</label>
         <input type="number" id="amount" placeholder="e.g., 5000 or -1200">
       </div>
       <button class="btn">Record Transaction</button>
+      <button type="button" class="btn btn-clear" onclick="clearAllData()">Reset Dashboard</button>
     </form>
 
-    <!-- CRUCIAL TEXT CONTENT SECTION FOR GOOGLE ADSENSE APPROVAL -->
     <div class="info-section">
       <h2>Essential Personal Finance & Budgeting Resources</h2>
-      <p>Managing your money efficiently requires consistent tracking, strategic saving patterns, and clear financial goals. Below is an educational framework designed to maximize your savings velocity using our tracking utility.</p>
+      <p>Managing your money efficiently requires consistent tracking, strategic saving patterns, and clear financial goals.</p>
       
       <div class="info-card">
         <h3>The 50/30/20 Budgeting Rule Explained</h3>
-        <p>A classic financial formula divides your post-tax income into three distinct categories:</p>
         <ul>
-          <li><strong>50% Needs:</strong> Obligatory allocations including housing rent, bills, insurance, utilities, and essential groceries.</li>
-          <li><strong>30% Wants:</strong> Discretionary spending targeting entertainment, dining out, hobbies, and streaming memberships.</li>
-          <li><strong>20% Savings:</strong> Asset accumulation including emergency accounts, retirement contributions, and debt settlements.</li>
-        </ul>
-      </div>
-
-      <div class="info-card">
-        <h3>Top Strategies to Minimize Daily Expenditures</h3>
-        <p>Small adjustments heavily influence cumulative long-term cash retention. Consider deploying these strategies:</p>
-        <ul>
-          <li><strong>Automate Savings:</strong> Configure automatic bank transfers directly into specialized savings vaults immediately following payroll events.</li>
-          <li><strong>Audit Fixed Subscriptions:</strong> Routinely scan recurring card statements to isolate and deactivate underutilized premium streaming, software, or gym memberships.</li>
-          <li><strong>Meal Preparation:</strong> Planning household meals weekly systematically reduces dependencies on high-markup food delivery mobile applications.</li>
+          <li><strong>50% Needs:</strong> Obligatory allocations including housing rent, bills, insurance, and groceries.</li>
+          <li><strong>30% Wants:</strong> Discretionary spending targeting entertainment, dining out, and streaming memberships.</li>
+          <li><strong>20% Savings:</strong> Asset accumulation including emergency accounts and investment portfolios.</li>
         </ul>
       </div>
     </div>
 
-    <!-- ADDED PRIVACY LINKS FOOTER FOR ADSENSE BOT COMPLIANCE -->
     <footer>
         <p>© 2026 Smart Wallet Tracker. All rights reserved.</p>
-        <p>
-            <a href="privacy.html">Privacy Policy</a>
-        </p>
+        <p><a href="privacy.html">Privacy Policy</a></p>
     </footer>
   </div>
 
@@ -110,24 +128,33 @@
     const money_minus = document.getElementById('money-minus');
     const list = document.getElementById('list');
     const form = document.getElementById('form');
-    const text = document.getElementById('text');
+    const category = document.getElementById('category');
     const amount = document.getElementById('amount');
+    const advisor = document.getElementById('advisor');
 
     const localStorageTransactions = JSON.parse(localStorage.getItem('transactions'));
     let transactions = localStorage.getItem('transactions') !== null ? localStorageTransactions : [];
 
     function addTransaction(e) {
       e.preventDefault();
-      if (text.value.trim() === '' || amount.value.trim() === '') {
-        alert('Please provide a valid description and numerical amount.');
+      if (amount.value.trim() === '' || isNaN(amount.value)) {
+        alert('Please provide a valid numerical amount.');
         return;
       }
-      const transaction = { id: generateID(), text: text.value, amount: +amount.value };
+      
+      const transactionVal = +amount.value;
+      const selectedCategory = category.value;
+      
+      const transaction = { 
+        id: generateID(), 
+        text: selectedCategory, 
+        amount: transactionVal 
+      };
+      
       transactions.push(transaction);
       addTransactionDOM(transaction);
       updateValues();
       updateLocalStorage();
-      text.value = '';
       amount.value = '';
     }
 
@@ -137,25 +164,48 @@
       const sign = transaction.amount < 0 ? '-' : '+';
       const item = document.createElement('li');
       item.classList.add(transaction.amount < 0 ? 'minus' : 'plus');
-      item.innerHTML = `${transaction.text} <span>${sign}₹${Math.abs(transaction.amount)}</span>`;
+      
+      item.innerHTML = `
+        <div>
+          <strong>${transaction.text}</strong> 
+          <span>${sign}₹${Math.abs(transaction.amount).toFixed(2)}</span>
+        </div>
+        <button class="delete-btn" onclick="removeTransaction(${transaction.id})">Delete</button>
+      `;
       list.appendChild(item);
+    }
+
+    function removeTransaction(id) {
+      transactions = transactions.filter(transaction => transaction.id !== id);
+      updateLocalStorage();
+      init();
     }
 
     function updateValues() {
       const amounts = transactions.map(transaction => transaction.amount);
-      const total = amounts.reduce((acc, item) => (acc += item), 0).toFixed(2);
-      const income = amounts.filter(item => item > 0).reduce((acc, item) => (acc += item), 0).toFixed(2);
-      const expense = (amounts.filter(item => item < 0).reduce((acc, item) => (acc += item), 0) * -1).toFixed(2);
-      balance.innerText = `₹${total}`;
-      money_plus.innerText = `+₹${income}`;
-      money_minus.innerText = `-₹${expense}`;
-    }
+      const total = amounts.reduce((acc, item) => (acc += item), 0);
+      const income = amounts.filter(item => item > 0).reduce((acc, item) => (acc += item), 0);
+      const expense = amounts.filter(item => item < 0).reduce((acc, item) => (acc += item), 0) * -1;
+      
+      balance.innerText = `₹${total.toFixed(2)}`;
+      money_plus.innerText = `+₹${income.toFixed(2)}`;
+      money_minus.innerText = `-₹${expense.toFixed(2)}`;
 
-    function updateLocalStorage() { localStorage.setItem('transactions', JSON.stringify(transactions)); }
-    function init() { list.innerHTML = ''; transactions.forEach(addTransactionDOM); updateValues(); }
-    
-    form.addEventListener('submit', addTransaction);
-    init();
-  </script>
-</body>
-</html>
+      // DYNAMIC FINANCIAL ADVISOR RULES SYSTEM
+      if (income === 0 && expense === 0) {
+        advisor.className = "advisor-box";
+        advisor.innerText = "Start adding transactions to receive automated financial budget feedback.";
+      } else if (income === 0 && expense > 0) {
+        advisor.className = "advisor-box advisor-warning";
+        advisor.innerText = "⚠️ Warning: You are logging expenses without any recorded income flow. Please add your income sources to calculate a sustainable savings balance.";
+      } else {
+        const expenseRatio = (expense / income) * 100;
+        
+        // Target specific category heavy spend rules
+        const groceryExpense = transactions
+          .filter(t => t.text === 'Groceries')
+          .reduce((acc, t) => acc + Math.abs(t.amount), 0);
+        
+        const groceryRatio = (groceryExpense / income) * 100;
+
+        if (groceryRatio > 25) {
