@@ -19,9 +19,12 @@ const barSavings = document.getElementById('bar-savings');
 const labelNeeds = document.getElementById('label-needs');
 const labelWants = document.getElementById('label-wants');
 const labelSavings = document.getElementById('label-savings');
+const currencySelect = document.getElementById('currency-select');
+const convertedDisplay = document.getElementById('converted-display');
 
 let transactions = JSON.parse(localStorage.getItem('transactions')) || [];
 let editId = null;
+let currentNetBalanceINR = 0;
 
 const monthsArray = ["January","February","March","April","May","June","July","August","September","October","November","December"];
 formMonth.value = monthsArray[new Date().getMonth()];
@@ -32,18 +35,50 @@ function toggleDropdowns() {
   expenseGroup.style.display = (mode === 'expense') ? 'block' : 'none';
 }
 
+// LIVE MULTI-CURRENCY CONVERTER ARCHITECTURE
+function convertCurrency() {
+  const selectedCurrency = currencySelect.value;
+  let rate = 1;
+  let symbol = "₹";
+
+  if (selectedCurrency === "USD") { rate = 0.012; symbol = "$"; }
+  else if (selectedCurrency === "EUR") { rate = 0.011; symbol = "€"; }
+  else if (selectedCurrency === "GBP") { rate = 0.0093; symbol = "£"; }
+
+  const convertedValue = currentNetBalanceINR * rate;
+  convertedDisplay.innerText = `${symbol}${convertedValue.toFixed(2)}`;
+}
+
 function addTransaction(e) {
   e.preventDefault();
+  
+  // RESET PREVIOUS VALIDATION VISUAL STYLES
+  formDate.classList.remove('error-border');
+  amount.classList.remove('error-border');
+
+  let hasError = false;
+
+  // SMART VALIDATOR LOOKUP FOR MANDATORY FIELDS
+  if (formDate.value.trim() === '') {
+    formDate.classList.add('error-border');
+    hasError = true;
+  }
+  
   const valText = amount.value.trim();
   if (valText === '' || isNaN(valText) || parseFloat(valText) <= 0) {
-    alert('Please enter a valid positive number.');
+    amount.classList.add('error-border');
+    hasError = true;
+  }
+
+  if (hasError) {
+    alert('Please fill out all red highlighted mandatory fields correctly.');
     return;
   }
   
   const mode = document.querySelector('input[name="txType"]:checked').value;
   let transactionVal = parseFloat(valText);
   let selectedCategory = (mode === 'income') ? incomeCategory.value : expenseCategory.value;
-  const customLabel = formDate.value.trim() ? formDate.value.trim() : selectedCategory;
+  const customLabel = formDate.value.trim();
   const targetMonth = formMonth.value;
 
   if (mode === 'expense') transactionVal = -transactionVal;
@@ -109,9 +144,14 @@ function updateValues() {
     if(t.amount > 0 && t.rawCat === "Salary (Annually)") calculatedIncomePool += (t.amount / 12);
   });
 
-  balance.innerText = `₹${(calculatedIncomePool - expense).toFixed(2)}`;
+  currentNetBalanceINR = calculatedIncomePool - expense;
+  balance.innerText = `₹${currentNetBalanceINR.toFixed(2)}`;
   money_plus.innerText = `+₹${calculatedIncomePool.toFixed(2)}`;
   money_minus.innerText = `-₹${expense.toFixed(2)}`;
+  
+  // RERUN THE DYNAMIC CONVERTER VALUE RECALCULATION
+  convertCurrency();
+
   list.innerHTML = '';
   transactions.forEach(addTransactionDOM);
 
@@ -120,15 +160,9 @@ function updateValues() {
     if (t.amount < 0) {
       const absAmt = Math.abs(t.amount);
       const cat = t.rawCat || t.text;
-      
-      // CRUCIAL UPDATED EXPENDITURE FILTER CLASSIFICATIONS LOGIC ROW
-      if (cat.startsWith('Groceries') || cat.startsWith('Rent/Bills') || cat.startsWith('Medical/Hospital')) {
-        needsVal += absAmt;
-      } else if (cat.startsWith('Dining Out') || cat.startsWith('Entertainment') || cat.startsWith('Travel/Fuel') || cat.startsWith('Other Expense')) {
-        wantsVal += absAmt;
-      } else if (cat.startsWith('Investment') || cat.startsWith('Education/Fees')) {
-        savingsVal += absAmt;
-      }
+      if (cat.startsWith('Groceries') || cat.startsWith('Rent/Bills') || cat.startsWith('Medical/Hospital')) needsVal += absAmt;
+      else if (cat.startsWith('Dining Out') || cat.startsWith('Entertainment') || cat.startsWith('Travel/Fuel') || cat.startsWith('Other Expense')) wantsVal += absAmt;
+      else if (cat.startsWith('Investment') || cat.startsWith('Education/Fees')) savingsVal += absAmt;
     } else {
       const cat = t.rawCat || t.text;
       if (cat.startsWith('Investments Return')) savingsVal += t.amount;
@@ -143,7 +177,7 @@ function updateValues() {
     labelNeeds.innerText = `${nPct}% (Target: 50%)`; labelWants.innerText = `${wPct}% (Target: 30%)`; labelSavings.innerText = `${sPct}% (Target: 20%)`;
   } else {
     barNeeds.style.width = '0%'; barWants.style.width = '0%'; barSavings.style.width = '0%';
-    labelNeeds.innerText = '0%'; labelWants.innerText = '0%'; labelSavings.innerText = '0%';
+    labelNeeds.innerHTML = '0%'; labelWants.innerHTML = '0%'; labelSavings.innerHTML = '0%';
   }
 
   if (calculatedIncomePool === 0 && expense === 0) {
