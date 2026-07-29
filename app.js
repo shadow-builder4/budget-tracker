@@ -53,7 +53,7 @@ let editId = null;
 let currentSelectedType = 'income';
 
 // Set calendar input picker fallback directly to today's date on execution boot
-if (formTransactionDate && !formTransactionDate.value) {
+if (formTransactionDate) {
   formTransactionDate.value = new Date().toISOString().split('T')[0];
 }
 
@@ -66,6 +66,7 @@ function showToast(message, classType = 'toast-success') {
   container.appendChild(toast);
   setTimeout(() => { toast.remove(); }, 2500);
 }
+
 function saveFinancialGoal() {
   const goalInput = document.getElementById('goal-input');
   if (goalInput) { localStorage.setItem('financialGoalText', goalInput.value); }
@@ -78,7 +79,7 @@ function loadFinancialGoal() {
 }
 
 function importDataCSV(e) {
-  const file = e.target.files;
+  const file = e.target.files[0];
   if (!file) return;
   const reader = new FileReader();
   reader.onload = function(event) {
@@ -102,7 +103,6 @@ function importDataCSV(e) {
   reader.readAsText(file);
   e.target.value = '';
 }
-
 function setTransactionType(type) {
   currentSelectedType = type;
   const incomeTab = document.getElementById('tab-income');
@@ -133,6 +133,7 @@ function exportDataCSV() {
   document.body.appendChild(link); link.click(); document.body.removeChild(link);
   showToast("📥 CSV Spreadsheet Exported Successfully!");
 }
+
 function addTransaction(e) {
   e.preventDefault(); const valText = amount.value.trim();
   let catSel = (currentSelectedType === 'income') ? incomeCategory.value : expenseCategory.value;
@@ -162,6 +163,7 @@ function addTransactionDOM(t) {
   list.appendChild(item);
 }
 
+// RESTORE FUNCTION
 function editTransaction(id) {
   const target = transactions.find(t => t.id === id); if (!target) return; editId = id; amount.value = Math.abs(target.amount).toFixed(2); formDate.value = target.text; if (target.exactDate) formTransactionDate.value = target.exactDate;
   if (target.amount >= 0) { setTransactionType('income'); incomeCategory.value = target.rawCat; } else { setTransactionType('expense'); expenseCategory.value = target.rawCat; }
@@ -200,11 +202,19 @@ function updateValues() {
 
 function unloadCurrentSession() { transactions = []; list.innerHTML = ''; updateValues(); showToast("🧹 Current Session Unloaded Safely", "toast-warning"); }
 
+/* CRITICAL FICTION CORRECTION: HARDWARE PERSISTENCE STORAGE RESET PURGE ROUTINE */
 function resetAllData() {
   if (confirm("Are you absolutely sure you want to delete all transaction data? This action cannot be undone.")) {
-    transactions = []; localStorage.removeItem('transactions'); localStorage.removeItem('financialGoalText');
-    const goalInput = document.getElementById('goal-input'); if (goalInput) goalInput.value = '';
-    editId = null; submitBtn.innerText = "Record Transaction"; amount.value = ''; formDate.value = ''; init(); showToast("⚠️ Local Database Erased Completely!", "toast-danger");
+    transactions = []; 
+    localStorage.clear(); 
+    const goalInput = document.getElementById('goal-input'); 
+    if (goalInput) goalInput.value = '';
+    editId = null; 
+    submitBtn.innerText = "Record Transaction"; 
+    amount.value = ''; 
+    formDate.value = ''; 
+    init(); 
+    showToast("⚠️ Local Database Erased Completely!", "toast-danger");
   }
 }
 
@@ -214,7 +224,7 @@ function toggleAccordion(headerElement) {
   if (!isActive) { parentItem.classList.add('active'); contentElement.style.maxHeight = contentElement.scrollHeight + "px"; }
 }
 
-function init() { updateValues(); setTransactionType('income'); loadFinancialGoal(); }
+function init() { updateValues(); setTransactionType('income'); loadFinancialGoal(); incomeCategory.value = ""; expenseCategory.value = ""; }
 
 form.addEventListener('submit', addTransaction);
 document.getElementById('unload-session-btn').addEventListener('click', unloadCurrentSession);
