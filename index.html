@@ -10,7 +10,7 @@
   <link href="https://googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
 </head>
 <body>
-  <!-- TOAST ALERT PANEL HOUSING -->
+  <!-- TOAST ALERTS PANEL -->
   <div id="toast-container" class="toast-container"></div>
 
   <div class="app-wrapper">
@@ -46,7 +46,7 @@
       </div>
     </div>
 
-    <!-- MAIN TWO-COLUMN WORKSPACE -->
+    <!-- MAIN TWO-COLUMN WORKSPACE WORKBENCH -->
     <div class="main-workspace-grid">
       
       <!-- LEFT WORKSPACE COLUMN: INPUT OPERATIONS -->
@@ -64,7 +64,7 @@
               </div>
             </div>
 
-            <!-- INCOME SOURCE: EMPTY PLACEHOLDER DEFAULT -->
+            <!-- INCOME SOURCE Select option element arrays -->
             <div class="form-control" id="income-group">
               <label for="income-category">Income Source <span class="required">*</span></label>
               <select id="income-category">
@@ -77,7 +77,7 @@
               </select>
             </div>
 
-            <!-- EXPENSE CATEGORY: EMPTY PLACEHOLDER DEFAULT -->
+            <!-- EXPENSE CATEGORY Select option element arrays -->
             <div class="form-control" id="expense-group" style="display: none;">
               <label for="expense-category">Expense Category <span class="required">*</span></label>
               <select id="expense-category">
@@ -94,6 +94,7 @@
               </select>
             </div>
 
+            <!-- HYBRID TRACKING COMPONENT: CALENDAR DATE PICKER ROOT -->
             <div class="form-control" id="date-selection-group">
               <label for="form-transaction-date">Transaction Date <span class="required">*</span></label>
               <input type="date" id="form-transaction-date">
@@ -202,7 +203,7 @@
 
     <ul id="list" class="list"></ul>
 
-    <!-- INTERACTIVE RESOURCES ACCORDION MODULES -->
+    <!-- INTERACTIVE RESOURCES ACCORDION COMPONENT -->
     <div class="info-section">
       <h2 class="section-main-title" style="border-left:none; padding-left:0;">📚 FINANCIAL RESOURCE CENTER</h2>
       <p class="resources-subtitle">Click on any panel header below to expand core personal finance learning modules.</p>
@@ -240,7 +241,11 @@
 
     <footer class="legal-footer-layer">
       <p>© 2026 Smart Wallet Tracker Pro. All Rights Reserved. Data stored locally via secure client-side browser storage layers.</p>
-      <p><a href="privacy.html">Privacy Policy</a> | <a href="terms.html">Terms of Service</a></p>
+      <div>
+        <a href="privacy.html">Privacy Policy</a>
+        <span style="color:#94a3b8; font-weight:700;">•</span>
+        <a href="terms.html">Terms of Service</a>
+      </div>
     </footer>
   </div>
 
