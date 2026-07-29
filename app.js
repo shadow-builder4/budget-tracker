@@ -5,28 +5,16 @@
   const secureDomain = "shadow-builder4.github.io";
   if (window.location.hostname !== secureDomain && window.location.hostname !== "localhost" && window.location.hostname !== "127.0.0.1") {
     alert("⛔ CRITICAL SAFETY ERROR: Unauthorized application clone detected. Execution halted.");
-    document.body.innerHTML = "<h1 style='color:#ff007f; text-align:center; margin-top:20%; font-family:sans-serif;'>CRITICAL ERROR: UNAUTHORIZED INSTANCE CORE DUMPED</h1>";
+    document.body.innerHTML = "<h1 style='color:#ef4444; text-align:center; margin-top:20%; font-family:sans-serif;'>CRITICAL ERROR: UNAUTHORIZED INSTANCE CORE DUMPED</h1>";
     throw new Error("Core code execution intercepted on unverified domain context layer.");
   }
-
   document.addEventListener('contextmenu', function(e) { e.preventDefault(); });
-
   document.addEventListener('keydown', function(e) {
-    if (e.keyCode === 123 || 
-       (e.ctrlKey && e.shiftKey && (e.keyCode === 73 || e.keyCode === 74)) || 
-       (e.ctrlKey && e.keyCode === 85)) {
-      e.preventDefault();
-      return false;
-    }
+    if (e.keyCode === 123 || (e.ctrlKey && e.shiftKey && (e.keyCode === 73 || e.keyCode === 74)) || (e.ctrlKey && e.keyCode === 85)) { e.preventDefault(); return false; }
   });
-
   setInterval(function() {
     function dynamicDebugger(i) {
-      if (("" + i / i).length !== 1 || i % 20 === 0) {
-        (function() {}).constructor("debugger")();
-      } else {
-        (function() {}).constructor("debugger")();
-      }
+      if (("" + i / i).length !== 1 || i % 20 === 0) { (function() {}).constructor("debugger")(); } else { (function() {}).constructor("debugger")(); }
       dynamicDebugger(++i);
     }
     try { dynamicDebugger(0); } catch(e) {}
@@ -43,10 +31,8 @@ const list = document.getElementById('list');
 const form = document.getElementById('form');
 const amount = document.getElementById('amount');
 const advisor = document.getElementById('advisor');
-const formHeading = document.getElementById('form-heading');
 const submitBtn = document.getElementById('submit-btn');
-const formMonth = document.getElementById('form-month');
-const monthSelectionGroup = document.getElementById('month-selection-group');
+const formTransactionDate = document.getElementById('form-transaction-date');
 const formDate = document.getElementById('form-date');
 const incomeGroup = document.getElementById('income-group');
 const expenseGroup = document.getElementById('expense-group');
@@ -66,8 +52,10 @@ let transactions = JSON.parse(localStorage.getItem('transactions')) || [];
 let editId = null;
 let currentSelectedType = 'income';
 
-const monthsArray = ["January","February","March","April","May","June","July","August","September","October","November","December"];
-formMonth.value = monthsArray[new Date().getMonth()];
+// Set calendar input picker fallback directly to today's date on execution boot
+if (formTransactionDate && !formTransactionDate.value) {
+  formTransactionDate.value = new Date().toISOString().split('T')[0];
+}
 
 function showToast(message, classType = 'toast-success') {
   const container = document.getElementById('toast-container');
@@ -90,7 +78,7 @@ function loadFinancialGoal() {
 }
 
 function importDataCSV(e) {
-  const file = e.target.files[0];
+  const file = e.target.files;
   if (!file) return;
   const reader = new FileReader();
   reader.onload = function(event) {
@@ -106,7 +94,7 @@ function importDataCSV(e) {
         const textLabel = parts[1].replace(/^"|"$/g, '').trim();
         const categoryVal = parts[2].trim();
         const amountVal = parseFloat(parts[3].trim());
-        if (!isNaN(amountVal)) { importedTransactions.push({ id: Math.floor(Math.random() * 100000000), text: textLabel, amount: amountVal, rawCat: categoryVal, month: monthVal }); }
+        if (!isNaN(amountVal)) { importedTransactions.push({ id: Math.floor(Math.random() * 100000000), text: textLabel, amount: amountVal, rawCat: categoryVal, month: monthVal, exactDate: new Date().toISOString().split('T')[0] }); }
       }
     }
     if (importedTransactions.length > 0) { transactions = [...transactions, ...importedTransactions]; localStorage.setItem('transactions', JSON.stringify(transactions)); init(); showToast(`📥 Successfully Restored ${importedTransactions.length} Log Records!`); } else { showToast("No valid structural records detected.", "toast-danger"); }
@@ -115,24 +103,19 @@ function importDataCSV(e) {
   e.target.value = '';
 }
 
-function checkAnnualIncomeMode() {
-  if (currentSelectedType === 'income' && incomeCategory.value === 'Salary (Annually)') { monthSelectionGroup.style.display = 'none'; } else { monthSelectionGroup.style.display = 'block'; }
-}
-
 function setTransactionType(type) {
   currentSelectedType = type;
   const incomeTab = document.getElementById('tab-income');
   const expenseTab = document.getElementById('tab-expense');
   if (type === 'income') {
     incomeGroup.style.display = 'block'; expenseGroup.style.display = 'none';
-    incomeTab.style.background = 'rgba(6, 214, 160, 0.15)'; incomeTab.style.border = '1px solid #06d6a0';
-    expenseTab.style.background = '#111827'; expenseTab.style.border = 'none';
+    incomeTab.style.backgroundColor = '#10b981'; incomeTab.style.color = '#ffffff';
+    expenseTab.style.backgroundColor = '#ffffff'; expenseTab.style.color = '#475569';
   } else {
     incomeGroup.style.display = 'none'; expenseGroup.style.display = 'block';
-    expenseTab.style.background = 'rgba(255, 90, 95, 0.15)'; expenseTab.style.border = '1px solid #ff5a5f';
-    incomeTab.style.background = '#111827'; incomeTab.style.border = 'none';
+    expenseTab.style.backgroundColor = '#ef4444'; expenseTab.style.color = '#ffffff';
+    incomeTab.style.backgroundColor = '#ffffff'; incomeTab.style.color = '#475569';
   }
-  checkAnnualIncomeMode();
 }
 
 function handleFormToggleDirect(e, type) { if(e) e.preventDefault(); setTransactionType(type); }
@@ -152,20 +135,25 @@ function exportDataCSV() {
 }
 function addTransaction(e) {
   e.preventDefault(); const valText = amount.value.trim();
-  formDate.classList.remove('error-border'); amount.classList.remove('error-border');
-  if (valText === '' || isNaN(valText) || parseFloat(valText) <= 0) { amount.classList.add('error-border'); showToast('Please enter a valid positive number.', 'toast-danger'); return; }
-  let amtVal = parseFloat(valText); let catSel = (currentSelectedType === 'income') ? incomeCategory.value : expenseCategory.value;
-  const labelVal = formDate.value.trim() !== '' ? formDate.value.trim() : catSel;
-  let finalMonth = (currentSelectedType === 'income' && catSel === 'Salary (Annually)') ? 'Full Year' : formMonth.value;
+  let catSel = (currentSelectedType === 'income') ? incomeCategory.value : expenseCategory.value;
+  
+  if (catSel === "" || catSel.includes("--")) { showToast('Please choose a valid transaction category target option.', 'toast-danger'); return; }
+  if (valText === '' || isNaN(valText) || parseFloat(valText) <= 0) { showToast('Please enter a valid positive number values.', 'toast-danger'); return; }
+  
+  let amtVal = parseFloat(valText); const labelVal = formDate.value.trim() !== '' ? formDate.value.trim() : catSel;
+  let selectedDate = formTransactionDate.value ? formTransactionDate.value : new Date().toISOString().split('T')[0];
+  const parsedMonth = new Date(selectedDate).toLocaleString('default', { month: 'long' });
+  
   if (currentSelectedType === 'expense') amtVal = -amtVal;
   if (editId !== null) {
-    transactions = transactions.map(t => t.id === editId ? { id: editId, text: labelVal, amount: amtVal, rawCat: catSel, month: finalMonth } : t);
-    editId = null; formHeading.innerText = "Add New Entry"; submitBtn.innerText = "Record Transaction"; submitBtn.style.background = "#00f0ff"; submitBtn.style.color = "#070a13"; showToast("✏️ Record Updated Successfully!");
+    transactions = transactions.map(t => t.id === editId ? { id: editId, text: labelVal, amount: amtVal, rawCat: catSel, month: parsedMonth, exactDate: selectedDate } : t);
+    editId = null; submitBtn.innerText = "Record Transaction"; showToast("✏️ Record Updated Successfully!");
   } else {
-    transactions.push({ id: Math.floor(Math.random() * 100000000), text: labelVal, amount: amtVal, rawCat: catSel, month: finalMonth });
+    transactions.push({ id: Math.floor(Math.random() * 100000000), text: labelVal, amount: amtVal, rawCat: catSel, month: parsedMonth, exactDate: selectedDate });
     showToast(currentSelectedType === 'income' ? "🟢 Income Recorded Successfully!" : "🔴 Expense Recorded Successfully!");
   }
   localStorage.setItem('transactions', JSON.stringify(transactions)); init(); amount.value = ''; formDate.value = '';
+  incomeCategory.value = ""; expenseCategory.value = "";
 }
 
 function addTransactionDOM(t) {
@@ -175,13 +163,13 @@ function addTransactionDOM(t) {
 }
 
 function editTransaction(id) {
-  const target = transactions.find(t => t.id === id); if (!target) return; editId = id; amount.value = Math.abs(target.amount).toFixed(2); formDate.value = target.text; if (target.month !== 'Full Year') formMonth.value = target.month;
-  if (target.amount >= 0) { setTransactionType('income'); incomeCategory.value = target.rawCat || 'Salary (Monthly)'; } else { setTransactionType('expense'); expenseCategory.value = target.rawCat || 'Groceries'; }
-  formHeading.innerText = `✏️ Editing Entry: ${target.text}`; submitBtn.innerText = "Save Updated Value"; submitBtn.style.background = "#fbbf24"; submitBtn.style.color = "#0f172a"; formHeading.scrollIntoView({ behavior: 'smooth' }); checkAnnualIncomeMode();
+  const target = transactions.find(t => t.id === id); if (!target) return; editId = id; amount.value = Math.abs(target.amount).toFixed(2); formDate.value = target.text; if (target.exactDate) formTransactionDate.value = target.exactDate;
+  if (target.amount >= 0) { setTransactionType('income'); incomeCategory.value = target.rawCat; } else { setTransactionType('expense'); expenseCategory.value = target.rawCat; }
+  submitBtn.innerText = "Save Updated Value"; submitBtn.scrollIntoView({ behavior: 'smooth' });
 }
 
 function removeTransaction(id) {
-  if(editId === id) { editId = null; formHeading.innerText = "Add New Entry"; submitBtn.innerText = "Record Transaction"; submitBtn.style.background = "#00f0ff"; amount.value = ''; formDate.value = ''; }
+  if(editId === id) { editId = null; submitBtn.innerText = "Record Transaction"; amount.value = ''; formDate.value = ''; }
   transactions = transactions.filter(t => t.id !== id); localStorage.setItem('transactions', JSON.stringify(transactions)); init(); showToast("❌ Entry Removed From Database", "toast-warning");
 }
 
@@ -190,11 +178,11 @@ function updateValues() {
   let income = transactions.filter(t => t.amount > 0 && t.rawCat !== "Salary (Annually)").reduce((acc, t) => acc + t.amount, 0);
   transactions.forEach(t => { if(t.amount > 0 && t.rawCat === "Salary (Annually)") income += (t.amount / 12); });
   const total = income - expense; balance.innerText = `₹${total.toFixed(2)}`; money_plus.innerText = `+₹${income.toFixed(2)}`; money_minus.innerText = `-₹${expense.toFixed(2)}`;
-  velocityDisplay.innerText = income > 0 ? `${((income - expense) / income * 100).toFixed(1)}%` : "0.0%"; velocityDisplay.style.color = (income > 0 && ((income - expense) / income) * 100 >= 20) ? '#39ff14' : '#ffb800';
+  velocityDisplay.innerText = income > 0 ? `${((income - expense) / income * 100).toFixed(1)}%` : "0.0%";
   if(expense > 0 && total > 0) {
-    const cleanMonths = transactions.map(t => t.month).filter(m => m !== 'Full Year'); const monthsCount = new Set(cleanMonths).size || 1;
-    runwayDisplay.innerText = `${(total / (expense / monthsCount)).toFixed(1)} Months`; runwayDisplay.style.color = ((total / (expense / monthsCount)) >= 6) ? '#00f0ff' : '#ff007f';
-  } else { runwayDisplay.innerText = "0.0 Months"; runwayDisplay.style.color = '#64748b'; }
+    const cleanMonths = transactions.map(t => t.month); const monthsCount = new Set(cleanMonths).size || 1;
+    runwayDisplay.innerText = `${(total / (expense / monthsCount)).toFixed(1)} Months`;
+  } else { runwayDisplay.innerText = "0.0 Months"; }
   list.innerHTML = ''; transactions.forEach(addTransactionDOM); let nVal = 0, wVal = 0, sVal = 0;
   transactions.filter(t => t.amount < 0).forEach(t => {
     const c = t.rawCat; if (["Groceries", "Rent/Bills", "Medical/Hospital", "Travel/Fuel", "Education/Fees"].includes(c)) nVal += Math.abs(t.amount); else if (["Dining Out", "Entertainment", "Other Expense"].includes(c)) wVal += Math.abs(t.amount); else if (["Investment"].includes(c)) sVal += Math.abs(t.amount);
@@ -216,7 +204,7 @@ function resetAllData() {
   if (confirm("Are you absolutely sure you want to delete all transaction data? This action cannot be undone.")) {
     transactions = []; localStorage.removeItem('transactions'); localStorage.removeItem('financialGoalText');
     const goalInput = document.getElementById('goal-input'); if (goalInput) goalInput.value = '';
-    editId = null; formHeading.innerText = "Add New Entry"; submitBtn.innerText = "Record Transaction"; submitBtn.style.background = "#00f0ff"; amount.value = ''; formDate.value = ''; init(); showToast("⚠️ Local Database Erased Completely!", "toast-danger");
+    editId = null; submitBtn.innerText = "Record Transaction"; amount.value = ''; formDate.value = ''; init(); showToast("⚠️ Local Database Erased Completely!", "toast-danger");
   }
 }
 
@@ -231,5 +219,4 @@ function init() { updateValues(); setTransactionType('income'); loadFinancialGoa
 form.addEventListener('submit', addTransaction);
 document.getElementById('unload-session-btn').addEventListener('click', unloadCurrentSession);
 resetAllBtn.addEventListener('click', resetAllData);
-
 init();
