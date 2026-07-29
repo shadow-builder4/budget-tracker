@@ -16,7 +16,7 @@
   <div class="container">
     <!-- TIED GROUP 1: THE APPLICATION HEADER & MAIN STATUS SUMMARY -->
     <header class="app-header">
-      <h1>SMART WALLET TRACKER <span class="premium-badge">PRO v4.1</span></h1>
+      <h1>SMART WALLET TRACKER <span class="premium-badge">PRO v4.2</span></h1>
       <p class="subtitle">Your Advanced Personal Finance Dashboard</p>
     </header>
     
@@ -170,15 +170,23 @@
       </div>
     </div>
 
-    <!-- TIED GROUP 4: HISTORY STORAGE REGISTRIES AND UTILITY TOOLBARS (Bottom Tier) -->
-    <h3 class="section-main-title">📋 ARCHIVAL HISTORY REGISTRY</h3>
+    <!-- TIED GROUP 4: HISTORY STORAGE REGISTRIES AND DUAL UTILITY IMPORT TOOLBAR -->
+    <h3 class="section-main-title">📋 TRANSACTION RECORDS</h3>
 
     <div class="utility-toolbar">
       <input type="text" id="search-bar" placeholder="🔍 Search through history ledger entries..." onkeyup="filterLedgerSearch()">
       
-      <div class="tooltip-wrapper">
-        <button type="button" class="action-export-btn" onclick="exportDataCSV()">📥 Export Excel Report</button>
-        <span class="tooltip-box">ℹ️ Click to save a copy of your transaction history as a spreadsheet (.csv) file directly on your local device.</span>
+      <div class="backup-button-group">
+        <div class="tooltip-wrapper">
+          <button type="button" class="action-export-btn" onclick="exportDataCSV()">📥 Export Backup</button>
+          <span class="tooltip-box">ℹ️ Save your transaction log as a spreadsheet (.csv) file directly on this device.</span>
+        </div>
+
+        <div class="tooltip-wrapper">
+          <label for="import-file" class="action-export-btn import-label-btn">📤 Import Backup</label>
+          <input type="file" id="import-file" accept=".csv" onchange="importDataCSV(event)" style="display: none;">
+          <span class="tooltip-box">ℹ️ Select a previously exported (.csv) wallet file to restore your saved data history.</span>
+        </div>
       </div>
     </div>
 
