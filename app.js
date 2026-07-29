@@ -77,7 +77,6 @@ function loadFinancialGoal() {
   const storedGoal = localStorage.getItem('financialGoalText') || '';
   if (goalInput) goalInput.value = storedGoal;
 }
-
 function importDataCSV(e) {
   const file = e.target.files;
   if (!file) return;
@@ -103,6 +102,7 @@ function importDataCSV(e) {
   reader.readAsText(file);
   e.target.value = '';
 }
+
 function setTransactionType(type) {
   currentSelectedType = type;
   const incomeTab = document.getElementById('tab-income');
@@ -133,7 +133,6 @@ function exportDataCSV() {
   document.body.appendChild(link); link.click(); document.body.removeChild(link);
   showToast("📥 CSV Spreadsheet Exported Successfully!");
 }
-
 function addTransaction(e) {
   e.preventDefault(); const valText = amount.value.trim();
   let catSel = (currentSelectedType === 'income') ? incomeCategory.value : expenseCategory.value;
@@ -144,14 +143,18 @@ function addTransaction(e) {
   
   let amtVal = parseFloat(valText); const labelVal = formDate.value.trim() !== '' ? formDate.value.trim() : catSel;
   
-  // AUTOMATED HYBRID PARSER: Extracts specific calendar month details smoothly for historical bucket groupings
+  // AUTOMATED HYBRID PARSER: Extracts month name strings seamlessly to create chronological ledger records
   let selectedDate = formTransactionDate.value;
   const dateParts = selectedDate.split('-');
-  const dateObj = new Date(dateParts[0], dateParts[1] - 1, dateParts[2]);
+  const yearNum = parseInt(dateParts[0], 10);
+  const monthNum = parseInt(dateParts[1], 10);
+  const dayNum = parseInt(dateParts[2], 10);
   
-  // Appends both the Month name string and execution year parameter to create absolute ironclad ledger records
+  if (isNaN(yearNum) || isNaN(monthNum) || isNaN(dayNum)) { showToast('Invalid date format. Submission aborted.', 'toast-danger'); return; }
+
+  const dateObj = new Date(yearNum, monthNum - 1, dayNum);
   const monthNameStr = dateObj.toLocaleString('default', { month: 'long' });
-  const finalLogBucket = (currentSelectedType === 'income' && catSel === 'Salary (Annually)') ? 'Full Year' : `${monthNameStr} ${dateParts[0]}`;
+  const finalLogBucket = (currentSelectedType === 'income' && catSel === 'Salary (Annually)') ? 'Full Year' : `${monthNameStr} ${yearNum}`;
   
   if (currentSelectedType === 'expense') amtVal = -amtVal;
   if (editId !== null) {
@@ -219,3 +222,12 @@ function resetAllData() {
 function toggleAccordion(headerElement) {
   const parentItem = headerElement.parentElement; const contentElement = parentItem.querySelector('.accordion-content'); const isActive = parentItem.classList.contains('active');
   document.querySelectorAll('.accordion-item').forEach(item => { item.classList.remove('active'); item.querySelector('.accordion-content').style.maxHeight = null; });
+  if (!isActive) { parentItem.classList.add('active'); contentElement.style.maxHeight = contentElement.scrollHeight + "px"; }
+}
+
+function init() { updateValues(); setTransactionType('income'); loadFinancialGoal(); incomeCategory.value = ""; expenseCategory.value = ""; }
+
+form.addEventListener('submit', addTransaction);
+document.getElementById('unload-session-btn').addEventListener('click', unloadCurrentSession);
+resetAllBtn.addEventListener('click', resetAllData);
+init();
