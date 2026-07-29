@@ -2,16 +2,16 @@
    SOPHISTICATED LIGHT SKY-BLUE FINTECH PALETTE CONSTANTS
    ========================================================================== */
 :root {
-  --bg-dark: #f0f7ff;               /* REPLACED DARK: Soft Light Sky-Blue Canvas Base */
-  --panel-dark: #ffffff;            /* Pure Crisp White Card Containers */
+  --bg-dark: #f0f7ff;               
+  --panel-dark: #ffffff;            
   --panel-glass: #ffffff;           
-  --border-glow: #cbd5e1;           /* Clean Slate Gray boundary wires */
-  --accent-blue: #3b82f6;           /* Premium Executive Royal Blue */
-  --accent-neon-green: #10b981;     /* Fresh Mint Emerald Income Green */
-  --accent-neon-red: #ef4444;       /* Classic Royal Ruby Expense Red */
-  --accent-yellow: #f59e0b;        /* Smooth Matte Amber Target Gold */
-  --text-main: #0f172a;             /* Deep Charcoal Slate for absolute 100% letter visibility */
-  --text-muted: #475569;            /* Soft Charcoal for clean sub-readings */
+  --border-glow: #cbd5e1;           
+  --accent-blue: #3b82f6;           
+  --accent-neon-green: #10b981;     
+  --accent-neon-red: #ef4444;       
+  --accent-yellow: #f59e0b;        
+  --text-main: #0f172a;             
+  --text-muted: #475569;            
 }
 
 /* ==========================================================================
@@ -20,7 +20,7 @@
 * { box-sizing: border-box; }
 
 html, body, .app-wrapper, .container {
-  background-color: #f0f7ff !important; /* FORCED NO BLACK OR DARK BACKGROUNDS */
+  background-color: #f0f7ff !important;
   background-image: 
     radial-gradient(at 50% 0%, #ffffff 0px, transparent 60%),
     linear-gradient(180deg, #f0f7ff 0%, #e0f2fe 100%) !important;
@@ -49,7 +49,7 @@ body {
 }
 
 /* ==========================================================================
-   APP HEADER & SOPHISTICATED LIGHT COMMMAND HOUSINGS
+   APP HEADER & GLOWING HUD PANELS
    ========================================================================== */
 .app-header { text-align: left; margin: 0; }
 .app-header h1 { font-size: 26px; letter-spacing: -0.5px; margin: 0; font-weight: 800; color: #0f172a !important; }
@@ -76,7 +76,7 @@ body {
 .velocity-glow { border-top: 4px solid var(--accent-neon-green) !important; }
 
 /* ==========================================================================
-   WORKSPACE CONTENT DECKS
+   WORKSPACE CONTROL DECKS
    ========================================================================== */
 .main-workspace-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; align-items: start; }
 .workspace-column { display: flex; flex-direction: column; gap: 16px; }
@@ -115,7 +115,6 @@ body {
 .plus { color: var(--accent-neon-green) !important; }
 .minus { color: var(--accent-neon-red) !important; }
 
-/* REBUILT BACKUP TOOLBAR: Perfectly integrated light steel layout arrays */
 .utility-toolbar { 
   background: #ffffff !important; border: 1px solid #cbd5e1 !important; padding: 14px 18px; border-radius: 14px; 
   display: flex; flex-wrap: wrap; gap: 16px; justify-content: space-between; align-items: center; margin-bottom: 0px !important;
@@ -127,7 +126,6 @@ body {
 .backup-button-group { display: flex !important; align-items: center !important; gap: 10px !important; }
 .backup-button-group .tooltip-wrapper { display: flex !important; align-items: center !important; }
 
-/* FIXED ALIGNMENTS: Symmetrical backup triggers matching down to the single pixel */
 .action-export-btn, .import-label-btn { 
   display: inline-flex !important; align-items: center !important; justify-content: center !important;
   background-color: #f1f5f9 !important; color: #334155 !important; border: 1px solid #cbd5e1 !important; 
@@ -142,7 +140,6 @@ body {
 .tooltip-box { visibility: hidden; width: 240px; background-color: #0f172a; color: #ffffff; text-align: left; border-radius: 8px; padding: 10px; position: absolute; z-index: 100; bottom: 125%; left: 50%; transform: translateX(-50%); opacity: 0; transition: opacity 0.3s; font-size: 12px; font-weight: 600; border: 1px solid #334155; line-height: 1.4; }
 .tooltip-wrapper:hover .tooltip-box { visibility: visible; opacity: 1; }
 
-/* FIXED ACTIVE LOG CHANNELS: Clean dark-ink text with multi-line auto wrapping */
 .list { list-style-type: none; padding: 0; margin: 0; display: block; width: 100%; }
 .list li { background: #ffffff !important; border: 1px solid #e2e8f0 !important; border-left: 5px solid #64748b !important; display: flex; justify-content: space-between; padding: 12px 18px; margin-top: 8px; border-radius: 8px; align-items: center; box-shadow: 0 5px 15px rgba(0,0,0,0.02); }
 .list li.plus { border-left-color: var(--accent-neon-green) !important; }
@@ -156,25 +153,20 @@ body {
 .delete-btn { background-color: rgba(239, 68, 68, 0.06) !important; color: var(--accent-neon-red) !important; border: 1px solid rgba(239, 68, 68, 0.15) !important; }
 .edit-btn { background-color: rgba(245, 158, 11, 0.06) !important; color: #d97706 !important; border: 1px solid rgba(245, 158, 11, 0.15) !important; }
 
-/* THE SOPHISTICATED LIGHT MODULE CARD Wrapper */
 .form-container { background: #ffffff !important; border: 1px solid #cbd5e1 !important; padding: 24px; border-radius: 16px; box-shadow: 0 10px 25px rgba(0, 0, 0, 0.04); }
 .form-sub-note { color: #64748b !important; font-size: 11.5px; font-weight: 600; margin-top: -5px; margin-bottom: 18px; display: block; }
 .form-control { margin-bottom: 14px; }
-
-/* HIGH-CONTRAST DATA LABELS: Forced dark ink text headings */
 .form-control label { display: block; margin-bottom: 6px; font-weight: 800; font-size: 12.5px; text-transform: uppercase; color: #334155 !important; letter-spacing: 0.5px; }
 
-/* EMBEDDED MATTE SLOT CONFIGURATIONS: Completely borderless inputs syncing flush into white backing */
-input, select { width: 100%; padding: 11px; background: #f8fafc !important; border: 1px solid #cbd5e1 !important; border-radius: 8px; font-size: 13.5px; font-weight: 600; color: #0f172a !important; outline: none; }
+/* AUTO WRAP DATE FIELD CONFIGURATION HOOKS */
+input, select { width: 100%; padding: 11px; background: #f8fafc !important; border: 1px solid #cbd5e1 !important; border-radius: 8px; font-size: 13.5px; font-weight: 600; color: #0f172a !important; outline: none; white-space: normal !important; }
 input:focus, select:focus { border-color: var(--accent-blue) !important; box-shadow: 0 0 10px rgba(59, 130, 246, 0.15); background: #ffffff !important; }
 
 select option { background: #ffffff !important; color: #0f172a !important; font-weight: 600; }
 
-/* REBUILT SELECTION INTERFACE TABS WITH SOPHISTICATED MINT & RUBY HUES */
 .type-selector { display: flex; gap: 12px; background: #f8fafc; padding: 4px; border-radius: 8px; border: 1px solid #cbd5e1; }
 .type-option { flex: 1; display: flex; align-items: center; justify-content: center; gap: 8px; padding: 11px; font-weight: 800; font-size: 12.5px; cursor: pointer; border-radius: 5px; background: #ffffff; color: #475569; border: 1px solid transparent !important; }
 
-/* Fully updated balanced tech accent colorings mapping tabs directly */
 .type-option.option-income { background-color: var(--accent-neon-green) !important; color: #ffffff !important; box-shadow: 0 4px 10px rgba(16,185,129,0.2) !important; }
 .type-option.option-expense { background-color: var(--accent-neon-red) !important; color: #ffffff !important; box-shadow: 0 4px 10px rgba(239,68,68,0.2) !important; }
 
@@ -190,7 +182,12 @@ select option { background: #ffffff !important; color: #0f172a !important; font-
 .btn-clear { background-color: #e2e8f0 !important; color: #334155 !important; font-weight: 700; border: 1px solid #cbd5e1 !important; }
 .btn-reset { background-color: rgba(239, 68, 68, 0.04) !important; color: var(--accent-neon-red) !important; border: 1px solid rgba(239, 68, 68, 0.2) !important; font-weight: 700; }
 
-/* THE INTERACTIVE RESOURCE DROPDOWNS: Clean Light Charcoal Headers with high-contrast text lines */
 .info-section { 
   background: #ffffff !important; border: 1px solid #cbd5e1 !important; padding: 20px; border-radius: 14px; margin-top: 5px !important; display: flex; flex-direction: column; gap: 10px; box-shadow: 0 10px 20px rgba(0, 0, 0, 0.02);
 }
+.resources-subtitle { margin: 0 0 4px 0 !important; font-size: 12.5px; color: var(--text-muted) !important; font-weight: 600; }
+
+/* FIXED HIGHLIGHT ACCORDIONS: Clean bright headers with pure dark ink titles */
+.accordion-item { background: #f8fafc !important; border: 1px solid #cbd5e1 !important; border-radius: 8px; overflow: hidden; margin-bottom: 8px !important; }
+.accordion-header { width: 100%; background: #f8fafc !important; border: none; padding: 14px 18px; display: flex; justify-content: space-between; align-items: center; color: var(--accent-blue) !important; font-size: 13.5px; font-weight: 800; cursor: pointer; text-align: left; }
+.accordion-header:hover { background-color: #f1f5f9 !important; }
