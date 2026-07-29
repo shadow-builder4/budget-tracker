@@ -101,7 +101,6 @@ function filterLedgerSearch() {
     item.style.display = item.textContent.toLowerCase().includes(query) ? 'flex' : 'none';
   });
 }
-
 function exportDataCSV() {
   if (!transactions.length) { showToast("Ledger is empty. Action aborted.", "toast-danger"); return; }
   let csv = "data:text/csv;charset=utf-8,Month,Label,Category,Amount (INR)\n";
@@ -135,7 +134,7 @@ function addTransaction(e) {
   if (editId !== null) {
     transactions = transactions.map(t => t.id === editId ? { id: editId, text: labelVal, amount: amtVal, rawCat: catSel, month: finalMonth } : t);
     editId = null; 
-    formHeading.innerText = "Add New Transaction";
+    formHeading.innerText = "Add New Entry";
     submitBtn.innerText = "Record Transaction"; 
     submitBtn.style.background = "#38bdf8"; 
     submitBtn.style.color = "#0f172a";
@@ -180,7 +179,7 @@ function editTransaction(id) {
 }
 
 function removeTransaction(id) {
-  if(editId === id) { editId = null; formHeading.innerText = "Add New Transaction"; submitBtn.innerText = "Record Transaction"; submitBtn.style.background = "#38bdf8"; amount.value = ''; formDate.value = ''; }
+  if(editId === id) { editId = null; formHeading.innerText = "Add New Entry"; submitBtn.innerText = "Record Transaction"; submitBtn.style.background = "#38bdf8"; amount.value = ''; formDate.value = ''; }
   transactions = transactions.filter(t => t.id !== id); 
   localStorage.setItem('transactions', JSON.stringify(transactions)); 
   init();
@@ -242,7 +241,7 @@ function updateValues() {
     advice += "Your fixed <strong>Needs</strong> take up " + nPct + "% of your tracking. Consider audit reviews for subscription leaks or grocery waste. ";
   }
   if (wPct > 30) {
-    advice += "Lifestyle choices (<strong>Wants</strong>) are taking up " + wPct + "%. If you are working towards a major financial milestone, trimming temporary lifestyle lifestyle leaks is the fastest way to get there. ";
+    advice += "Lifestyle choices (<strong>Wants</strong>) are taking up " + wPct + "%. If you are working towards a major financial milestone, trimming temporary lifestyle leaks is the fastest way to get there. ";
   }
   if (sPct >= 35) {
     advice += "Exceptional wealth velocity! Saving " + sPct + "% places you significantly ahead of standard economic baselines. Keep this momentum going! ";
@@ -270,7 +269,7 @@ function resetAllData() {
     const goalInput = document.getElementById('goal-input');
     if (goalInput) goalInput.value = '';
     editId = null;
-    formHeading.innerText = "Add New Transaction";
+    formHeading.innerText = "Add New Entry";
     submitBtn.innerText = "Record Transaction";
     submitBtn.style.background = "#38bdf8";
     amount.value = '';
