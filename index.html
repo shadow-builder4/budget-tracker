@@ -10,9 +10,12 @@
   <link href="https://googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
+  <!-- DYNAMIC TOAST ALERT POPUP BOX -->
+  <div id="toast-container" class="toast-container"></div>
+
   <div class="container">
     <header class="app-header">
-      <h1>SMART WALLET TRACKER <span class="premium-badge">PRO v3.2</span></h1>
+      <h1>SMART WALLET TRACKER <span class="premium-badge">PRO v3.4</span></h1>
       <p class="subtitle">Your Advanced Personal Finance Dashboard</p>
     </header>
     
@@ -96,7 +99,6 @@
       <p class="form-sub-note">Fields marked with <span class="required">*</span> are mandatory.</p>
       
       <form id="form">
-        <!-- STEP 1: TRANSACTION TYPE -->
         <div class="form-control">
           <label>Transaction Type <span class="required">*</span></label>
           <div class="type-selector">
@@ -105,7 +107,6 @@
           </div>
         </div>
 
-        <!-- STEP 2: CATEGORY SELECTION -->
         <div class="form-control" id="income-group">
           <label for="income-category">Income Source <span class="required">*</span></label>
           <select id="income-category" onchange="checkAnnualIncomeMode()">
@@ -132,7 +133,6 @@
           </select>
         </div>
 
-        <!-- STEP 3: DYNAMIC MONTH PICKER (Hidden on Annual Selection) -->
         <div class="form-control" id="month-selection-group">
           <label for="form-month">Select Month <span class="required">*</span></label>
           <select id="form-month">
@@ -140,7 +140,6 @@
           </select>
         </div>
 
-        <!-- STEP 4: LABELS & VALUES -->
         <div class="form-control">
           <label for="form-date">Transaction Note / Label (Optional)</label>
           <input type="text" id="form-date" placeholder="e.g., Office Salary, Groceries, Rent, Uber">
