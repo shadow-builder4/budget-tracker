@@ -29,7 +29,6 @@ let transactions = JSON.parse(localStorage.getItem('transactions')) || [];
 let editId = null;
 let currentSelectedType = 'income';
 
-// Fixed typo: Added comma between May and June so the app doesn't crash
 const monthsArray = ["January","February","March","April","May","June","July","August","September","October","November","December"];
 formMonth.value = monthsArray[new Date().getMonth()];
 
@@ -41,6 +40,19 @@ function showToast(message, classType = 'toast-success') {
   toast.innerText = message;
   container.appendChild(toast);
   setTimeout(() => { toast.remove(); }, 2500);
+}
+
+function saveFinancialGoal() {
+  const goalInput = document.getElementById('goal-input');
+  if (goalInput) {
+    localStorage.setItem('financialGoalText', goalInput.value);
+  }
+}
+
+function loadFinancialGoal() {
+  const goalInput = document.getElementById('goal-input');
+  const storedGoal = localStorage.getItem('financialGoalText') || '';
+  if (goalInput) goalInput.value = storedGoal;
 }
 
 function checkAnnualIncomeMode() {
@@ -137,6 +149,7 @@ function addTransaction(e) {
   amount.value = ''; 
   formDate.value = '';
 }
+
 function addTransactionDOM(t) {
   const sign = t.amount < 0 ? '-' : '+';
   const item = document.createElement('li');
@@ -151,7 +164,6 @@ function editTransaction(id) {
   amount.value = Math.abs(target.amount).toFixed(2); 
   formDate.value = target.text; 
   if (target.month !== 'Full Year') formMonth.value = target.month;
-  
   if (target.amount >= 0) {
     setTransactionType('income');
     incomeCategory.value = target.rawCat || 'Salary (Monthly)';
@@ -178,7 +190,6 @@ function removeTransaction(id) {
 function updateValues() {
   const expense = transactions.filter(t => t.amount < 0).reduce((acc, t) => acc + Math.abs(t.amount), 0);
   let income = transactions.filter(t => t.amount > 0 && t.rawCat !== "Salary (Annually)").reduce((acc, t) => acc + t.amount, 0);
-  
   transactions.forEach(t => { 
     if(t.amount > 0 && t.rawCat === "Salary (Annually)") income += (t.amount / 12); 
   });
@@ -215,24 +226,32 @@ function updateValues() {
   const wPct = totalExp > 0 ? Math.round((wVal / totalExp) * 100) : 0;
   const sPct = totalExp > 0 ? Math.round((sVal / totalExp) * 100) : 0;
 
-  labelNeeds.innerText = `${nPct}%`;
-  labelWants.innerText = `${wPct}%`;
-  labelSavings.innerText = `${sPct}%`;
-  barNeeds.style.width = `${Math.min(nPct, 100)}%`;
-  barWants.style.width = `${Math.min(wPct, 100)}%`;
-  barSavings.style.width = `${Math.min(sPct, 100)}%`;
+  labelNeeds.innerText = `${nPct}%`; labelWants.innerText = `${wPct}%`; labelSavings.innerText = `${sPct}%`;
+  barNeeds.style.width = `${Math.min(nPct, 100)}%`; barWants.style.width = `${Math.min(wPct, 100)}%`; barSavings.style.width = `${Math.min(sPct, 100)}%`;
 
   if (transactions.length === 0) {
     advisor.className = "advisor-box";
-    advisor.innerHTML = "Start adding transactions to receive automated financial budget feedback.";
+    advisor.innerHTML = "Start recording transactions to receive personalized budget feedback tailored to your life situation.";
     return;
   }
 
-  let advice = "💡 <strong>Budget Analysis:</strong> ";
-  if (nPct > 50) advice += "Your <strong>Needs</strong> exceed 50%. Optimize utilities or rent rules. ";
-  if (wPct > 30) advice += "Your <strong>Wants</strong> spending is high at " + wPct + "%. Prune lifestyle leaks. ";
-  if (sPct < 20 && totalExp > 0) advice += "Investment velocity is under 20%. Automate transfers early. ";
-  if (nPct <= 50 && wPct <= 30 && sPct >= 20) advice += "Excellent allocations matching the 50/30/20 framework!";
+  let advice = "💡 <strong>Personalized Analysis:</strong> ";
+  if (nPct > 50 && wPct <= 25) {
+    advice += "Your <strong>Needs</strong> are high at " + nPct + "%. Because your lifestyle spending (Wants) is highly disciplined, this indicates structural fixed costs (like city rent or utilities). Keep Wants low to protect your savings pool. ";
+  } else if (nPct > 50) {
+    advice += "Your fixed <strong>Needs</strong> take up " + nPct + "% of your tracking. Consider audit reviews for subscription leaks or grocery waste. ";
+  }
+  if (wPct > 30) {
+    advice += "Lifestyle choices (<strong>Wants</strong>) are taking up " + wPct + "%. If you are working towards a major financial milestone, trimming temporary lifestyle lifestyle leaks is the fastest way to get there. ";
+  }
+  if (sPct >= 35) {
+    advice += "Exceptional wealth velocity! Saving " + sPct + "% places you significantly ahead of standard economic baselines. Keep this momentum going! ";
+  } else if (sPct < 20 && totalExp > 0) {
+    advice += "Your wealth accumulation rate is currently " + sPct + "%. If your cash flow permits, try automating your investment transfers right at the beginning of the month. ";
+  }
+  if (nPct <= 50 && wPct <= 30 && sPct >= 20) {
+    advice += "Your spending distribution cleanly balances living essentials, lifestyle freedom, and wealth generation.";
+  }
   advisor.innerHTML = advice;
 }
 
@@ -247,6 +266,9 @@ function resetAllData() {
   if (confirm("Are you absolutely sure you want to delete all transaction data? This action cannot be undone.")) {
     transactions = [];
     localStorage.removeItem('transactions');
+    localStorage.removeItem('financialGoalText');
+    const goalInput = document.getElementById('goal-input');
+    if (goalInput) goalInput.value = '';
     editId = null;
     formHeading.innerText = "Add New Transaction";
     submitBtn.innerText = "Record Transaction";
@@ -261,6 +283,7 @@ function resetAllData() {
 function init() {
   updateValues();
   setTransactionType('income');
+  loadFinancialGoal();
 }
 
 form.addEventListener('submit', addTransaction);
