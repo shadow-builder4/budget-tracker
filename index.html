@@ -16,7 +16,7 @@
   <div class="container">
     <!-- TIED GROUP 1: THE APPLICATION HEADER & MAIN STATUS SUMMARY -->
     <header class="app-header">
-      <h1>SMART WALLET TRACKER <span class="premium-badge">PRO v4.0</span></h1>
+      <h1>SMART WALLET TRACKER <span class="premium-badge">PRO v4.1</span></h1>
       <p class="subtitle">Your Advanced Personal Finance Dashboard</p>
     </header>
     
@@ -43,13 +43,12 @@
         </div>
       </div>
     </div>
-
     <!-- MAIN CONTROL HEADINGS AND INPUT ELEMENTS -->
     <h3 class="section-main-title">📥 RECORD NEW TRANSACTION</h3>
 
     <!-- TIED GROUP 2: DYNAMIC ACTIVE ENTRY FORMS -->
     <div class="form-container">
-      <h3 id="form-heading" style="margin-top: 0; font-size: 20px; text-transform: uppercase; color: #fff;">Add New Transaction</h3>
+      <h3 id="form-heading" style="margin-top: 0; font-size: 20px; text-transform: uppercase; color: #fff;">Add New Entry</h3>
       <p class="form-sub-note">Fields marked with <span class="required">*</span> are mandatory.</p>
       
       <form id="form">
@@ -66,9 +65,9 @@
           <select id="income-category" onchange="checkAnnualIncomeMode()">
             <option value="Salary (Monthly)">Salary Payout (Monthly)</option>
             <option value="Salary (Annually)">Salary Payout (Annually)</option>
-            <option value="Freelance / Side Business">Freelance / Side Business</option>
-            <option value="Investment Returns">Investment Returns</option>
-            <option value="Other Inbound Money">Other Inbound Money</option>
+            <option value="Freelance / Side Business">Freelance / Side Business (Monthly)</option>
+            <option value="Investment Returns">Investment Returns (Monthly)</option>
+            <option value="Other Inbound Money">Other Inbound Money (Monthly)</option>
           </select>
         </div>
 
@@ -136,7 +135,6 @@
     </div>
 
     <div class="dashboard-chart">
-      <!-- FIXED SECTION ALLOCATION PANEL TITLE FOR VISUAL CLARITY -->
       <div class="chart-title">Metrics Framework Allocation</div>
       <div class="chart-row">
         <div class="chart-label">
@@ -177,10 +175,11 @@
 
     <div class="utility-toolbar">
       <input type="text" id="search-bar" placeholder="🔍 Search through history ledger entries..." onkeyup="filterLedgerSearch()">
-      <button type="button" class="action-export-btn" onclick="exportDataCSV()">📥 Export Excel Report</button>
-      <p style="width: 100%; margin: 10px 0 0 0; font-size: 13px; color: var(--text-muted); text-align: left; line-height: 1.4;">
-        ℹ️ <strong>What is the Export button for?</strong> Click this button to save a copy of your transaction history as a spreadsheet file on your mobile phone or computer.
-      </p>
+      
+      <div class="tooltip-wrapper">
+        <button type="button" class="action-export-btn" onclick="exportDataCSV()">📥 Export Excel Report</button>
+        <span class="tooltip-box">ℹ️ Click to save a copy of your transaction history as a spreadsheet (.csv) file directly on your local device.</span>
+      </div>
     </div>
 
     <ul id="list" class="list"></ul>
