@@ -20,7 +20,7 @@
 * { box-sizing: border-box; }
 
 html, body, .app-wrapper, .container {
-  background-color: #f0f7ff !important;
+  background-color: #f0f7ff !important; 
   background-image: 
     radial-gradient(at 50% 0%, #ffffff 0px, transparent 60%),
     linear-gradient(180deg, #f0f7ff 0%, #e0f2fe 100%) !important;
@@ -49,7 +49,7 @@ body {
 }
 
 /* ==========================================================================
-   APP HEADER & GLOWING HUD PANELS
+   APP HEADER & SOPHISTICATED LIGHT MODULE HUBS
    ========================================================================== */
 .app-header { text-align: left; margin: 0; }
 .app-header h1 { font-size: 26px; letter-spacing: -0.5px; margin: 0; font-weight: 800; color: #0f172a !important; }
@@ -76,19 +76,30 @@ body {
 .velocity-glow { border-top: 4px solid var(--accent-neon-green) !important; }
 
 /* ==========================================================================
-   WORKSPACE CONTROL DECKS
+   WORKSPACE CONTENT DECKS
    ========================================================================== */
 .main-workspace-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; align-items: start; }
 .workspace-column { display: flex; flex-direction: column; gap: 16px; }
 
 .advisor-box { background: rgba(59, 130, 246, 0.04) !important; border: 1px solid #cbd5e1 !important; border-left: 5px solid var(--accent-blue) !important; padding: 14px; border-radius: 8px; font-weight: 600; font-size: 13.5px; color: #334155 !important; }
 
+/* ==========================================================================
+   FIXED: ACTIVE MILESTONE SMART TRUNCATION DECK SYSTEM
+   ========================================================================== */
 .goal-tracker-card { background: #ffffff !important; border: 1px solid var(--accent-yellow) !important; padding: 16px; border-radius: 12px; box-shadow: 0 10px 20px rgba(0, 0, 0, 0.04); }
 .goal-header-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
 .goal-badge { font-size: 10px; font-weight: 800; letter-spacing: 1px; color: #ffffff !important; background: var(--accent-yellow) !important; padding: 2px 8px; border-radius: 4px; }
 .goal-status-text { font-size: 11px; color: var(--text-muted) !important; font-weight: 700; }
-.goal-tracker-card input { width: 100%; background: #f8fafc !important; border: 1px solid #cbd5e1 !important; padding: 12px 14px; font-size: 14px; font-weight: 600; color: #0f172a !important; border-radius: 8px; outline: none; white-space: normal !important; overflow: visible !important; }
-.goal-tracker-card input::placeholder { color: #94a3b8 !important; }
+
+/* Milestone smart truncation handler loops */
+.goal-tracker-card input { 
+  width: 100%; background: #f8fafc !important; border: 1px solid #cbd5e1 !important; padding: 12px 14px; font-size: 14px; font-weight: 600; color: #0f172a !important; border-radius: 8px; outline: none; transition: all 0.25s ease;
+  white-space: nowrap !important; overflow: hidden !important; text-overflow: ellipsis !important; /* Forces ... on long titles */
+}
+/* Automatically expands sentence cleanly when clicking inside to type / modify values */
+.goal-tracker-card input:focus { 
+  text-overflow: clip !important; white-space: normal !important; overflow: visible !important; border-color: var(--accent-yellow) !important; box-shadow: 0 0 10px rgba(245, 158, 11, 0.15); background: #ffffff !important;
+}
 .dashboard-chart { background: #ffffff !important; border: 1px solid #e2e8f0 !important; padding: 20px; border-radius: 14px; box-shadow: 0 10px 20px rgba(0, 0, 0, 0.04); }
 .chart-title { font-size: 12px; font-weight: 800; text-transform: uppercase; margin-bottom: 16px; border-bottom: 1px solid #e2e8f0; padding-bottom: 8px; color: var(--accent-blue) !important; letter-spacing: 1px; }
 .chart-row { margin-bottom: 12px; }
@@ -120,7 +131,7 @@ body {
   display: flex; flex-wrap: wrap; gap: 16px; justify-content: space-between; align-items: center; margin-bottom: 0px !important;
   box-shadow: 0 10px 25px rgba(0,0,0,0.03);
 }
-.utility-toolbar input { flex: 1; min-width: 240px; background: #f8fafc !important; border: 1px solid #cbd5e1 !important; padding: 11px 14px; font-size: 14px; font-weight: 600; color: #0f172a !important; border-radius: 6px; outline: none; white-space: normal !important; overflow: visible !important; text-overflow: clip !important; }
+.utility-toolbar input { flex: 1; min-width: 240px; background: #f8fafc !important; border: 1px solid #cbd5e1 !important; padding: 11px 14px; font-size: 14px; font-weight: 600; color: #0f172a !important; border-radius: 6px; outline: none; }
 .utility-toolbar input::placeholder { color: #94a3b8 !important; }
 
 .backup-button-group { display: flex !important; align-items: center !important; gap: 10px !important; }
@@ -144,7 +155,7 @@ body {
 .list li { background: #ffffff !important; border: 1px solid #e2e8f0 !important; border-left: 5px solid #64748b !important; display: flex; justify-content: space-between; padding: 12px 18px; margin-top: 8px; border-radius: 8px; align-items: center; box-shadow: 0 5px 15px rgba(0,0,0,0.02); }
 .list li.plus { border-left-color: var(--accent-neon-green) !important; }
 .list li.minus { border-left-color: var(--accent-neon-red) !important; }
-.list li strong { font-size: 14.5px; font-weight: 700; color: #0f172a !important; display: inline-block; white-space: normal !important; overflow: visible !important; text-overflow: clip !important; }
+.list li strong { font-size: 14.5px; font-weight: 700; color: #0f172a !important; display: inline-block; white-space: normal !important; overflow: visible !important; text-overflow: clip !important; max-width: 100% !important; }
 .list li small { font-size: 12px; color: #64748b !important; font-weight: 600; }
 .action-group { display: flex; gap: 8px; }
 .list li span { font-weight: 800; font-size: 15px; margin-right: 10px; color: #0f172a !important; }
@@ -158,8 +169,7 @@ body {
 .form-control { margin-bottom: 14px; }
 .form-control label { display: block; margin-bottom: 6px; font-weight: 800; font-size: 12.5px; text-transform: uppercase; color: #334155 !important; letter-spacing: 0.5px; }
 
-/* AUTO WRAP DATE FIELD CONFIGURATION HOOKS */
-input, select { width: 100%; padding: 11px; background: #f8fafc !important; border: 1px solid #cbd5e1 !important; border-radius: 8px; font-size: 13.5px; font-weight: 600; color: #0f172a !important; outline: none; white-space: normal !important; }
+input, select { width: 100%; padding: 11px; background: #f8fafc !important; border: 1px solid #cbd5e1 !important; border-radius: 8px; font-size: 13.5px; font-weight: 600; color: #0f172a !important; outline: none; }
 input:focus, select:focus { border-color: var(--accent-blue) !important; box-shadow: 0 0 10px rgba(59, 130, 246, 0.15); background: #ffffff !important; }
 
 select option { background: #ffffff !important; color: #0f172a !important; font-weight: 600; }
@@ -187,7 +197,8 @@ select option { background: #ffffff !important; color: #0f172a !important; font-
 }
 .resources-subtitle { margin: 0 0 4px 0 !important; font-size: 12.5px; color: var(--text-muted) !important; font-weight: 600; }
 
-/* FIXED HIGHLIGHT ACCORDIONS: Clean bright headers with pure dark ink titles */
 .accordion-item { background: #f8fafc !important; border: 1px solid #cbd5e1 !important; border-radius: 8px; overflow: hidden; margin-bottom: 8px !important; }
-.accordion-header { width: 100%; background: #f8fafc !important; border: none; padding: 14px 18px; display: flex; justify-content: space-between; align-items: center; color: var(--accent-blue) !important; font-size: 13.5px; font-weight: 800; cursor: pointer; text-align: left; }
+.accordion-header { width: 100%; background: #f8fafc !important; border: none; padding: 14px 18px; display: flex; justify-content: space-between; align-items: center; color: var(--accent-blue) !important; font-size: 13.5px; font-weight: 700; cursor: pointer; text-align: left; }
 .accordion-header:hover { background-color: #f1f5f9 !important; }
+.accordion-arrow { font-size: 9px; color: var(--accent-blue) !important; }
+.accordion-content { max-height: 0; overflow: hidden; transition: max-height 0.3s cubic-bezier(0.4, 0, 0.2, 1); background-color: #ffffff; }
