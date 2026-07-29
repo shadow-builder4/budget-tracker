@@ -11,8 +11,8 @@
   --accent-neon-green: #39ff14;    
   --accent-neon-red: #ff007f;      
   --accent-yellow: #ffb800;        
-  --text-main: #ffffff;             /* Crisp pure white for elite tiny text visibility */
-  --text-muted: #94a3b8;            /* Bright slate gray for compact readability */
+  --text-main: #ffffff;             
+  --text-muted: #94a3b8;            
 }
 
 /* ==========================================================================
@@ -43,13 +43,12 @@ body {
   margin: 0 auto; 
   display: flex; 
   flex-direction: column; 
-  gap: 20px; /* Highly compressed structural grid spacing */
+  gap: 20px; 
 }
 
-/* MICRO SECTION HEADING SPECIFICATION MATRICES */
 .section-main-title {
   margin: 5px 0 0 0 !important; 
-  font-size: 12.5px !important; /* Completely scaled down header layout sizes */
+  font-size: 12.5px !important; 
   font-weight: 800 !important; 
   letter-spacing: 2px; 
   text-transform: uppercase !important; 
@@ -130,7 +129,7 @@ body {
 .bar-fill { height: 100%; width: 0%; transition: width 0.8s ease; }
 .bar-needs { background: var(--accent-blue); }
 .bar-wants { background: var(--accent-yellow); }
-.bar-savings { background: var(--accent-neon Green); }
+.bar-savings { background: var(--accent-neon-green); }
 
 .inc-exp-container { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
 .flow-card { background: rgba(18, 24, 41, 0.2); border: 1px solid rgba(255, 255, 255, 0.02); padding: 14px; border-radius: 12px; text-align: center; }
@@ -141,11 +140,11 @@ body {
 .plus { color: var(--accent-neon-green); }
 .minus { color: var(--accent-neon-red); }
 
-/* COMPRESSED COMPACT TOOLBAR PREVENTING LARGE DEAD SPACES */
+/* FIXED HIGHLIGHT AREA: APPLIED DISTINCT BLUE GLOW BOX EMBED TO BACKUP ZONE LAYER */
 .utility-toolbar { 
-  background: linear-gradient(135deg, rgba(0, 240, 255, 0.01), rgba(11, 15, 29, 0.95)); 
-  border: 1px solid rgba(0, 240, 255, 0.2); 
-  padding: 12px 16px; 
+  background: linear-gradient(135deg, rgba(0, 240, 255, 0.04), rgba(11, 15, 29, 0.98)) !important; 
+  border: 1px solid rgba(0, 240, 255, 0.25) !important; /* Cyberpunk sharp accent boundaries */
+  padding: 14px 18px; 
   border-radius: 12px; 
   display: flex; 
   flex-wrap: wrap; 
@@ -153,9 +152,17 @@ body {
   justify-content: space-between; 
   align-items: center; 
   margin-bottom: 0px !important;
+  box-shadow: inset 0 0 20px rgba(0, 240, 255, 0.05);
 }
-.utility-toolbar input { flex: 1; min-width: 240px; background: #040711; border: 1px solid rgba(255, 255, 255, 0.06); padding: 10px 14px; font-size: 13px; font-weight: 600; color: #fff; border-radius: 6px; outline: none; }
-.utility-toolbar input:focus { border-color: var(--accent-blue); }
+
+/* FIXED VISIBILITY: DYNAMIC TEXT TRUNCATION CONTROLLER REVEALS FULL TERMS ON MOUSE HOVER */
+.utility-toolbar input { 
+  flex: 1; min-width: 240px; background: #040711; border: 1px solid rgba(255, 255, 255, 0.08); padding: 10px 14px; font-size: 13px; font-weight: 600; color: #fff; border-radius: 6px; outline: none;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis; transition: all 0.25s ease-in-out;
+}
+.utility-toolbar input:hover, .utility-toolbar input:focus { 
+  text-overflow: clip; white-space: normal; background: #080d22; border-color: var(--accent-blue);
+}
 .utility-toolbar input::placeholder { color: #334155; }
 
 .backup-button-group { display: flex; gap: 10px; }
@@ -169,7 +176,12 @@ body {
 
 .list { list-style-type: none; padding: 0; margin: 0; display: block; width: 100%; }
 .list li { background: var(--panel-glass); border: 1px solid rgba(255, 255, 255, 0.03); border-left: 3px solid #334155; display: flex; justify-content: space-between; padding: 12px 18px; margin-top: 8px; border-radius: 8px; align-items: center; }
-.list li strong { font-size: 13.5px; font-weight: 700; color: #fff; }
+
+/* HOVER EFFECT REVEALS EXPANDED LEDGER NOTE DESCRIPTIONS */
+.list li strong { 
+  font-size: 13.5px; font-weight: 700; color: #fff; max-width: 180px; display: inline-block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; transition: all 0.2s ease;
+}
+.list li:hover strong { white-space: normal; overflow: visible; max-width: 100%; color: var(--accent-blue); }
 .list li small { font-size: 11.5px; color: #94a3b8; font-weight: 600; }
 .action-group { display: flex; gap: 8px; }
 .list li span { font-weight: 800; font-size: 14px; margin-right: 10px; }
@@ -227,4 +239,3 @@ input:focus, select:focus { border-color: var(--accent-blue); }
 
 @media (max-width: 1024px) { .main-workspace-grid, .top-hud-grid { grid-template-columns: 1fr; gap: 20px; } }
 @media (max-width: 768px) { .backup-button-group { width: 100%; } .backup-button-group .tooltip-wrapper, .backup-button-group .action-export-btn { width: 100%; } }
-@media (max-width: 600px) { .container { padding: 15px; gap: 15px; } .pro-metrics-grid, .inc-exp-container, .button-group { grid-template-columns: 1fr; width: 100%; } .list li { flex-direction: column; align-items: flex-start; gap: 8px; } .action-group { width: 100%; justify-content: space-between; } }
