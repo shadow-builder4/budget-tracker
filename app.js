@@ -340,3 +340,18 @@ clearLedgerBtn.addEventListener('click', clearLedger);
 resetAllBtn.addEventListener('click', resetAllData);
 
 init();
+function toggleAccordion(headerElement) {
+  const parentItem = headerElement.parentElement;
+  const contentElement = parentItem.querySelector('.accordion-content');
+  const isActive = parentItem.classList.contains('active');
+  
+  document.querySelectorAll('.accordion-item').forEach(item => {
+    item.classList.remove('active');
+    item.querySelector('.accordion-content').style.maxHeight = null;
+  });
+
+  if (!isActive) {
+    parentItem.classList.add('active');
+    contentElement.style.maxHeight = contentElement.scrollHeight + "px";
+  }
+}
