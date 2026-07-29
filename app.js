@@ -143,7 +143,6 @@ function addTransaction(e) {
   
   let amtVal = parseFloat(valText); const labelVal = formDate.value.trim() !== '' ? formDate.value.trim() : catSel;
   
-  // AUTOMATED HYBRID PARSER: Extracts month name strings seamlessly to create chronological ledger records
   let selectedDate = formTransactionDate.value;
   const dateParts = selectedDate.split('-');
   const yearNum = parseInt(dateParts[0], 10);
@@ -210,12 +209,19 @@ function updateValues() {
   advisor.innerHTML = advice;
 }
 
-function unloadCurrentSession() { transactions = []; list.innerHTML = ''; updateValues(); showToast("🧹 Current Session Unloaded Safely", "toast-warning"); }
+/* FIXED CALENDAR RESET FLUSH PIPELINE ROUTINE VARIABLES */
+function unloadCurrentSession() { 
+  transactions = []; list.innerHTML = ''; updateValues(); 
+  if (formTransactionDate) formTransactionDate.value = new Date().toISOString().split('T')[0];
+  showToast("🧹 Current Session Unloaded Safely", "toast-warning"); 
+}
 
 function resetAllData() {
   if (confirm("Are you absolutely sure you want to delete all transaction data? This action cannot be undone.")) {
     transactions = []; localStorage.clear(); const goalInput = document.getElementById('goal-input'); if (goalInput) goalInput.value = '';
-    editId = null; submitBtn.innerText = "Record Transaction"; amount.value = ''; formDate.value = ''; init(); showToast("⚠️ Local Database Erased Completely!", "toast-danger");
+    editId = null; submitBtn.innerText = "Record Transaction"; amount.value = ''; formDate.value = ''; 
+    if (formTransactionDate) formTransactionDate.value = new Date().toISOString().split('T')[0];
+    init(); showToast("⚠️ Local Database Erased Completely!", "toast-danger");
   }
 }
 
