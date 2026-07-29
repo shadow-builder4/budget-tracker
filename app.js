@@ -29,14 +29,38 @@ let editId = null;
 const monthsArray = ["January","February","March","April","May","June","July","August","September","October","November","December"];
 formMonth.value = monthsArray[new Date().getMonth()];
 
+// 🔥 INSTANT VISUAL TABS HIGHLIGHTER LOGIC ENGINE
 function toggleDropdowns() {
   const mode = document.querySelector('input[name="txType"]:checked').value;
+  const incomeTab = document.querySelector('.option-income');
+  const expenseTab = document.querySelector('.option-expense');
+  
   if (mode === 'income') {
     incomeGroup.style.display = 'block';
     expenseGroup.style.display = 'none';
+    
+    // Force direct Neon Green highlighting onto the Income card tab
+    incomeTab.style.background = 'rgba(6, 214, 160, 0.15)';
+    incomeTab.style.border = '1px solid #06d6a0';
+    incomeTab.style.boxShadow = '0 0 15px rgba(6, 214, 160, 0.3)';
+    
+    // Clear out Expense card styles completely
+    expenseTab.style.background = '#0b1329';
+    expenseTab.style.border = '1px solid #3a506b';
+    expenseTab.style.boxShadow = 'none';
   } else {
     incomeGroup.style.display = 'none';
     expenseGroup.style.display = 'block';
+    
+    // Force direct Neon Red highlighting onto the Expense card tab
+    expenseTab.style.background = 'rgba(255, 90, 95, 0.15)';
+    expenseTab.style.border = '1px solid #ff5a5f';
+    expenseTab.style.boxShadow = '0 0 15px rgba(255, 90, 95, 0.3)';
+    
+    // Clear out Income card styles completely
+    incomeTab.style.background = '#0b1329';
+    incomeTab.style.border = '1px solid #3a506b';
+    incomeTab.style.boxShadow = 'none';
   }
 }
 
@@ -182,15 +206,3 @@ function updateValues() {
   } else {
     const ratio = (expense / income) * 100;
     advisor.className = ratio > 70 ? "advisor-box advisor-warning" : "advisor-box advisor-good";
-    advisor.innerText = ratio > 70 ? `⚠️ High Spending Alert: You have spent ${ratio.toFixed(1)}% of your earnings. Restrain your discretionary expenses.` : `🌱 Healthy Budget: Your spending profile is stable (${ratio.toFixed(1)}% of income used).`;
-  }
-}
-
-function clearCurrentLedger() { if(confirm("Clear the visible list? Your underlying data settings remain safe.")) { transactions = []; localStorage.setItem('transactions', JSON.stringify(transactions)); init(); } }
-function clearAllData() { if(confirm("Completely delete all memory data history from this browser?")) { localStorage.clear(); location.reload(); } }
-
-function init() { updateValues(); }
-form.addEventListener('submit', addTransaction);
-clearLedgerBtn.addEventListener('click', clearCurrentLedger);
-resetAllBtn.addEventListener('click', clearAllData);
-init();
