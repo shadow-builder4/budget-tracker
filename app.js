@@ -8,6 +8,7 @@ const advisor = document.getElementById('advisor');
 const formHeading = document.getElementById('form-heading');
 const submitBtn = document.getElementById('submit-btn');
 const formMonth = document.getElementById('form-month');
+const monthSelectionGroup = document.getElementById('month-selection-group');
 const formDate = document.getElementById('form-date');
 const incomeGroup = document.getElementById('income-group');
 const expenseGroup = document.getElementById('expense-group');
@@ -30,6 +31,17 @@ let currentSelectedType = 'income';
 
 const monthsArray = ["January","February","March","April","May","June","July","August","September","October","November","December"];
 formMonth.value = monthsArray[new Date().getMonth()];
+
+// Automatically configures UI based on Annual vs Monthly categories chosen
+function checkAnnualIncomeMode() {
+  if (currentSelectedType === 'income' && incomeCategory.value === 'Salary (Annually)') {
+    monthSelectionGroup.style.opacity = '0.5';
+    monthSelectionGroup.style.pointerEvents = 'none';
+  } else {
+    monthSelectionGroup.style.opacity = '1';
+    monthSelectionGroup.style.pointerEvents = 'auto';
+  }
+}
 
 function setTransactionType(type) {
   currentSelectedType = type;
@@ -59,6 +71,7 @@ function setTransactionType(type) {
     incomeTab.style.border = '1px solid #3a506b';
     incomeTab.style.boxShadow = 'none';
   }
+  checkAnnualIncomeMode();
 }
 
 function handleFormToggleDirect(type) {
@@ -97,18 +110,21 @@ function addTransaction(e) {
   let amtVal = parseFloat(valText);
   let catSel = (currentSelectedType === 'income') ? incomeCategory.value : expenseCategory.value;
   const labelVal = formDate.value.trim() !== '' ? formDate.value.trim() : catSel;
+  
+  // Set month to 'Full Year' automatically if it's an annual tracking payout
+  let finalMonth = (currentSelectedType === 'income' && catSel === 'Salary (Annually)') ? 'Full Year' : formMonth.value;
 
   if (currentSelectedType === 'expense') amtVal = -amtVal;
   
   if (editId !== null) {
-    transactions = transactions.map(t => t.id === editId ? { id: editId, text: labelVal, amount: amtVal, rawCat: catSel, month: formMonth.value } : t);
+    transactions = transactions.map(t => t.id === editId ? { id: editId, text: labelVal, amount: amtVal, rawCat: catSel, month: finalMonth } : t);
     editId = null; 
     formHeading.innerText = "Add New Transaction";
     submitBtn.innerText = "Record Transaction"; 
     submitBtn.style.background = "#38bdf8"; 
     submitBtn.style.color = "#0f172a";
   } else {
-    transactions.push({ id: Math.floor(Math.random() * 100000000), text: labelVal, amount: amtVal, rawCat: catSel, month: formMonth.value });
+    transactions.push({ id: Math.floor(Math.random() * 100000000), text: labelVal, amount: amtVal, rawCat: catSel, month: finalMonth });
   }
   localStorage.setItem('transactions', JSON.stringify(transactions)); 
   init();
@@ -129,7 +145,10 @@ function editTransaction(id) {
   editId = id; 
   amount.value = Math.abs(target.amount).toFixed(2); 
   formDate.value = target.text; 
-  formMonth.value = target.month;
+  
+  if (target.month !== 'Full Year') {
+    formMonth.value = target.month;
+  }
   
   if (target.amount >= 0) {
     setTransactionType('income');
@@ -143,6 +162,7 @@ function editTransaction(id) {
   submitBtn.style.background = "#fbbf24"; 
   submitBtn.style.color = "#0f172a";
   formHeading.scrollIntoView({ behavior: 'smooth' });
+  checkAnnualIncomeMode();
 }
 
 function removeTransaction(id) {
@@ -154,8 +174,16 @@ function removeTransaction(id) {
 
 function updateValues() {
   const expense = transactions.filter(t => t.amount < 0).reduce((acc, t) => acc + Math.abs(t.amount), 0);
+  
+  // Calculate income base cleanly (ignoring crude raw values of annualized counters)
   let income = transactions.filter(t => t.amount > 0 && t.rawCat !== "Salary (Annually)").reduce((acc, t) => acc + t.amount, 0);
-  transactions.forEach(t => { if(t.amount > 0 && t.rawCat === "Salary (Annually)") income += (t.amount / 12); });
+  
+  // Automatically split annual metrics safely across standard dashboard calculation blocks
+  transactions.forEach(t => { 
+    if(t.amount > 0 && t.rawCat === "Salary (Annually)") {
+      income += (t.amount / 12); 
+    }
+  });
 
   const total = income - expense;
   balance.innerText = `₹${total.toFixed(2)}`; 
@@ -166,7 +194,9 @@ function updateValues() {
   velocityDisplay.style.color = (income > 0 && ((income - expense) / income) * 100 >= 20) ? '#06d6a0' : '#fbbf24';
 
   if(expense > 0 && total > 0) {
-    const monthsCount = new Set(transactions.map(t => t.month)).size || 1;
+    // Treat 'Full Year' entries uniformly without cluttering month counts
+    const cleanMonths = transactions.map(t => t.month).filter(m => m !== 'Full Year');
+    const monthsCount = new Set(cleanMonths).size || 1;
     runwayDisplay.innerText = `${(total / (expense / monthsCount)).toFixed(1)} Months`;
     runwayDisplay.style.color = ((total / (expense / monthsCount)) >= 6) ? '#38bdf8' : '#f87171';
   } else {
@@ -197,34 +227,3 @@ function updateValues() {
   labelNeeds.innerText = `${nPct}%`;
   labelWants.innerText = `${wPct}%`;
   labelSavings.innerText = `${sPct}%`;
-
-  barNeeds.style.width = `${Math.min(nPct, 100)}%`;
-  barWants.style.width = `${Math.min(wPct, 100)}%`;
-  barSavings.style.width = `${Math.min(sPct, 100)}%`;
-
-  if (transactions.length === 0) {
-    advisor.className = "advisor-box";
-    advisor.innerHTML = "Start adding transactions to receive automated financial budget feedback.";
-    return;
-  }
-
-  let advice = "💡 <strong>Budget Analysis:</strong> ";
-  if (nPct > 50) {
-    advice += "Your <strong>Needs</strong> exceed the target 50%. Look for options to optimize utilities, rent or food waste. ";
-  }
-  if (wPct > 30) {
-    advice += "Your <strong>Wants</strong> spending is high at " + wPct + "%. Consider pruning non-essential streaming profiles or dining leaks. ";
-  }
-  if (sPct < 20 && totalExp > 0) {
-    advice += "Your investment velocity is under 20%. Try setting up automatic investment allocations early in the month. ";
-  }
-  if (nPct <= 50 && wPct <= 30 && sPct >= 20) {
-    advice += "Excellent financial health! Your allocations safely mirror optimal parameters of the 50/30/20 framework.";
-  }
-  
-  advisor.innerHTML = advice;
-}
-
-function clearLedger() {
-  list.innerHTML = '';
-}
