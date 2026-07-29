@@ -52,7 +52,7 @@ let transactions = JSON.parse(localStorage.getItem('transactions')) || [];
 let editId = null;
 let currentSelectedType = 'income';
 
-// Set calendar input picker fallback directly to today's date on execution boot
+// Set active picker defaults directly to current calendar day strings on boot initialization
 if (formTransactionDate) {
   formTransactionDate.value = new Date().toISOString().split('T')[0];
 }
@@ -79,7 +79,7 @@ function loadFinancialGoal() {
 }
 
 function importDataCSV(e) {
-  const file = e.target.files[0];
+  const file = e.target.files;
   if (!file) return;
   const reader = new FileReader();
   reader.onload = function(event) {
@@ -139,18 +139,26 @@ function addTransaction(e) {
   let catSel = (currentSelectedType === 'income') ? incomeCategory.value : expenseCategory.value;
   
   if (catSel === "" || catSel.includes("--")) { showToast('Please choose a valid transaction category target option.', 'toast-danger'); return; }
+  if (!formTransactionDate.value) { showToast('Please choose a valid transaction execution calendar date.', 'toast-danger'); return; }
   if (valText === '' || isNaN(valText) || parseFloat(valText) <= 0) { showToast('Please enter a valid positive number values.', 'toast-danger'); return; }
   
   let amtVal = parseFloat(valText); const labelVal = formDate.value.trim() !== '' ? formDate.value.trim() : catSel;
-  let selectedDate = formTransactionDate.value ? formTransactionDate.value : new Date().toISOString().split('T')[0];
-  const parsedMonth = new Date(selectedDate).toLocaleString('default', { month: 'long' });
+  
+  // AUTOMATED HYBRID PARSER: Extracts specific calendar month details smoothly for historical bucket groupings
+  let selectedDate = formTransactionDate.value;
+  const dateParts = selectedDate.split('-');
+  const dateObj = new Date(dateParts[0], dateParts[1] - 1, dateParts[2]);
+  
+  // Appends both the Month name string and execution year parameter to create absolute ironclad ledger records
+  const monthNameStr = dateObj.toLocaleString('default', { month: 'long' });
+  const finalLogBucket = (currentSelectedType === 'income' && catSel === 'Salary (Annually)') ? 'Full Year' : `${monthNameStr} ${dateParts[0]}`;
   
   if (currentSelectedType === 'expense') amtVal = -amtVal;
   if (editId !== null) {
-    transactions = transactions.map(t => t.id === editId ? { id: editId, text: labelVal, amount: amtVal, rawCat: catSel, month: parsedMonth, exactDate: selectedDate } : t);
+    transactions = transactions.map(t => t.id === editId ? { id: editId, text: labelVal, amount: amtVal, rawCat: catSel, month: finalLogBucket, exactDate: selectedDate } : t);
     editId = null; submitBtn.innerText = "Record Transaction"; showToast("✏️ Record Updated Successfully!");
   } else {
-    transactions.push({ id: Math.floor(Math.random() * 100000000), text: labelVal, amount: amtVal, rawCat: catSel, month: parsedMonth, exactDate: selectedDate });
+    transactions.push({ id: Math.floor(Math.random() * 100000000), text: labelVal, amount: amtVal, rawCat: catSel, month: finalLogBucket, exactDate: selectedDate });
     showToast(currentSelectedType === 'income' ? "🟢 Income Recorded Successfully!" : "🔴 Expense Recorded Successfully!");
   }
   localStorage.setItem('transactions', JSON.stringify(transactions)); init(); amount.value = ''; formDate.value = '';
@@ -163,7 +171,6 @@ function addTransactionDOM(t) {
   list.appendChild(item);
 }
 
-// RESTORE FUNCTION
 function editTransaction(id) {
   const target = transactions.find(t => t.id === id); if (!target) return; editId = id; amount.value = Math.abs(target.amount).toFixed(2); formDate.value = target.text; if (target.exactDate) formTransactionDate.value = target.exactDate;
   if (target.amount >= 0) { setTransactionType('income'); incomeCategory.value = target.rawCat; } else { setTransactionType('expense'); expenseCategory.value = target.rawCat; }
@@ -182,7 +189,7 @@ function updateValues() {
   const total = income - expense; balance.innerText = `₹${total.toFixed(2)}`; money_plus.innerText = `+₹${income.toFixed(2)}`; money_minus.innerText = `-₹${expense.toFixed(2)}`;
   velocityDisplay.innerText = income > 0 ? `${((income - expense) / income * 100).toFixed(1)}%` : "0.0%";
   if(expense > 0 && total > 0) {
-    const cleanMonths = transactions.map(t => t.month); const monthsCount = new Set(cleanMonths).size || 1;
+    const cleanMonths = transactions.map(t => t.month).filter(m => m !== 'Full Year'); const monthsCount = new Set(cleanMonths).size || 1;
     runwayDisplay.innerText = `${(total / (expense / monthsCount)).toFixed(1)} Months`;
   } else { runwayDisplay.innerText = "0.0 Months"; }
   list.innerHTML = ''; transactions.forEach(addTransactionDOM); let nVal = 0, wVal = 0, sVal = 0;
@@ -202,31 +209,13 @@ function updateValues() {
 
 function unloadCurrentSession() { transactions = []; list.innerHTML = ''; updateValues(); showToast("🧹 Current Session Unloaded Safely", "toast-warning"); }
 
-/* CRITICAL FICTION CORRECTION: HARDWARE PERSISTENCE STORAGE RESET PURGE ROUTINE */
 function resetAllData() {
   if (confirm("Are you absolutely sure you want to delete all transaction data? This action cannot be undone.")) {
-    transactions = []; 
-    localStorage.clear(); 
-    const goalInput = document.getElementById('goal-input'); 
-    if (goalInput) goalInput.value = '';
-    editId = null; 
-    submitBtn.innerText = "Record Transaction"; 
-    amount.value = ''; 
-    formDate.value = ''; 
-    init(); 
-    showToast("⚠️ Local Database Erased Completely!", "toast-danger");
+    transactions = []; localStorage.clear(); const goalInput = document.getElementById('goal-input'); if (goalInput) goalInput.value = '';
+    editId = null; submitBtn.innerText = "Record Transaction"; amount.value = ''; formDate.value = ''; init(); showToast("⚠️ Local Database Erased Completely!", "toast-danger");
   }
 }
 
 function toggleAccordion(headerElement) {
   const parentItem = headerElement.parentElement; const contentElement = parentItem.querySelector('.accordion-content'); const isActive = parentItem.classList.contains('active');
   document.querySelectorAll('.accordion-item').forEach(item => { item.classList.remove('active'); item.querySelector('.accordion-content').style.maxHeight = null; });
-  if (!isActive) { parentItem.classList.add('active'); contentElement.style.maxHeight = contentElement.scrollHeight + "px"; }
-}
-
-function init() { updateValues(); setTransactionType('income'); loadFinancialGoal(); incomeCategory.value = ""; expenseCategory.value = ""; }
-
-form.addEventListener('submit', addTransaction);
-document.getElementById('unload-session-btn').addEventListener('click', unloadCurrentSession);
-resetAllBtn.addEventListener('click', resetAllData);
-init();
