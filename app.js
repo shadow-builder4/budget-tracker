@@ -221,8 +221,11 @@ function updateValues() {
   advisor.innerHTML = advice;
 }
 
+// Fixed: Clears list items from view and empties structural state arrays to avoid instant calculations feedback loop
 function clearLedger() {
+  transactions = [];
   list.innerHTML = '';
+  updateValues();
 }
 
 function resetAllData() {
