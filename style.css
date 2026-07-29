@@ -55,7 +55,13 @@ body {
 .runway-glow { border-top: 3px solid var(--accent-blue); }
 .velocity-glow { border-top: 3px solid var(--accent-neon-green); }
 
-.advisor-box { background: rgba(0, 180, 216, 0.05); border-left: 4px solid var(--accent-blue); padding: 20px; border-radius: 6px; margin-bottom: 30px; font-weight: 500; font-size: 15px; }
+.advisor-box { background: rgba(0, 180, 216, 0.05); border-left: 4px solid var(--accent-blue); padding: 20px; border-radius: 6px; margin-bottom: 20px; font-weight: 500; font-size: 15px; }
+
+/* STYLE CONFIGURATION FOR GOAL TRACKER ROW ELEMENT */
+.goal-tracker-box { background: rgba(251, 191, 36, 0.03); border: 1px solid #45371c; padding: 20px; border-radius: 12px; margin-bottom: 30px; }
+.goal-tracker-box label { display: block; font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--accent-yellow); margin-bottom: 10px; }
+.goal-tracker-box input { border-color: #45371c; }
+.goal-tracker-box input:focus { border-color: var(--accent-yellow); box-shadow: 0 0 8px rgba(251, 191, 36, 0.2); }
 
 .dashboard-chart { background: rgba(15, 23, 42, 0.4); border: 1px solid var(--border-glow); padding: 25px; border-radius: 12px; margin-bottom: 30px; }
 .chart-title { font-size: 16px; font-weight: bold; text-transform: uppercase; margin-bottom: 20px; border-bottom: 1px solid var(--border-glow); padding-bottom: 10px; }
@@ -134,43 +140,13 @@ input, select { width: 100%; padding: 14px; background: #0f172a; border: 1px sol
 
 .error-border { border: 1px solid var(--accent-neon-red) !important; box-shadow: 0 0 8px rgba(255, 90, 95, 0.3); }
 
-/* TOAST POPUP NOTIFICATION INTERACTIVE STYLES */
 .toast-container {
-  position: fixed;
-  top: 30px;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 9999;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  width: 90%;
-  max-width: 400px;
-  pointer-events: none;
+  position: fixed; top: 30px; left: 50%; transform: translateX(-50%); z-index: 9999;
+  display: flex; flex-direction: column; gap: 10px; width: 90%; max-width: 400px; pointer-events: none;
 }
 .toast-message {
-  background: rgba(30, 41, 59, 0.9);
-  backdrop-filter: blur(8px);
-  border: 1px solid var(--border-glow);
-  color: var(--text-main);
-  padding: 16px 24px;
-  border-radius: 12px;
-  font-size: 14px;
-  font-weight: 600;
-  text-align: center;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.6);
-  animation: toastFadeInOut 2.5s ease-in-out forwards;
+  background: rgba(30, 41, 59, 0.9); backdrop-filter: blur(8px); border: 1px solid var(--border-glow);
+  color: var(--text-main); padding: 16px 24px; border-radius: 12px; font-size: 14px; font-weight: 600;
+  text-align: center; box-shadow: 0 10px 25px rgba(0, 0, 0, 0.6); animation: toastFadeInOut 2.5s ease-in-out forwards;
 }
 .toast-success { border-left: 5px solid var(--accent-neon-green); }
-.toast-warning { border-left: 5px solid var(--accent-yellow); }
-.toast-danger { border-left: 5px solid var(--accent-neon-red); }
-
-@keyframes toastFadeInOut {
-  0% { opacity: 0; transform: translateY(-20px) scale(0.9); }
-  10% { opacity: 1; transform: translateY(0) scale(1); }
-  85% { opacity: 1; transform: translateY(0) scale(1); }
-  100% { opacity: 0; transform: translateY(-20px) scale(0.9); }
-}
-
-@media (max-width: 600px) {
-  .container { padding: 20px; }
