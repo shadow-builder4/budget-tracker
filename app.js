@@ -21,6 +21,8 @@ const labelWants = document.getElementById('label-wants');
 const labelSavings = document.getElementById('label-savings');
 const runwayDisplay = document.getElementById('runway-display');
 const velocityDisplay = document.getElementById('velocity-display');
+const clearLedgerBtn = document.getElementById('clear-ledger-btn');
+const resetAllBtn = document.getElementById('reset-all-btn');
 
 let transactions = JSON.parse(localStorage.getItem('transactions')) || [];
 let editId = null;
@@ -29,8 +31,13 @@ formMonth.value = monthsArray[new Date().getMonth()];
 
 function toggleDropdowns() {
   const mode = document.querySelector('input[name="txType"]:checked').value;
-  incomeGroup.style.display = (mode === 'income') ? 'block' : 'none';
-  expenseGroup.style.display = (mode === 'expense') ? 'block' : 'none';
+  if (mode === 'income') {
+    incomeGroup.style.display = 'block';
+    expenseGroup.style.display = 'none';
+  } else {
+    incomeGroup.style.display = 'none';
+    expenseGroup.style.display = 'block';
+  }
 }
 
 function filterLedgerSearch() {
@@ -46,17 +53,20 @@ function exportDataCSV() {
   transactions.forEach(t => csv += `${t.month},"${t.text.replace(/"/g, '""')}",${t.rawCat || 'Unallocated'},${t.amount}\n`);
   const link = document.createElement("a");
   link.setAttribute("href", encodeURI(csv));
-  link.setAttribute("download", `Executive_Asset_Statement.csv`);
+  link.setAttribute("download", `Budget_Report.csv`);
   document.body.appendChild(link); link.click(); document.body.removeChild(link);
 }
 
 function addTransaction(e) {
   e.preventDefault();
   const valText = amount.value.trim();
-  formDate.classList.remove('error-border'); amount.classList.remove('error-border');
+  formDate.classList.remove('error-border'); 
+  amount.classList.remove('error-border');
 
   if (valText === '' || isNaN(valText) || parseFloat(valText) <= 0) {
-    amount.classList.add('error-border'); alert('Invalid financial metric input value.'); return;
+    amount.classList.add('error-border'); 
+    alert('Please enter a valid positive amount.'); 
+    return;
   }
   
   const mode = document.querySelector('input[name="txType"]:checked').value;
@@ -68,13 +78,18 @@ function addTransaction(e) {
   
   if (editId !== null) {
     transactions = transactions.map(t => t.id === editId ? { id: editId, text: labelVal, amount: amtVal, rawCat: catSel, month: formMonth.value } : t);
-    editId = null; formHeading.innerText = "Execute Allocation Registry Entry";
-    submitBtn.innerText = "Execute Registry Record"; submitBtn.style.background = "#38bdf8"; submitBtn.style.color = "#0f172a";
+    editId = null; 
+    formHeading.innerText = "Add New Transaction";
+    submitBtn.innerText = "Record Transaction"; 
+    submitBtn.style.background = "#38bdf8"; 
+    submitBtn.style.color = "#0f172a";
   } else {
     transactions.push({ id: Math.floor(Math.random() * 100000000), text: labelVal, amount: amtVal, rawCat: catSel, month: formMonth.value });
   }
-  localStorage.setItem('transactions', JSON.stringify(transactions)); init();
-  amount.value = ''; formDate.value = '';
+  localStorage.setItem('transactions', JSON.stringify(transactions)); 
+  init();
+  amount.value = ''; 
+  formDate.value = '';
 }
 
 function addTransactionDOM(t) {
@@ -87,20 +102,31 @@ function addTransactionDOM(t) {
 
 function editTransaction(id) {
   const target = transactions.find(t => t.id === id); if (!target) return;
-  editId = id; amount.value = Math.abs(target.amount).toFixed(2); formDate.value = target.text; formMonth.value = target.month;
+  editId = id; 
+  amount.value = Math.abs(target.amount).toFixed(2); 
+  formDate.value = target.text; 
+  formMonth.value = target.month;
+  
   if (target.amount >= 0) {
-    document.getElementById('type-income').checked = true; incomeCategory.value = target.rawCat || '';
+    document.getElementById('type-income').checked = true; 
+    incomeCategory.value = target.rawCat || 'Salary (Monthly)';
   } else {
-    document.getElementById('type-expense').checked = true; expenseCategory.value = target.rawCat || '';
+    document.getElementById('type-expense').checked = true; 
+    expenseCategory.value = target.rawCat || 'Groceries';
   }
-  toggleDropdowns(); formHeading.innerText = `✏️ Modifying Archive Registry: ${target.text}`;
-  submitBtn.innerText = "Commit Adjusted Values"; submitBtn.style.background = "#fbbf24"; submitBtn.style.color = "#0f172a";
+  toggleDropdowns(); 
+  formHeading.innerText = `✏️ Editing Entry: ${target.text}`;
+  submitBtn.innerText = "Save Updated Value"; 
+  submitBtn.style.background = "#fbbf24"; 
+  submitBtn.style.color = "#0f172a";
   formHeading.scrollIntoView({ behavior: 'smooth' });
 }
 
 function removeTransaction(id) {
-  if(editId === id) { editId = null; formHeading.innerText = "Execute Allocation Registry Entry"; submitBtn.innerText = "Execute Registry Record"; submitBtn.style.background = "#38bdf8"; amount.value = ''; formDate.value = ''; }
-  transactions = transactions.filter(t => t.id !== id); localStorage.setItem('transactions', JSON.stringify(transactions)); init();
+  if(editId === id) { editId = null; formHeading.innerText = "Add New Transaction"; submitBtn.innerText = "Record Transaction"; submitBtn.style.background = "#38bdf8"; amount.value = ''; formDate.value = ''; }
+  transactions = transactions.filter(t => t.id !== id); 
+  localStorage.setItem('transactions', JSON.stringify(transactions)); 
+  init();
 }
 
 function updateValues() {
@@ -109,28 +135,32 @@ function updateValues() {
   transactions.forEach(t => { if(t.amount > 0 && t.rawCat === "Salary (Annually)") income += (t.amount / 12); });
 
   const total = income - expense;
-  balance.innerText = `₹${total.toFixed(2)}`; money_plus.innerText = `+₹${income.toFixed(2)}`; money_minus.innerText = `-₹${expense.toFixed(2)}`;
+  balance.innerText = `₹${total.toFixed(2)}`; 
+  money_plus.innerText = `+₹${income.toFixed(2)}`; 
+  money_minus.innerText = `-₹${expense.toFixed(2)}`;
 
-  velocityDisplay.innerText = income > 0 ? `${((income - expense) / income * 100).toFixed(1)}% Retained` : "0.0% Retained";
-  velocityDisplay.style.color = (income > 0 && ((income - expense) / income) * 100 >= 20) ? '#4ade80' : '#fbbf24';
+  velocityDisplay.innerText = income > 0 ? `${((income - expense) / income * 100).toFixed(1)}%` : "0.0%";
+  velocityDisplay.style.color = (income > 0 && ((income - expense) / income) * 100 >= 20) ? '#06d6a0' : '#fbbf24';
 
   if(expense > 0 && total > 0) {
     const monthsCount = new Set(transactions.map(t => t.month)).size || 1;
     runwayDisplay.innerText = `${(total / (expense / monthsCount)).toFixed(1)} Months`;
     runwayDisplay.style.color = ((total / (expense / monthsCount)) >= 6) ? '#38bdf8' : '#f87171';
   } else {
-    runwayDisplay.innerText = "0.0 Months Survival"; runwayDisplay.style.color = '#94a3b8';
+    runwayDisplay.innerText = "0.0 Months"; runwayDisplay.style.color = '#94a3b8';
   }
 
-  list.innerHTML = ''; transactions.forEach(addTransactionDOM);
+  list.innerHTML = ''; 
+  transactions.forEach(addTransactionDOM);
   let nVal = 0, wVal = 0, sVal = 0;
 
   transactions.forEach(t => {
     if (t.amount < 0) {
-      const abs = Math.abs(t.amount); const c = t.rawCat || t.text;
-      if (c.startsWith('Groceries') || c.startsWith('Rent/Bills') || c.startsWith('Medical/Hospital')) nVal += abs;
-      else if (c.startsWith('Dining Out') || c.startsWith('Entertainment') || c.startsWith('Travel/Fuel') || c.startsWith('Other Expense')) wVal += abs;
-      else if (c.startsWith('Investment') || c.startsWith('Education/Fees')) sVal += abs;
+      const abs = Math.abs(t.amount); 
+      const c = t.rawCat || t.text;
+      if (c === 'Groceries' || c === 'Rent/Bills' || c === 'Medical/Hospital') nVal += abs;
+      else if (c === 'Dining Out' || c === 'Entertainment' || c === 'Travel/Fuel' || c === 'Other Expense') wVal += abs;
+      else if (c === 'Investment' || c === 'Education/Fees') sVal += abs;
     } else {
       if ((t.rawCat || t.text).startsWith('Investments Return')) sVal += t.amount;
     }
@@ -148,16 +178,19 @@ function updateValues() {
   }
 
   if (!income && !expense) {
-    advisor.className = "advisor-box"; advisor.innerText = "Initialize transactional allocation ledger matrices to activate predictive algorithmic resource feedback loops.";
+    advisor.className = "advisor-box"; advisor.innerText = "Start adding transactions to receive automated financial budget feedback.";
   } else {
     const ratio = (expense / income) * 100;
     advisor.className = ratio > 70 ? "advisor-box advisor-warning" : "advisor-box advisor-good";
-    advisor.innerText = ratio > 70 ? `⚠️ Critical Variance Warning: Outbound capital distribution limits breached (${ratio.toFixed(1)}% consumption index). Contract discretionary liabilities.` : `🌱 Capital Equilibrium Intact: Portfolio alignment scales securely within baseline target thresholds (${ratio.toFixed(1)}% consumption index).`;
+    advisor.innerText = ratio > 70 ? `⚠️ High Spending Alert: You have spent ${ratio.toFixed(1)}% of your earnings. Restrain your discretionary expenses.` : `🌱 Healthy Budget: Your spending profile is stable (${ratio.toFixed(1)}% of income used).`;
   }
 }
 
-function clearCurrentLedger() { if(confirm("Purge current visible interface ledger state? Core registers remain secure.")) { transactions = []; localStorage.setItem('transactions', JSON.stringify(transactions)); init(); } }
-function clearAllData() { if(confirm("Execute global system memory override wipe? This actions permanent database clean reset.")) { localStorage.clear(); location.reload(); } }
+function clearCurrentLedger() { if(confirm("Clear the visible list? Your underlying data settings remain safe.")) { transactions = []; localStorage.setItem('transactions', JSON.stringify(transactions)); init(); } }
+function clearAllData() { if(confirm("Completely delete all memory data history from this browser?")) { localStorage.clear(); location.reload(); } }
+
 function init() { updateValues(); }
 form.addEventListener('submit', addTransaction);
+clearLedgerBtn.addEventListener('click', clearCurrentLedger);
+resetAllBtn.addEventListener('click', clearAllData);
 init();
