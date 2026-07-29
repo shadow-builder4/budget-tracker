@@ -12,7 +12,7 @@
 <body>
   <div class="container">
     <header class="app-header">
-      <h1>SMART WALLET TRACKER <span class="premium-badge">PRO v2.8</span></h1>
+      <h1>SMART WALLET TRACKER <span class="premium-badge">PRO v2.9</span></h1>
       <p class="subtitle">Your Advanced Personal Finance Dashboard</p>
     </header>
     
@@ -96,7 +96,8 @@
       <p class="form-sub-note">Fields marked with <span class="required">*</span> are mandatory.</p>
       
       <form id="form">
-        <div class="form-control">
+        <!-- Added wrapper ID to toggle visibility based on annual selection -->
+        <div class="form-control" id="month-selection-group">
           <label for="form-month">Select Month <span class="required">*</span></label>
           <select id="form-month">
             <option value="January">January</option><option value="February">February</option><option value="March">March</option><option value="April">April</option><option value="May">May</option><option value="June">June</option><option value="July">July</option><option value="August">August</option><option value="September">September</option><option value="October">October</option><option value="November">November</option><option value="December">December</option>
@@ -111,14 +112,15 @@
         <div class="form-control">
           <label>Transaction Type <span class="required">*</span></label>
           <div class="type-selector">
-            <div class="type-option option-income" id="tab-income" onclick="handleFormToggleDirect('income')">🟢 Income Inflow</div>
-            <div class="type-option option-expense" id="tab-expense" onclick="handleFormToggleDirect('expense')">🔴 Expense Outflow</div>
+            <!-- Appended native dataset trackers to replace legacy checkbox pseudo CSS dependencies -->
+            <div class="type-option option-income" id="tab-income" data-type="income" onclick="handleFormToggleDirect('income')">🟢 Income Inflow</div>
+            <div class="type-option option-expense" id="tab-expense" data-type="expense" onclick="handleFormToggleDirect('expense')">🔴 Expense Outflow</div>
           </div>
         </div>
 
         <div class="form-control" id="income-group">
           <label for="income-category">Income Source <span class="required">*</span></label>
-          <select id="income-category">
+          <select id="income-category" onchange="checkAnnualIncomeMode()">
             <option value="Salary (Monthly)">Salary Payout (Monthly)</option>
             <option value="Salary (Annually)">Salary Payout (Annually)</option>
             <option value="Freelance">Freelance / Side Business</option>
