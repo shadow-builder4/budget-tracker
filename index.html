@@ -3,67 +3,74 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- KEEPING YOUR ACTIVE ADSENSE VERIFICATION TAG INTACT -->
   <script async src="https://googlesyndication.com" crossorigin="anonymous"></script>
-  <title>Quantum Capital Ledger — Executive Wealth Intelligence Suite</title>
+  <title>Smart Wallet Tracker Pro — Premium Personal Budget Planner</title>
   <link rel="stylesheet" href="style.css">
   <link rel="preconnect" href="https://googleapis.com">
   <link rel="preconnect" href="https://gstatic.com" crossorigin>
-  <link href="https://googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link href="https://googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
   <div class="container">
     <header class="app-header">
-      <h1>QUANTUM CAPITAL <span class="premium-badge">OS v2.8</span></h1>
-      <p class="subtitle">Predictive Algorithmic Liquidity Architecture</p>
+      <h1>SMART WALLET TRACKER <span class="premium-badge">PRO v2.8</span></h1>
+      <p class="subtitle">Your Advanced Personal Finance Dashboard</p>
     </header>
     
     <div class="balance-box">
-      <h4>NET LIQUID RESERVES (BASE INR)</h4>
+      <h4>Current Balance</h4>
       <h1 id="balance">₹0.00</h1>
     </div>
 
+    <!-- CLEAN HIGH-VALUE METRICS -->
     <div class="pro-metrics-grid">
       <div class="metric-card runway-glow">
         <div class="metric-icon">🛡️</div>
         <div>
-          <strong>Strategic Runway Buffer</strong>
-          <p id="runway-display">0.0 Months Survival</p>
-          <small>Estimated timeline if inbound revenue flows freeze.</small>
+          <strong>Survival Runway</strong>
+          <p id="runway-display">0.0 Months</p>
+          <small>How many months your savings will last if income stops.</small>
         </div>
       </div>
+
       <div class="metric-card velocity-glow">
         <div class="metric-icon">⚡</div>
         <div>
-          <strong>Conservation Efficiency</strong>
-          <p id="velocity-display">0.0% Retained</p>
-          <small>Net acceleration ratio of current income streams.</small>
+          <strong>Income Saved</strong>
+          <p id="velocity-display">0.0%</p>
+          <small>The percentage of total income you kept this month.</small>
         </div>
       </div>
     </div>
 
     <div id="advisor" class="advisor-box">
-      Initialize transactional allocation ledger matrices to activate predictive algorithmic resource feedback loops.
+      Start adding transactions to receive automated financial budget feedback.
     </div>
 
+    <!-- 50/30/20 SIMPLIFIED VISUAL PROGRESS BARS -->
     <div class="dashboard-chart">
-      <div class="chart-title">📊 Capital Allocation Priority Indices (50/30/20 Model)</div>
+      <div class="chart-title">📊 50/30/20 Budget Allocation Dashboard</div>
+      
       <div class="chart-row">
         <div class="chart-label">
-          <span>Fixed Obligations & Needs <small>(Target: 50%)</small></span>
+          <span>Needs (Rent, Bills, Groceries) <small>(Target: 50% max)</small></span>
           <span id="label-needs" class="pct-badge needs-bg">0%</span>
         </div>
         <div class="bar-container"><div id="bar-needs" class="bar-fill bar-needs"></div></div>
       </div>
+      
       <div class="chart-row">
         <div class="chart-label">
-          <span>Discretionary Expenditures & Wants <small>(Target: 30%)</small></span>
+          <span>Wants (Dining Out, Entertainment) <small>(Target: 30% max)</small></span>
           <span id="label-wants" class="pct-badge wants-bg">0%</span>
         </div>
         <div class="bar-container"><div id="bar-wants" class="bar-fill bar-wants"></div></div>
       </div>
+      
       <div class="chart-row">
         <div class="chart-label">
-          <span>Wealth Accelerators & Asset Portfolios <small>(Target: 20%)</small></span>
+          <span>Savings & Investments <small>(Target: 20% min)</small></span>
           <span id="label-savings" class="pct-badge savings-bg">0%</span>
         </div>
         <div class="bar-container"><div id="bar-savings" class="bar-fill bar-savings"></div></div>
@@ -72,96 +79,118 @@
 
     <div class="inc-exp-container">
       <div class="flow-card plus-border">
-        <h4>CUMULATIVE INCOME INFLOWS</h4>
+        <h4>Total Income</h4>
         <p id="money-plus" class="money plus">+₹0.00</p>
       </div>
       <div class="flow-card minus-border">
-        <h4>AGGREGATED EXPENDITURES</h4>
+        <h4>Total Expense</h4>
         <p id="money-minus" class="money minus">-₹0.00</p>
       </div>
     </div>
 
+    <!-- ADVANCED FILTER & DOWNLOAD TOOLBAR -->
     <div class="utility-toolbar">
-      <input type="text" id="search-bar" placeholder="🔍 Query transactional registry archives..." onkeyup="filterLedgerSearch()">
-      <button type="button" class="action-export-btn" onclick="exportDataCSV()">📥 Export Corporate CSV Sheet</button>
+      <input type="text" id="search-bar" placeholder="🔍 Search through histories..." onkeyup="filterLedgerSearch()">
+      <button type="button" class="action-export-btn" onclick="exportDataCSV()">📥 Export Excel/CSV Report</button>
     </div>
 
-    <h3>Active Ledger Transaction Registry</h3>
+    <h3>Transaction History</h3>
     <ul id="list" class="list"></ul>
 
+    <!-- FULLY FIXED CLEAN FORM CONTAINER -->
     <div class="form-container">
-      <h3 id="form-heading">Execute Allocation Registry Entry</h3>
-      <p class="form-sub-note">Mandatory data parameters are denoted via an asterisk (<span class="required">*</span>).</p>
+      <h3 id="form-heading">Add New Transaction</h3>
+      <p class="form-sub-note">Fields marked with <span class="required">*</span> are mandatory.</p>
       
       <form id="form" novalidate>
         <div class="form-control">
-          <label for="form-month">Target Fiscal Calendar Month <span class="required">*</span></label>
+          <label for="form-month">Select Month <span class="required">*</span></label>
           <select id="form-month">
             <option value="January">January</option><option value="February">February</option><option value="March">March</option><option value="April">April</option><option value="May">May</option><option value="June">June</option><option value="July">July</option><option value="August">August</option><option value="September">September</option><option value="October">October</option><option value="November">November</option><option value="December">December</option>
           </select>
         </div>
+
         <div class="form-control">
-          <label for="form-date">Transaction Descriptor Specification (Optional)</label>
-          
+          <label for="form-date">Transaction Note / Label (Optional)</label>
+          <input type="text" id="form-date" placeholder="e.g., Office Salary, Groceries, Rent, Uber">
         </div>
+
         <div class="form-control">
-          <label>Operational Asset Class Vector <span class="required">*</span></label>
+          <label>Transaction Type <span class="required">*</span></label>
           <div class="type-selector">
-            <label class="type-option"><input type="radio" name="txType" id="type-income" value="income" checked onclick="toggleDropdowns()"> 🟢 Inbound Capital</label>
-            <label class="type-option"><input type="radio" name="txType" id="type-expense" value="expense" onclick="toggleDropdowns()"> 🔴 Outbound Liability</label>
+            <label class="type-option"><input type="radio" name="txType" id="type-income" value="income" checked onclick="toggleDropdowns()"> 🟢 Income Inflow</label>
+            <label class="type-option"><input type="radio" name="txType" id="type-expense" value="expense" onclick="toggleDropdowns()"> 🔴 Expense Outflow</label>
           </div>
         </div>
+
         <div class="form-control" id="income-group">
-          <label for="income-category">Inbound Classification Category <span class="required">*</span></label>
+          <label for="income-category">Income Source <span class="required">*</span></label>
           <select id="income-category">
-            <option value="Salary (Monthly)">Corporate Salary Remuneration (Monthly)</option>
-            <option value="Salary (Annually)">Corporate Salary Remuneration (Annually)</option>
-            <option value="Freelance">Consulting Retainer / Freelance Revenue</option>
-            <option value="Investments Return">Dividends & Equity Investment Inflows</option>
-            <option value="Other Income">Alternative Revenue Channels</option>
+            <option value="Salary (Monthly)">Salary Payout (Monthly)</option>
+            <option value="Salary (Annually)">Salary Payout (Annually)</option>
+            <option value="Freelance">Freelance / Side Business</option>
+            <option value="Investments Return">Investment Returns</option>
+            <option value="Other Income">Other Inbound Money</option>
           </select>
         </div>
+
         <div class="form-control" id="expense-group" style="display: none;">
-          <label for="expense-category">Outbound Liability Classification Vector <span class="required">*</span></label>
+          <label for="expense-category">Expense Category <span class="required">*</span></label>
           <select id="expense-category">
-            <option value="Groceries">Sustenance & Household Groceries</option>
-            <option value="Rent/Bills">Fixed Asset Overheads, Rent & Utilities</option>
-            <option value="Medical/Hospital">Healthcare Contingencies & Medical Insurance</option>
-            <option value="Travel/Fuel">Logistics, Fleet Fuel & Transportation</option>
-            <option value="Dining Out">Corporate Entertaining & Gastronomy</option>
-            <option value="Entertainment">Discretionary Leisure & Digital Media Subscriptions</option>
-            <option value="Investment">Capital Allocation Portfolio / Equities / Mutual Funds</option>
-            <option value="Education/Fees">Professional Development / Academic Tuition Fees</option>
-            <option value="Other Expense">Miscellaneous Liability Outflows</option>
+            <option value="Groceries">Essential Groceries</option>
+            <option value="Rent/Bills">Housing Rent & Utilities</option>
+            <option value="Medical/Hospital">Medical & Hospital bills</option>
+            <option value="Travel/Fuel">Travel, Fuel & Transport</option>
+            <option value="Dining Out">Food & Restaurants</option>
+            <option value="Entertainment">Entertainment & Subscriptions</option>
+            <option value="Investment">Mutual Funds / Stock Investments</option>
+            <option value="Education/Fees">Education & Tuition Fees</option>
+            <option value="Other Expense">Other Miscellaneous Expenses</option>
           </select>
         </div>
+
         <div class="form-control">
-          <label for="amount">Quantitative Capital Value (INR Base Valuation) <span class="required">*</span></label>
-          <input type="number" id="amount" step="any" placeholder="Enter absolute numeric financial value">
+          <label for="amount">Amount (Value in ₹) <span class="required">*</span></label>
+          <input type="number" id="amount" step="any" placeholder="e.g., 5000">
         </div>
         
-        <button type="submit" class="btn btn-submit" id="submit-btn">Execute Registry Record</button>
+        <button type="submit" class="btn btn-submit" id="submit-btn">Record Transaction</button>
         
         <div class="directive-box">
-          <p><strong>💡 Operational Control Directives:</strong></p>
+          <p><strong>💡 Dashboard Control Guide:</strong></p>
           <ul>
-            <li><strong>Clear Ledger:</strong> Purges current localized active UI list layout row array states. Underlying system variables remain securely cached.</li>
-            <li><strong>Reset All Data:</strong> Executes comprehensive factory system override parameter wipe, flushing browser memory cache index.</li>
+            <li><strong>Clear Ledger:</strong> Clears the visible transaction history list from the screen. Your underlying browser memory is <strong>safely saved</strong>.</li>
+            <li><strong>Reset All Data:</strong> Permanent factory reset. Completely erases your entire budget records and data history.</li>
           </ul>
         </div>
+
         <div class="button-group">
-          <button type="button" class="btn btn-clear" onclick="clearCurrentLedger()">Purge Interface State</button>
-          <button type="button" class="btn btn-reset" onclick="clearAllData()">Execute System Reset</button>
+          <button type="button" class="btn btn-clear" onclick="clearCurrentLedger()">Clear Ledger</button>
+          <button type="button" class="btn btn-reset" onclick="clearAllData()">Reset All Data</button>
         </div>
       </form>
     </div>
 
+    <!-- HIGH-VALUE REVENUE ARTICLE DISCLOSURES -->
     <div class="info-section">
-      <h2>Macroeconomic Capital Allocation Framework & Risk Paradigms</h2>
-      <p>Efficient personal wealth acceleration models demand precision data-tracking infrastructure, automated emergency runway configurations, and systematic baseline risk diversification. Below is an academic overview targeting portfolio structuring utilizing our dashboard analytics asset architecture.</p>
+      <h2>Essential Personal Finance & Budgeting Resources</h2>
+      <p>Managing your money efficiently requires consistent tracking, strategic saving patterns, and clear financial goals. Below is an educational framework designed to maximize your savings velocity using our tracking utility.</p>
+      
       <div class="info-card">
-        <h3>The 50/30/20 Portfolio Deployment Thesis Explained</h3>
-        <p>This classical economic wealth allocation standard optimization paradigm segregates your aggregate net operational income stream into three distinct baseline segments:</p>
+        <h3>The 50/30/20 Budgeting Rule Explained</h3>
+        <p>A classic financial formula divides your post-tax income into three distinct categories:</p>
         <ul>
-          <li><strong>50% Nondiscretionary Obligations (Fixed Liabilities):</strong> Critical operational expenditures required to preserve essential baseline livelihood, including real estate commitments, debt service amortizations, regulatory utilities, and primary medical premiums.</li>
-          <li><strong>30% Discretionary Consumption (Lifestyle Variance):</strong> Nonessential lifestyle expenditure allocations targeting cultural entertainment, high-tier dining, luxury recreational travel acquisitions, and elective consumer subscription models.</li>
+          <li><strong>50% Needs:</strong> Obligatory allocations including housing rent, bills, insurance, utilities, and essential groceries.</li>
+          <li><strong>30% Wants:</strong> Discretionary spending targeting entertainment, dining out, hobbies, and streaming memberships.</li>
+          <li><strong>20% Savings:</strong> Asset accumulation including emergency accounts, retirement contributions, and debt settlements.</li>
+        </ul>
+      </div>
+
+      <div class="info-card">
+        <h3>Top Strategies to Minimize Daily Expenditures</h3>
+        <p>Small adjustments heavily influence cumulative long-term cash retention. Consider deploying these strategies:</p>
+        <ul>
+          <li><strong>Automate Savings:</strong> Configure automatic bank transfers directly into specialized savings vaults immediately following payroll events.</li>
+          <li><strong>Audit Fixed Subscriptions:</strong> Routinely scan recurring card statements to isolate and deactivate underutilized premium streaming, software, or gym memberships.</li>
+          <li><strong>Meal Preparation:</strong> Planning household meals weekly systematically reduces dependencies on high-markup food delivery mobile applications.</li>
+        </ul>
