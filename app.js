@@ -52,7 +52,6 @@ let transactions = JSON.parse(localStorage.getItem('transactions')) || [];
 let editId = null;
 let currentSelectedType = 'income';
 
-// Leave the initial box completely blank on boot launch to display dd-mm-yyyy
 if (formTransactionDate) {
   formTransactionDate.value = "";
 }
@@ -90,10 +89,10 @@ function importDataCSV(e) {
       if (!lines[i].trim()) continue;
       const parts = lines[i].split(",");
       if (parts.length >= 4) {
-        const monthVal = parts.trim();
-        const textLabel = parts.replace(/^"|"$/g, '').trim();
-        const categoryVal = parts.trim();
-        const amountVal = parseFloat(parts.trim());
+        const monthVal = parts[0].trim();
+        const textLabel = parts[1].replace(/^"|"$/g, '').trim();
+        const categoryVal = parts[2].trim();
+        const amountVal = parseFloat(parts[3].trim());
         if (!isNaN(amountVal)) { importedTransactions.push({ id: Math.floor(Math.random() * 100000000), text: textLabel, amount: amountVal, rawCat: categoryVal, month: monthVal, exactDate: "" }); }
       }
     }
@@ -137,12 +136,11 @@ function addTransaction(e) {
   e.preventDefault(); const valText = amount.value.trim();
   let catSel = (currentSelectedType === 'income') ? incomeCategory.value : expenseCategory.value;
   
-  if (catSel === "" || catSel.includes("--")) { showToast('Please choose a valid transaction category target option.', 'toast-danger'); return; }
+  if (catSel === "" || catSel.includes("--")) { showToast('Please choose a valid transaction category option.', 'toast-danger'); return; }
   if (!formTransactionDate.value || formTransactionDate.value === "") { showToast('Please select a specific date on the calendar input.', 'toast-danger'); return; }
   if (valText === '' || isNaN(valText) || parseFloat(valText) <= 0) { showToast('Please enter a valid positive number values.', 'toast-danger'); return; }
   
-  let amtVal = parseFloat(valText); const labelVal = formDate.value.trim() !== '' ? formDate.value.trim() : catSel;
-  
+  let amtVal = parseFloat(valText); 
   let selectedDate = formTransactionDate.value;
   const dateParts = selectedDate.split('-');
   const yearNum = parseInt(dateParts[0], 10);
@@ -155,13 +153,16 @@ function addTransaction(e) {
   const monthNameStr = dateObj.toLocaleString('default', { month: 'long' });
   const finalLogBucket = (currentSelectedType === 'income' && catSel === 'Salary (Annually)') ? 'Full Year' : `${monthNameStr} ${yearNum}`;
   
+  const extraLabelInput = formDate.value.trim();
+  const labelVal = extraLabelInput !== '' ? `${extraLabelInput} [${finalLogBucket}]` : `${catSel} [${finalLogBucket}]`;
+  
   if (currentSelectedType === 'expense') amtVal = -amtVal;
   if (editId !== null) {
     transactions = transactions.map(t => t.id === editId ? { id: editId, text: labelVal, amount: amtVal, rawCat: catSel, month: finalLogBucket, exactDate: selectedDate } : t);
     editId = null; submitBtn.innerText = "Record Transaction"; showToast("✏️ Record Updated Successfully!");
   } else {
     transactions.push({ id: Math.floor(Math.random() * 100000000), text: labelVal, amount: amtVal, rawCat: catSel, month: finalLogBucket, exactDate: selectedDate });
-    showToast(currentSelectedType === 'income' ? "🟢 Income Recorded Successfully!" : "🔴 Expense Recorded Successfully!");
+    showToast(currentSelectedType === 'income' ? "🟢 Capital Recorded Successfully!" : "🔴 Expense Recorded Successfully!");
   }
   localStorage.setItem('transactions', JSON.stringify(transactions)); init(); amount.value = ''; formDate.value = '';
   incomeCategory.value = ""; expenseCategory.value = "";
@@ -169,12 +170,14 @@ function addTransaction(e) {
 
 function addTransactionDOM(t) {
   const sign = t.amount < 0 ? '-' : '+'; const item = document.createElement('li'); item.className = t.amount < 0 ? 'minus' : 'plus';
-  item.innerHTML = `<div><strong>${t.text}</strong> <small>(${t.month})</small></div><div class="action-group"><span>${sign}₹${Math.abs(t.amount).toFixed(2)}</span><button type="button" class="edit-btn" onclick="editTransaction(${t.id})">Edit</button><button type="button" class="delete-btn" onclick="removeTransaction(${t.id})">Delete</button></div>`;
+  item.innerHTML = `<div><strong>${t.text}</strong></div><div class="action-group"><span>${sign}₹${Math.abs(t.amount).toFixed(2)}</span><button type="button" class="edit-btn" onclick="editTransaction(${t.id})">Edit</button><button type="button" class="delete-btn" onclick="removeTransaction(${t.id})">Delete</button></div>`;
   list.appendChild(item);
 }
 
 function editTransaction(id) {
-  const target = transactions.find(t => t.id === id); if (!target) return; editId = id; amount.value = Math.abs(target.amount).toFixed(2); formDate.value = target.text; if (target.exactDate) formTransactionDate.value = target.exactDate;
+  const target = transactions.find(t => t.id === id); if (!target) return; editId = id; amount.value = Math.abs(target.amount).toFixed(2);
+  formDate.value = target.text.split(" [")[0]; 
+  if (target.exactDate) formTransactionDate.value = target.exactDate;
   if (target.amount >= 0) { setTransactionType('income'); incomeCategory.value = target.rawCat; } else { setTransactionType('expense'); expenseCategory.value = target.rawCat; }
   submitBtn.innerText = "Save Updated Value"; submitBtn.scrollIntoView({ behavior: 'smooth' });
 }
@@ -186,14 +189,35 @@ function removeTransaction(id) {
 
 function updateValues() {
   const expense = transactions.filter(t => t.amount < 0).reduce((acc, t) => acc + Math.abs(t.amount), 0);
-  let income = transactions.filter(t => t.amount > 0 && t.rawCat !== "Salary (Annually)").reduce((acc, t) => acc + t.amount, 0);
-  transactions.forEach(t => { if(t.amount > 0 && t.rawCat === "Salary (Annually)") income += (t.amount / 12); });
-  const total = income - expense; balance.innerText = `₹${total.toFixed(2)}`; money_plus.innerText = `+₹${income.toFixed(2)}`; money_minus.innerText = `-₹${expense.toFixed(2)}`;
-  velocityDisplay.innerText = income > 0 ? `${((income - expense) / income * 100).toFixed(1)}%` : "0.0%";
-  if(expense > 0 && total > 0) {
-    const cleanMonths = transactions.map(t => t.month).filter(m => m !== 'Full Year'); const monthsCount = new Set(cleanMonths).size || 1;
-    runwayDisplay.innerText = `${(total / (expense / monthsCount)).toFixed(1)} Months`;
-  } else { runwayDisplay.innerText = "0.0 Months"; }
+  
+  let totalIncomeCapital = 0;
+  let recurringIncomeFlow = 0;
+  
+  transactions.filter(t => t.amount > 0).forEach(t => {
+    totalIncomeCapital += t.amount;
+    if (t.rawCat === "Salary (Annually)") {
+      recurringIncomeFlow += (t.amount / 12);
+    } else if (t.rawCat !== "Savings Anchor") {
+      recurringIncomeFlow += t.amount;
+    }
+  });
+  
+  const totalBalanceLeft = totalIncomeCapital - expense; 
+  balance.innerText = `₹${totalBalanceLeft.toFixed(2)}`;
+  
+  money_plus.innerText = `+₹${recurringIncomeFlow.toFixed(2)}`; 
+  money_minus.innerText = `-₹${expense.toFixed(2)}`;
+  
+  velocityDisplay.innerText = recurringIncomeFlow > 0 ? `${((recurringIncomeFlow - expense) / recurringIncomeFlow * 100).toFixed(1)}%` : "0.0%";
+  
+  if (expense > 0 && totalBalanceLeft > 0) {
+    const cleanMonths = transactions.map(t => t.month).filter(m => m !== 'Full Year'); 
+    const monthsCount = new Set(cleanMonths).size || 1;
+    runwayDisplay.innerText = `${(totalBalanceLeft / (expense / monthsCount)).toFixed(1)} Months`;
+  } else { 
+    runwayDisplay.innerText = "0.0 Months"; 
+  }
+  
   list.innerHTML = ''; transactions.forEach(addTransactionDOM); let nVal = 0, wVal = 0, sVal = 0;
   transactions.filter(t => t.amount < 0).forEach(t => {
     const c = t.rawCat; if (["Groceries", "Rent/Bills", "Medical/Hospital", "Travel/Fuel", "Education/Fees"].includes(c)) nVal += Math.abs(t.amount); else if (["Dining Out", "Entertainment", "Other Expense"].includes(c)) wVal += Math.abs(t.amount); else if (["Investment"].includes(c)) sVal += Math.abs(t.amount);
@@ -209,10 +233,9 @@ function updateValues() {
   advisor.innerHTML = advice;
 }
 
-/* FIXED FORCED BLANKING RESETS: Completely empties date field input text value box */
 function unloadCurrentSession() { 
   transactions = []; list.innerHTML = ''; updateValues(); 
-  if (formTransactionDate) formTransactionDate.value = ""; // Forces dd-mm-yyyy view state instantly
+  if (formTransactionDate) formTransactionDate.value = ""; 
   showToast("🧹 Current Session Unloaded Safely", "toast-warning"); 
 }
 
@@ -220,7 +243,7 @@ function resetAllData() {
   if (confirm("Are you absolutely sure you want to delete all transaction data? This action cannot be undone.")) {
     transactions = []; localStorage.clear(); const goalInput = document.getElementById('goal-input'); if (goalInput) goalInput.value = '';
     editId = null; submitBtn.innerText = "Record Transaction"; amount.value = ''; formDate.value = ''; 
-    if (formTransactionDate) formTransactionDate.value = ""; // Forces dd-mm-yyyy view state instantly
+    if (formTransactionDate) formTransactionDate.value = ""; 
     init(); showToast("⚠️ Local Database Erased Completely!", "toast-danger");
   }
 }
@@ -231,7 +254,7 @@ function toggleAccordion(headerElement) {
   if (!isActive) { parentItem.classList.add('active'); contentElement.style.maxHeight = contentElement.scrollHeight + "px"; }
 }
 
-function init() { updateValues(); setTransactionType('income'); loadFinancialGoal(); incomeCategory.value = ""; expenseCategory.value = ""; if (formTransactionDate) formTransactionDate.value = ""; }
+function init() { updateValues(); setTransactionType('income'); loadFinancialGoal(); incomeCategory.value = ""; expenseCategory.value = ""; }
 
 form.addEventListener('submit', addTransaction);
 document.getElementById('unload-session-btn').addEventListener('click', unloadCurrentSession);
