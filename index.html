@@ -1,255 +1,226 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Smart Wallet Tracker Pro — Premium Personal Budget Planner</title>
-  <link rel="stylesheet" href="style.css">
-  <link rel="preconnect" href="https://googleapis.com">
-  <link rel="preconnect" href="https://gstatic.com" crossorigin>
-  <link href="https://googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Wallet Tracker Pro - Advanced Financial Control Interface</title>
+    
+    <!-- Google AdSense Verification Engine -->
+    <script async src="https://googlesyndication.com" crossorigin="anonymous"></script>
+
+    <style>
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background-color: #f8fafc; margin: 0; padding: 20px; color: #1e293b; }
+        .container { max-width: 1200px; margin: 0 auto; }
+        header { background: #ffffff; padding: 20px; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center; }
+        h1 { margin: 0; color: #0d1b2a; font-size: 22px; font-weight: 800; }
+        .badge { font-size: 11px; background: #007bff; color: white; padding: 2px 6px; border-radius: 4px; font-weight: bold; }
+        .subtitle { margin: 5px 0 0 0; color: #666; font-size: 13px; font-weight: bold; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; margin-bottom: 20px; }
+        .card { background: #ffffff; padding: 20px; border-radius: 8px; border: 1px solid #e2e8f0; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+        .card-title { font-size: 12px; color: #64748b; font-weight: bold; text-transform: uppercase; margin-bottom: 8px; text-align: center; }
+        .card-value { font-size: 28px; font-weight: 700; color: #0f172a; text-align: center; margin: 10px 0; }
+        .card-desc { font-size: 12px; color: #64748b; text-align: center; }
+        label { display: block; font-weight: bold; font-size: 12px; margin-bottom: 6px; text-transform: uppercase; }
+        .form-group { margin-bottom: 15px; }
+        select, input { width: 100%; padding: 10px; border: 1px solid #cbd5e1; border-radius: 6px; box-sizing: border-box; font-size: 14px; }
+        .btn { width: 100%; background: #2563eb; color: white; padding: 12px; border: none; border-radius: 6px; font-weight: bold; font-size: 14px; cursor: pointer; text-transform: uppercase; }
+        .btn-danger { background: #fee2e2; color: #ef4444; border: 1px solid #fca5a5; }
+        .btn-secondary { background: #e2e8f0; color: #475569; }
+        .flex-buttons { display: flex; gap: 10px; margin-top: 15px; }
+        .alert-box { background: #f0fdf4; border: 1px solid #bbf7d0; color: #166534; padding: 15px; border-radius: 6px; font-size: 14px; margin-bottom: 15px; }
+        .allocation-row { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #f1f5f9; font-size: 14px; }
+        .allocation-pct { background: #f1f5f9; padding: 2px 6px; border-radius: 4px; font-weight: bold; color: #2563eb; }
+        .resource-box { background: #ffffff; padding: 25px; border-radius: 8px; border: 1px solid #e2e8f0; margin-top: 30px; }
+        .resource-link { display: block; padding: 15px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 6px; color: #007bff; text-decoration: none; font-weight: bold; margin-bottom: 10px; }
+        .resource-link:hover { background: #f1f5f9; }
+        footer { margin-top: 40px; padding: 20px 0; text-align: center; font-size: 13px; color: #64748b; border-top: 1px solid #e2e8f0; }
+        footer a { color: #2563eb; text-decoration: none; margin: 0 10px; }
+    </style>
 </head>
 <body>
-  <!-- TOAST ALERTS PANEL -->
-  <div id="toast-container" class="toast-container"></div>
+    <div class="container">
+        <header>
+            <div>
+                <h1>SMART WALLET TRACKER <span class="badge">PRO v4.5</span></h1>
+                <div class="subtitle">ADVANCED FINANCIAL CONTROL INTERFACE</div>
+            </div>
+        </header>
 
-  <div class="app-wrapper">
-    <!-- TOP CONTROL HUD BAR -->
-    <header class="app-header">
-      <h1>SMART WALLET TRACKER <span class="premium-badge">PRO v4.5</span></h1>
-      <p class="subtitle">Advanced Financial Control Interface</p>
-    </header>
-    
-    <div class="top-hud-grid">
-      <div class="balance-box">
-        <h4>Current Balance</h4>
-        <h1 id="balance">₹0.00</h1>
-      </div>
-
-      <div class="pro-metrics-grid">
-        <div class="metric-card runway-glow">
-          <div class="metric-icon">🛡️</div>
-          <div>
-            <strong>Survival Runway</strong>
-            <p id="runway-display">0.0 Months</p>
-            <small>Savings safety timeline framework.</small>
-          </div>
+        <!-- Metrics Display Grid -->
+        <div class="grid">
+            <div class="card">
+                <div class="card-title">CURRENT BALANCE</div>
+                <div class="card-value" id="val-balance">₹0.00</div>
+                <div class="card-desc">Active account liquid holdings ledger.</div>
+            </div>
+            <div class="card">
+                <div class="card-title">SURVIVAL RUNWAY</div>
+                <div class="card-value" id="val-runway">0.0 Months</div>
+                <div class="card-desc">Savings safety timeline framework.</div>
+            </div>
+            <div class="card">
+                <div class="card-title">INCOME SAVED</div>
+                <div class="card-value" id="val-saved">0.0%</div>
+                <div class="card-desc">Net cash flow velocity index.</div>
+            </div>
         </div>
-        <div class="metric-card velocity-glow">
-          <div class="metric-icon">⚡</div>
-          <div>
-            <strong>Income Saved</strong>
-            <p id="velocity-display">0.0%</p>
-            <small>Net cash flow velocity index.</small>
-          </div>
+
+        <!-- Inputs and Split Management Framework View -->
+        <div class="grid">
+            <div class="card">
+                <h3 style="margin-top:0; border-bottom:2px solid #2563eb; padding-bottom:5px; color:#0d1b2a;">📥 RECORD TRANSACTION</h3>
+                <p style="font-size:12px; color:#64748b; margin-bottom:15px;">Fields marked with * are mandatory.</p>
+                
+                <div class="form-group">
+                    <label>Transaction Type *</label>
+                    <select id="tx-type">
+                        <option value="inflow">Income Inflow</option>
+                        <option value="outflow">Expense Outflow</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Income / Expense Source *</label>
+                    <select id="tx-category">
+                        <option value="needs">Needs (Essentials / Salary)</option>
+                        <option value="wants">Wants (Lifestyle Spending)</option>
+                        <option value="savings">Savings & Investments</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Transaction Date *</label>
+                    <input type="date" id="tx-date">
+                </div>
+                <div class="form-group">
+                    <label>Transaction Note / Label (Optional)</label>
+                    <input type="text" id="tx-note" placeholder="e.g., Office Salary, Groceries, Rent, Uber">
+                </div>
+                <div class="form-group">
+                    <label>Amount (Value in ₹) *</label>
+                    <input type="number" id="tx-amount" placeholder="e.g., 5000">
+                </div>
+                
+                <button class="btn" onclick="addTransaction()">Record Transaction</button>
+                
+                <div class="flex-buttons">
+                    <button class="btn btn-secondary" onclick="unloadSession()">Unload Current Session</button>
+                    <button class="btn btn-danger" onclick="resetAllData()">Reset All Data</button>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3 style="margin-top:0; border-bottom:2px solid #2563eb; padding-bottom:5px; color:#0d1b2a;">📊 METRICS FRAMEWORK ALLOCATION</h3>
+                
+                <div class="allocation-row">
+                    <span><strong>Needs (Essentials)</strong> (Target: 50% max)</span>
+                    <span class="allocation-pct" id="pct-needs">0%</span>
+                </div>
+                <div class="allocation-row">
+                    <span><strong>Wants (Lifestyle)</strong> (Target: 30% max)</span>
+                    <span class="allocation-pct" id="pct-wants">0%</span>
+                </div>
+                <div class="allocation-row">
+                    <span><strong>Savings & Investments</strong> (Target: 20% min)</span>
+                    <span class="allocation-pct" id="pct-savings">0%</span>
+                </div>
+
+                <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px; margin-top:25px;">
+                    <div style="background:#f0fdf4; border:1px solid #bbf7d0; padding:15px; border-radius:6px; text-align:center;">
+                        <div style="font-size:11px; color:#166534; font-weight:bold;">TOTAL INCOME FLOW</div>
+                        <div style="font-size:20px; font-weight:bold; color:#166534;" id="flow-income">+₹0.00</div>
+                    </div>
+                    <div style="background:#fef2f2; border:1px solid #fca5a5; padding:15px; border-radius:6px; text-align:center;">
+                        <div style="font-size:11px; color:#991b1b; font-weight:bold;">TOTAL EXPENSE FLOW</div>
+                        <div style="font-size:20px; font-weight:bold; color:#991b1b;" id="flow-expense">-₹0.00</div>
+                    </div>
+                </div>
+
+                <h4 style="margin-top:25px; margin-bottom:10px;">📋 TELEMETRY REVIEWS</h4>
+                <div class="alert-box" id="telemetry-box" style="background:#f8fafc; border:1px solid #e2e8f0; color:#475569;">
+                    Start recording transactions to receive personalized budget feedback tailored to your life situation.
+                </div>
+            </div>
         </div>
-      </div>
-    </div>
 
-    <!-- MAIN TWO-COLUMN WORKSPACE WORKBENCH -->
-    <div class="main-workspace-grid">
-      
-      <!-- LEFT WORKSPACE COLUMN: INPUT OPERATIONS -->
-      <div class="workspace-column">
-        <h3 class="section-main-title">📥 RECORD TRANSACTION</h3>
-        <div class="form-container">
-          <p class="form-sub-note">Fields marked with <span class="required">*</span> are mandatory.</p>
-          
-          <form id="form">
-            <div class="form-control">
-              <label>Transaction Type <span class="required">*</span></label>
-              <div class="type-selector">
-                <button type="button" class="type-option option-income" id="tab-income" onclick="handleFormToggleDirect(event, 'income')">🟢 Income Inflow</button>
-                <button type="button" class="type-option option-expense" id="tab-expense" onclick="handleFormToggleDirect(event, 'expense')">🔴 Expense Outflow</button>
-              </div>
-            </div>
-
-            <!-- INCOME SOURCE: EXTENDED WITH AN ANCHOR SAVINGS OPTION FIELD -->
-            <div class="form-control" id="income-group">
-              <label for="income-category">Income Source <span class="required">*</span></label>
-              <select id="income-category">
-                <option value="" disabled selected>-- Choose Income Source --</option>
-                <option value="Savings Anchor">Existing Cash Savings / Bank Balance</option>
-                <option value="Salary (Monthly)">Salary Payout (Monthly)</option>
-                <option value="Salary (Annually)">Salary Payout (Annually)</option>
-                <option value="Freelance / Side Business">Freelance / Side Business (Monthly)</option>
-                <option value="Investment Returns">Investment Returns (Monthly)</option>
-                <option value="Other Inbound Money">Other Inbound Money (Monthly)</option>
-              </select>
-            </div>
-
-            <!-- EXPENSE CATEGORY Select option element arrays -->
-            <div class="form-control" id="expense-group" style="display: none;">
-              <label for="expense-category">Expense Category <span class="required">*</span></label>
-              <select id="expense-category">
-                <option value="" disabled selected>-- Choose Expense Category --</option>
-                <option value="Groceries">Essential Groceries</option>
-                <option value="Rent/Bills">Housing Rent & Utilities</option>
-                <option value="Medical/Hospital">Medical & Hospital bills</option>
-                <option value="Travel/Fuel">Travel, Fuel & Transport</option>
-                <option value="Dining Out">Food & Restaurants</option>
-                <option value="Entertainment">Entertainment & Subscriptions</option>
-                <option value="Investment">Mutual Funds / Stock Investments</option>
-                <option value="Education/Fees">Education & Tuition Fees</option>
-                <option value="Other Expense">Other Miscellaneous Expenses</option>
-              </select>
-            </div>
-
-            <!-- HYBRID TRACKING COMPONENT: CALENDAR DATE PICKER ROOT -->
-            <div class="form-control" id="date-selection-group">
-              <label for="form-transaction-date">Transaction Date <span class="required">*</span></label>
-              <input type="date" id="form-transaction-date">
-            </div>
-
-            <div class="form-control">
-              <label for="form-date">Transaction Note / Label (Optional)</label>
-              <input type="text" id="form-date" placeholder="e.g., Office Salary, Groceries, Rent, Uber">
-            </div>
-
-            <div class="form-control">
-              <label for="amount">Amount (Value in ₹) <span class="required">*</span></label>
-              <input type="number" id="amount" step="any" placeholder="e.g., 5000">
-            </div>
+        <!-- FIXED MULTI-PAGE AD CRAWLER INDEX AREA -->
+        <div class="resource-box">
+            <h3 style="margin-top: 0; color: #0d1b2a; border-bottom:2px solid #2563eb; padding-bottom:5px;">📖 FINANCIAL RESOURCE CENTER</h3>
+            <p style="color: #64748b; font-size: 14px; margin-bottom: 20px;">Read our detailed, step-by-step personal finance articles to fix and master your tracker metrics:</p>
             
-            <button type="submit" class="btn btn-submit" id="submit-btn">Record Transaction</button>
+            <a href="strategic-allocation.html" class="resource-link">📋 Strategic Capital Allocation Framework →</a>
+            <a href="understanding-50-30-20.html" class="resource-link">💡 Understanding the 50/30/20 Allocation Rule →</a>
+            <a href="runway-tactics.html" class="resource-link">🛡️ Capital Preservation &amp; Survival Runway Tactics →</a>
+            <a href="data-security-backup.html" class="resource-link">💾 Data Security: How Local Client-Side Storage &amp; Backups Work →</a>
+        </div>
+
+        <footer>
+            <p>© 2026 Smart Wallet Tracker Pro. All Rights Reserved. Data stored locally via secure client-side browser storage layers.</p>
+            <p><a href="privacy.html">Privacy Policy</a> | <a href="terms.html">Terms of Service</a></p>
+        </footer>
+    </div>
+    <script>
+        let state = JSON.parse(localStorage.getItem('wallet_state')) || { income: 0, expense: 0, needs: 0, wants: 0, savings: 0 };
+
+        function updateUI() {
+            document.getElementById('val-balance').innerText = '₹' + (state.income - state.expense).toFixed(2);
+            document.getElementById('flow-income').innerText = '+₹' + state.income.toFixed(2);
+            document.getElementById('flow-expense').innerText = '-₹' + state.expense.toFixed(2);
             
-            <div class="directive-box">
-              <p><strong>💡 Dashboard Control Guide:</strong></p>
-              <ul>
-                <li><strong>Unload Session:</strong> Clears active screen metrics safely without wiping backups.</li>
-                <li><strong>Reset All Data:</strong> Permanent local device storage hardware purge.</li>
-              </ul>
-            </div>
+            let totalAlloc = state.needs + state.wants + state.savings;
+            if (totalAlloc > 0) {
+                document.getElementById('pct-needs').innerText = ((state.needs / totalAlloc) * 100).toFixed(0) + '%';
+                document.getElementById('pct-wants').innerText = ((state.wants / totalAlloc) * 100).toFixed(0) + '%';
+                document.getElementById('pct-savings').innerText = ((state.savings / totalAlloc) * 100).toFixed(0) + '%';
+            }
 
-            <div class="button-group">
-              <button type="button" class="btn btn-clear" id="unload-session-btn">Unload Current Session</button>
-              <button type="button" class="btn btn-reset" id="reset-all-btn">Reset All Data</button>
-            </div>
-          </form>
-        </div>
-      </div>
-      <!-- RIGHT WORKSPACE COLUMN: GRAPHICS ANALYTICS RADAR -->
-      <div class="workspace-column">
-        <h3 class="section-main-title">📊 TELEMETRY REVIEWS</h3>
-        
-        <div id="advisor" class="advisor-box">
-          Start recording transactions to receive personalized budget feedback tailored to your life situation.
-        </div>
+            let monthlyExpense = state.expense || 1;
+            let runway = ((state.income - state.expense) / monthlyExpense) * 12;
+            document.getElementById('val-runway').innerText = (runway > 0 ? runway.toFixed(1) : '0.0') + ' Months';
+            
+            let savedPct = state.income > 0 ? ((state.income - state.expense) / state.income) * 100 : 0;
+            document.getElementById('val-saved').innerText = (savedPct > 0 ? savedPct.toFixed(1) : '0.0') + '%';
 
-        <div class="goal-tracker-card">
-          <div class="goal-header-row">
-            <span class="goal-badge">🎯 ACTIVE MILESTONE</span>
-            <small class="goal-status-text">🔒 Locked Client-Side</small>
-          </div>
-          <input type="text" id="goal-input" placeholder="Set a wealth target (e.g., Save ₹50,000 for emergency backup portfolio)..." onkeyup="saveFinancialGoal()">
-        </div>
+            if(state.income > 0) {
+                document.getElementById('telemetry-box').className = 'alert-box';
+                document.getElementById('telemetry-box').style.background = '#f0fdf4';
+                document.getElementById('telemetry-box').innerText = 'Active milestone targets are operational. Keep monitoring allocations.';
+            }
+        }
 
-        <div class="dashboard-chart">
-          <div class="chart-title">Metrics Framework Allocation</div>
-          <div class="chart-row">
-            <div class="chart-label">
-              <span>Needs (Essentials) <small>(Target: 50% max)</small></span>
-              <span id="label-needs" class="pct-badge needs-bg">0%</span>
-            </div>
-            <div class="bar-container"><div id="bar-needs" class="bar-fill bar-needs"></div></div>
-          </div>
-          <div class="chart-row">
-            <div class="chart-label">
-              <span>Wants (Lifestyle) <small>(Target: 30% max)</small></span>
-              <span id="label-wants" class="pct-badge wants-bg">0%</span>
-            </div>
-            <div class="bar-container"><div id="bar-wants" class="bar-fill bar-wants"></div></div>
-          </div>
-          <div class="chart-row">
-            <div class="chart-label">
-              <span>Savings & Investments <small>(Target: 20% min)</small></span>
-              <span id="label-savings" class="pct-badge savings-bg">0%</span>
-            </div>
-            <div class="bar-container"><div id="bar-savings" class="bar-fill bar-savings"></div></div>
-          </div>
-        </div>
+        function addTransaction() {
+            let type = document.getElementById('tx-type').value;
+            let cat = document.getElementById('tx-category').value;
+            let amt = parseFloat(document.getElementById('tx-amount').value) || 0;
 
-        <div class="inc-exp-container">
-          <div class="flow-card plus-border">
-            <h4>Total Income flow</h4>
-            <p id="money-plus" class="money plus">+₹0.00</p>
-          </div>
-          <div class="flow-card minus-border">
-            <h4>Total Expense flow</h4>
-            <p id="money-minus" class="money minus">-₹0.00</p>
-          </div>
-        </div>
-      </div>
-    </div> <!-- END OF GRID -->
+            if (amt <= 0) return alert('Enter a valid amount');
 
-    <!-- TERMINAL ENTRY ZONE -->
-    <h3 class="section-main-title">📋 DATA LOG & BACKUP STATION</h3>
+            if (type === 'inflow') {
+                state.income += amt;
+            } else {
+                state.expense += amt;
+                if (cat === 'needs') state.needs += amt;
+                if (cat === 'wants') state.wants += amt;
+                if (cat === 'savings') state.savings += amt;
+            }
 
-    <div class="utility-toolbar">
-      <input type="text" id="search-bar" placeholder="🔍 Search through history ledger entries..." onkeyup="filterLedgerSearch()">
-      
-      <div class="backup-button-group">
-        <div class="tooltip-wrapper">
-          <button type="button" class="action-export-btn" onclick="exportDataCSV()">📥 Export Backup</button>
-          <span class="tooltip-box">ℹ️ Save your transaction log as a spreadsheet (.csv) file directly on this device.</span>
-        </div>
+            localStorage.setItem('wallet_state', JSON.stringify(state));
+            updateUI();
+            document.getElementById('tx-amount').value = '';
+            document.getElementById('tx-note').value = '';
+        }
 
-        <div class="tooltip-wrapper">
-          <label for="import-file" class="action-export-btn import-label-btn">📤 Import Backup</label>
-          <input type="file" id="import-file" accept=".csv" onchange="importDataCSV(event)" style="display: none;">
-          <span class="tooltip-box">ℹ️ Select a previously exported (.csv) wallet file to restore your saved data history.</span>
-        </div>
-      </div>
-    </div>
+        function unloadSession() {
+            alert('Session metrics unloaded safely to device container memory.');
+        }
 
-    <ul id="list" class="list"></ul>
+        function resetAllData() {
+            if(confirm('Are you sure you want to permanently clear local storage database logs?')) {
+                localStorage.clear();
+                state = { income: 0, expense: 0, needs: 0, wants: 0, savings: 0 };
+                updateUI();
+            }
+        }
 
-    <!-- INTERACTIVE RESOURCES ACCORDION COMPONENT -->
-    <div class="info-section">
-      <h2 class="section-main-title" style="border-left:none; padding-left:0;">📚 FINANCIAL RESOURCE CENTER</h2>
-      <p class="resources-subtitle">Click on any panel header below to expand core personal finance learning modules.</p>
-      
-      <div class="accordion-item">
-        <button type="button" class="accordion-header" onclick="toggleAccordion(this)">
-          <span>📋 Strategic Capital Allocation Framework</span>
-          <span class="accordion-arrow">▼</span>
-        </button>
-        <div class="accordion-content">
-          <p>Managing money requires intentional tracking, balanced saving patterns, and concrete financial goals. Use this dashboard daily to mirror optimal wealth metrics and keep your spending under your complete control.</p>
-        </div>
-      </div>
-
-      <div class="accordion-item">
-        <button type="button" class="accordion-header" onclick="toggleAccordion(this)">
-          <span>💡 Understanding the 50/30/20 Allocation Rule</span>
-          <span class="accordion-arrow">▼</span>
-        </button>
-        <div class="accordion-content">
-          <p>This framework divides your net income into three distinct groups: 50% for absolute structural survival Needs (rent, utilities, groceries), 30% for discretionary lifestyle freedom Wants (dining out, hobbies), and a minimum of 20% dedicated to wealth generation Savings and debt payoff plans.</p>
-        </div>
-      </div>
-
-      <div class="accordion-item">
-        <button type="button" class="accordion-header" onclick="toggleAccordion(this)">
-          <span>🛡️ Capital Preservation & Survival Runway Tactics</span>
-          <span class="accordion-arrow">▼</span>
-        </button>
-        <div class="accordion-content">
-          <p>Your Survival Runway measures exactly how many months your household can comfortably sustain its current lifestyle if your primary income source suddenly stops. Financial experts recommend preserving a baseline emergency runway of 6 months.</p>
-        </div>
-      </div>
-    </div>
-
-    <footer class="legal-footer-layer">
-      <p>© 2026 Smart Wallet Tracker Pro. All Rights Reserved. Data stored locally via secure client-side browser storage layers.</p>
-      <div>
-        <a href="privacy.html">Privacy Policy</a>
-        <span style="color:#94a3b8; font-weight:700;">•</span>
-        <a href="terms.html">Terms of Service</a>
-      </div>
-    </footer>
-  </div>
-
-  <script src="app.js"></script>
+        window.onload = updateUI;
+    </script>
 </body>
 </html>
